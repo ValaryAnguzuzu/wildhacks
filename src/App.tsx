@@ -1,61 +1,57 @@
 import './App.css';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import logo from './394-2026-Logo.png';
+import { EndScreen } from './components/EndScreen';
+import { GameBoard } from './components/GameBoard';
+import { WelcomeScreen } from './components/WelcomeScreen';
+import { GamePhase, LevelStats } from './types';
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [phase, setPhase]             = useState<GamePhase>('welcome');
+  const [currentLevel, setCurrentLevel] = useState(0);
+  const [allStats, setAllStats]         = useState<LevelStats[]>([]);
+  const [gameStartTime]                 = useState(() => Date.now());
+
+  const handlePlay = () => {
+    setCurrentLevel(0);
+    setAllStats([]);
+    setPhase('playing');
+  };
+
+  const handleLevelComplete = (stats: LevelStats) => {
+    const updated = [...allStats, stats];
+    setAllStats(updated);
+    if (currentLevel < 2) {
+      setCurrentLevel((l) => l + 1);
+    } else {
+      setPhase('gameComplete');
+    }
+  };
+
+  const handleRestart = () => {
+    setPhase('welcome');
+  };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p className="header">
-          {' '}
-          🚀 Vite + React + Typescript + Vitest 🤘 & <br />
-          Eslint 🔥+ Prettier for Wildcats
-        </p>
+    <div className="app">
+      {phase === 'welcome' && <WelcomeScreen onPlay={handlePlay} />}
 
-        <div className="body">
-          {' '}
-          <button onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-          <p> Don&apos;t forgot to install Eslint and Prettier in Your Vscode.</p>
-          <p>
-            Mess up the code in <code>App.tsx </code> and save the file.
-          </p>
-          <p>
-            <a
-              className="App-link"
-              href="https://reactjs.org"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learn React
-            </a>
-            {' | '}
-            <a
-              className="App-link"
-              href="https://vitejs.dev/guide/features.html"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Vite Docs
-            </a>
-            {' | '}
-            <a
-              className="App-link"
-              href="https://vitest.dev/guide/features.html"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Vitest Docs
-            </a>
-          </p>
-        </div>
-      </header>
+      {phase === 'playing' && (
+        <GameBoard
+          key={currentLevel}
+          levelIndex={currentLevel}
+          onLevelComplete={handleLevelComplete}
+        />
+      )}
+
+      {phase === 'gameComplete' && (
+        <EndScreen
+          stats={allStats}
+          totalTimeMs={Date.now() - gameStartTime}
+          onRestart={handleRestart}
+        />
+      )}
     </div>
   );
 }
