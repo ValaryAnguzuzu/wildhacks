@@ -25,7 +25,6 @@ You can find more about these in the following links: [Vite](https://vitejs.dev)
 - **TypeScript 5.9** with strict mode enabled
 - **ESLint 9** using the new flat config format
 - All dependencies updated to their latest stable versions
-- **starter Copilot instructions** in `copilot-instructions.md` for code style and project structure guidelines
 
 ## Installation
 
@@ -145,13 +144,11 @@ For the smoothest editing experience:
 3. Enable `formatOnSave`.
 4. Open a `.tsx` file and confirm both ESLint and Prettier are active in the editor.
 
-## Copilot Instructions
-
-There is a basic set of copilot instructions in `copilot-instructions.md` that you can refer to for code style and project structure guidelines. Feel free to modify/change/expand these instructions as needed for your project. The instructions link with the husky hooks to make sure code is linted and formatted consistently.
-
 ## Pre-commit Hook
 
 The repo includes Husky setup and keeps the historical `pre-commit` lint flow in `package.json`. Running `npm run lint` before committing is still the safest way to ensure formatting and lint fixes are already applied.
+
+A `commit-msg` hook strips common Cursor IDE footer lines (for example `Co-authored-by: Cursor` or a `Made with Cursor` line) so those are not saved in commit messages.
 
 ## Acknowledgments
 
