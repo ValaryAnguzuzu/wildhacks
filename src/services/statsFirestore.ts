@@ -12,7 +12,7 @@ import {
 } from 'firebase/firestore';
 
 import { db } from '../config/firebase';
-import { LEVEL_COUNT } from '../data/levels';
+import { FIN_SIM_ROUND_COUNT } from '../data/finSimScenario';
 import type { LevelStats } from '../types';
 
 export interface GameSessionRecord {
@@ -77,7 +77,7 @@ async function migrateLocalToCloudOnce(uid: string): Promise<void> {
         if (maxRaw) {
           const n = parseInt(maxRaw, 10);
           if (!Number.isNaN(n)) {
-            const merged = Math.min(LEVEL_COUNT, Math.max(1, n));
+            const merged = Math.min(FIN_SIM_ROUND_COUNT, Math.max(1, n));
             await setDoc(
               settingsDoc(uid),
               { maxAnswerLevelUnlocked: merged },
@@ -181,12 +181,12 @@ export async function getMaxAnswerLevelUnlocked(uid: string): Promise<number> {
   if (snap.exists()) {
     const n = snap.data()?.maxAnswerLevelUnlocked;
     if (typeof n === 'number' && !Number.isNaN(n)) {
-      return Math.min(LEVEL_COUNT, Math.max(1, n));
+      return Math.min(FIN_SIM_ROUND_COUNT, Math.max(1, n));
     }
   }
   const sessions = await loadSessions(uid);
-  const fallback = sessions.some((s) => s.levelScores.length >= LEVEL_COUNT)
-    ? LEVEL_COUNT
+  const fallback = sessions.some((s) => s.levelScores.length >= FIN_SIM_ROUND_COUNT)
+    ? FIN_SIM_ROUND_COUNT
     : 1;
   await setDoc(settingsDoc(uid), { maxAnswerLevelUnlocked: fallback }, { merge: true });
   return fallback;
@@ -203,6 +203,6 @@ export async function updateMaxAnswerLevelUnlocked(
     snap.exists() && typeof snap.data()?.maxAnswerLevelUnlocked === 'number'
       ? snap.data()!.maxAnswerLevelUnlocked
       : 1;
-  const next = Math.min(LEVEL_COUNT, Math.max(prev, completedLevelNumber));
+  const next = Math.min(FIN_SIM_ROUND_COUNT, Math.max(prev, completedLevelNumber));
   await setDoc(settingsDoc(uid), { maxAnswerLevelUnlocked: next }, { merge: true });
 }

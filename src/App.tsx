@@ -10,6 +10,7 @@ import { ProfilePage } from './pages/ProfilePage';
 import { SettingsPage } from './pages/SettingsPage';
 import { SignInPage } from './pages/SignInPage';
 import { StatsPage } from './pages/StatsPage';
+import { GameContainer } from './finsim/components/GameContainer';
 import { RootLayout } from './routes/RootLayout';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route element={<RootLayout />}>
               <Route path="/" element={<HomePage />} />
               <Route path="/play" element={<PlayPage />} />
+              <Route path="/game" element={<GameContainer />} />
               <Route path="/stats" element={<StatsPage />} />
               <Route path="/answers" element={<AnswerKeyPage />} />
               <Route path="/sign-in" element={<SignInPage />} />

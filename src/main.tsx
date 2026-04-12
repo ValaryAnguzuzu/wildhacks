@@ -4,6 +4,7 @@ import './styles/home-zigzag.css';
 import './styles/game-arena.css';
 import './styles/game-arena-theme.css';
 import './styles/answer-key.css';
+import './styles/finsim.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';

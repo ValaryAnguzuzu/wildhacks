@@ -1,35 +1,29 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAuth } from '../context/AuthContext';
+import { FinSimBoard } from '../components/FinSimBoard';
 import { EndScreen } from '../components/EndScreen';
-import { GameBoard } from '../components/GameBoard';
-import { LEVEL_COUNT } from '../data/levels';
+import { FIN_SIM_ROUND_COUNT } from '../data/finSimScenario';
+import type { FinSimResources } from '../data/finSimScenario';
+import { useAuth } from '../context/AuthContext';
 import {
   getLastRunTotalScore,
   recordSession,
   updateMaxAnswerLevelUnlocked,
 } from '../services/statsStorage';
 import { GamePhase, LevelStats } from '../types';
-import { resumeAudioContext } from '../utilities/gameAudio';
 
 export function PlayPage() {
   const navigate = useNavigate();
   const { loading: authLoading } = useAuth();
   const [phase, setPhase] = useState<GamePhase>('playing');
-  const [currentLevel, setCurrentLevel] = useState(0);
   const [allStats, setAllStats] = useState<LevelStats[]>([]);
-  const [gameStartTime, setGameStartTime] = useState(() => Date.now());
+  const [gameStartTime] = useState(() => Date.now());
   const [lastRunTotalScore, setLastRunTotalScore] = useState(0);
-  /** Bumps when the player restarts mid-run so GameBoard fully remounts. */
   const [runId, setRunId] = useState(0);
+  const [finSimWon, setFinSimWon] = useState(false);
+  const [finSimResources, setFinSimResources] = useState<FinSimResources | null>(null);
   const recorded = useRef(false);
-
-  const sessionScoreOffset = allStats.reduce((a, s) => a + s.score, 0);
-
-  useEffect(() => {
-    resumeAudioContext();
-  }, []);
 
   useEffect(() => {
     if (authLoading) return;
@@ -37,7 +31,7 @@ export function PlayPage() {
   }, [authLoading]);
 
   useEffect(() => {
-    if (phase !== 'gameComplete' || allStats.length !== LEVEL_COUNT || recorded.current)
+    if (phase !== 'gameComplete' || allStats.length !== FIN_SIM_ROUND_COUNT || recorded.current)
       return;
     recorded.current = true;
     void recordSession(allStats, Date.now() - gameStartTime).then(() => {
@@ -45,15 +39,12 @@ export function PlayPage() {
     });
   }, [phase, allStats, gameStartTime]);
 
-  const handleLevelComplete = (stats: LevelStats) => {
-    void updateMaxAnswerLevelUnlocked(currentLevel);
-    const updated = [...allStats, stats];
-    setAllStats(updated);
-    if (currentLevel < LEVEL_COUNT - 1) {
-      setCurrentLevel((l) => l + 1);
-    } else {
-      setPhase('gameComplete');
-    }
+  const handleRunComplete = (stats: LevelStats[], won: boolean, resources: FinSimResources) => {
+    void updateMaxAnswerLevelUnlocked(FIN_SIM_ROUND_COUNT - 1);
+    setAllStats(stats);
+    setFinSimWon(won);
+    setFinSimResources(resources);
+    setPhase('gameComplete');
   };
 
   const handleRestart = () => {
@@ -61,9 +52,10 @@ export function PlayPage() {
   };
 
   const handleRestartRun = () => {
-    setCurrentLevel(0);
+    setPhase('playing');
     setAllStats([]);
-    setGameStartTime(Date.now());
+    setFinSimWon(false);
+    setFinSimResources(null);
     void getLastRunTotalScore().then(setLastRunTotalScore);
     setRunId((n) => n + 1);
     recorded.current = false;
@@ -72,15 +64,10 @@ export function PlayPage() {
   return (
     <div className="play-page">
       {phase === 'playing' && (
-        <GameBoard
-          key={`run-${runId}-lvl-${currentLevel}`}
-          levelIndex={currentLevel}
-          totalLevels={LEVEL_COUNT}
-          sessionScoreOffset={sessionScoreOffset}
+        <FinSimBoard
+          key={`finsim-${runId}`}
           lastRunTotalScore={lastRunTotalScore}
-          onLevelComplete={handleLevelComplete}
-          onLevelCleared={updateMaxAnswerLevelUnlocked}
-          onRestartRun={handleRestartRun}
+          onRunComplete={handleRunComplete}
           onExit={() => navigate('/')}
         />
       )}
@@ -89,7 +76,10 @@ export function PlayPage() {
         <EndScreen
           stats={allStats}
           totalTimeMs={Date.now() - gameStartTime}
+          finSimWon={finSimWon}
+          finSimResources={finSimResources}
           onRestart={handleRestart}
+          onRestartRun={handleRestartRun}
         />
       )}
     </div>

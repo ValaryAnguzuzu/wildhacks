@@ -1,0 +1,804 @@
+/* FinSim — modern split-panel simulation (scoped tokens) */
+
+.finsim-page {
+  --fs-surface: rgba(17, 24, 39, 0.72);
+  --fs-surface-2: rgba(30, 41, 59, 0.85);
+  --fs-border: rgba(148, 163, 184, 0.12);
+  --fs-border-strong: rgba(148, 163, 184, 0.22);
+  --fs-glow: rgba(56, 189, 248, 0.08);
+
+  min-height: calc(100vh - 56px);
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -30%, rgba(14, 165, 233, 0.14), transparent 55%),
+    radial-gradient(ellipse 90% 60% at 100% 50%, rgba(167, 139, 250, 0.08), transparent 50%),
+    radial-gradient(ellipse 70% 50% at 0% 80%, rgba(52, 211, 153, 0.06), transparent 45%),
+    var(--bg-deep);
+}
+
+[data-theme='light'] .finsim-page {
+  --fs-surface: rgba(255, 255, 255, 0.85);
+  --fs-surface-2: rgba(248, 250, 252, 0.95);
+  --fs-border: rgba(15, 23, 42, 0.08);
+  --fs-border-strong: rgba(15, 23, 42, 0.14);
+  --fs-glow: rgba(14, 165, 233, 0.06);
+  background:
+    radial-gradient(ellipse 100% 70% at 50% -20%, rgba(14, 165, 233, 0.12), transparent 55%),
+    radial-gradient(ellipse 80% 50% at 100% 40%, rgba(167, 139, 250, 0.1), transparent 50%),
+    #f1f5f9;
+}
+
+/* ─── HUD ─────────────────────────────────────────────────────────────── */
+
+.finsim-hud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.65rem 1rem 0.75rem;
+  border-bottom: 1px solid var(--fs-border);
+  background: var(--fs-surface);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme='light'] .finsim-hud {
+  box-shadow: 0 1px 0 rgba(15, 23, 42, 0.06), 0 8px 32px rgba(15, 23, 42, 0.06);
+}
+
+.finsim-hud__brand {
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: -0.02em;
+  margin-right: auto;
+  background: linear-gradient(135deg, #38bdf8 0%, #a78bfa 50%, #34d399 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+[data-theme='light'] .finsim-hud__brand {
+  filter: none;
+}
+
+.finsim-hud__metric {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.25rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.35);
+  border: 1px solid var(--fs-border);
+}
+
+[data-theme='light'] .finsim-hud__metric {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: var(--fs-border-strong);
+}
+
+.finsim-hud__metric span:first-child {
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.finsim-hud__metric strong {
+  font-size: 1rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.finsim-hud__metric.arena-beat-last strong {
+  color: #34d399;
+}
+
+.finsim-hud__timer {
+  flex: 1 0 100%;
+  width: 100%;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  margin-top: 0.15rem;
+}
+
+[data-theme='light'] .finsim-hud__timer {
+  background: rgba(15, 23, 42, 0.08);
+}
+
+.finsim-hud__timer-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.35s linear, background-color 0.35s;
+  box-shadow: 0 0 16px rgba(52, 211, 153, 0.35);
+}
+
+/* ─── Body ───────────────────────────────────────────────────────────── */
+
+.finsim-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(270px, 360px) 1fr;
+  gap: 0;
+  min-height: 0;
+}
+
+@media (max-width: 900px) {
+  .finsim-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.finsim-panel {
+  margin: 0.75rem 0 0.75rem 0.75rem;
+  padding: 1.1rem 1.15rem 1.25rem;
+  border-radius: 16px;
+  border: 1px solid var(--fs-border);
+  background: var(--fs-surface-2);
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 900px) {
+  .finsim-panel {
+    margin: 0.5rem 0.75rem 0;
+    border-radius: 16px 16px 0 0;
+  }
+}
+
+[data-theme='light'] .finsim-panel {
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+}
+
+.finsim-panel__title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.finsim-meters {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.finsim-meter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 0.85rem;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid var(--fs-border);
+  border-left-width: 4px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+[data-theme='light'] .finsim-meter {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.finsim-meter--savings {
+  border-left-color: #34d399;
+  box-shadow: inset 0 0 0 1px rgba(52, 211, 153, 0.08);
+}
+
+.finsim-meter--debt {
+  border-left-color: #fb7185;
+  box-shadow: inset 0 0 0 1px rgba(251, 113, 133, 0.08);
+}
+
+.finsim-meter--investing {
+  border-left-color: #a78bfa;
+  box-shadow: inset 0 0 0 1px rgba(167, 139, 250, 0.1);
+}
+
+.finsim-meter__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.finsim-meter__val {
+  font-weight: 800;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.finsim-meter--savings .finsim-meter__val {
+  color: #6ee7b7;
+}
+
+.finsim-meter--debt .finsim-meter__val {
+  color: #fda4af;
+}
+
+.finsim-meter--investing .finsim-meter__val {
+  color: #c4b5fd;
+}
+
+[data-theme='light'] .finsim-meter--savings .finsim-meter__val {
+  color: #059669;
+}
+
+[data-theme='light'] .finsim-meter--debt .finsim-meter__val {
+  color: #e11d48;
+}
+
+[data-theme='light'] .finsim-meter--investing .finsim-meter__val {
+  color: #7c3aed;
+}
+
+.finsim-ai {
+  padding: 1rem 1.25rem 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-height: 280px;
+}
+
+@media (min-width: 901px) {
+  .finsim-ai {
+    padding-right: 1.5rem;
+  }
+}
+
+.finsim-ai__badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.28rem 0.65rem;
+  border-radius: 8px;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+[data-theme='light'] .finsim-ai__badge {
+  color: #4f46e5;
+  background: rgba(99, 102, 241, 0.1);
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+.finsim-ai__scenario {
+  font-size: 1.08rem;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.finsim-ai__hint {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Pool summary chips */
+.finsim-pool-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--fs-border);
+  font-size: 0.82rem;
+}
+
+@media (max-width: 520px) {
+  .finsim-pool-timer {
+    margin-left: 0;
+    flex: 1 1 100%;
+    text-align: center;
+  }
+}
+
+[data-theme='light'] .finsim-pool-row {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.finsim-pool-row strong {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.finsim-pool-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.finsim-pool-chip--pool {
+  background: rgba(14, 165, 233, 0.15);
+  color: #7dd3fc;
+  border: 1px solid rgba(14, 165, 233, 0.25);
+}
+
+.finsim-pool-chip--alloc {
+  background: rgba(52, 211, 153, 0.12);
+  color: #6ee7b7;
+  border: 1px solid rgba(52, 211, 153, 0.22);
+}
+
+.finsim-pool-chip--rem {
+  background: rgba(251, 191, 36, 0.1);
+  color: #fcd34d;
+  border: 1px solid rgba(251, 191, 36, 0.22);
+}
+
+[data-theme='light'] .finsim-pool-chip--pool {
+  color: #0369a1;
+}
+
+[data-theme='light'] .finsim-pool-chip--alloc {
+  color: #047857;
+}
+
+[data-theme='light'] .finsim-pool-chip--rem {
+  color: #b45309;
+}
+
+.finsim-pool-timer {
+  margin-left: auto;
+  font-size: 0.78rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: #94a3b8;
+  padding: 0.25rem 0.55rem;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid var(--fs-border);
+}
+
+[data-theme='light'] .finsim-pool-timer {
+  background: rgba(255, 255, 255, 0.8);
+  color: #64748b;
+}
+
+.finsim-remaining-warn {
+  color: #fb923c !important;
+}
+
+.finsim-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.finsim-btn {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid var(--fs-border);
+  background: var(--fs-surface);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.12s, border-color 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.finsim-btn:hover:not(:disabled) {
+  border-color: rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.finsim-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.finsim-btn__title {
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.finsim-btn__sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.finsim-btn--primary {
+  border-color: rgba(52, 211, 153, 0.35);
+}
+
+.finsim-continue {
+  margin-top: 0.35rem;
+  padding: 0.7rem 1.25rem;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 45%, #10b981 100%);
+  color: #f0fdfa;
+  font-weight: 700;
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  align-self: flex-start;
+  box-shadow:
+    0 4px 20px rgba(14, 165, 233, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: transform 0.12s, filter 0.15s, box-shadow 0.15s;
+}
+
+.finsim-continue:hover:not(:disabled) {
+  filter: brightness(1.08);
+  box-shadow:
+    0 6px 28px rgba(14, 165, 233, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transform: translateY(-1px);
+}
+
+.finsim-continue:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.finsim-line {
+  font-size: 0.98rem;
+  padding: 0.5rem 0;
+}
+
+.finsim-line strong {
+  color: #6ee7b7;
+}
+
+.finsim-line--expense strong {
+  color: #fda4af;
+}
+
+.finsim-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(2, 6, 23, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+[data-theme='light'] .finsim-overlay {
+  background: rgba(15, 23, 42, 0.35);
+}
+
+.finsim-overlay-card {
+  max-width: 440px;
+  width: 100%;
+  padding: 1.75rem 1.6rem;
+  border-radius: 20px;
+  background: var(--fs-surface-2);
+  border: 1px solid var(--fs-border-strong);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+}
+
+[data-theme='light'] .finsim-overlay-card {
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+}
+
+.finsim-overlay-card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.finsim-overlay-card p {
+  margin: 0 0 1.25rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.finsim-intro-badge {
+  display: inline-block;
+  margin: 0 0 0.5rem;
+  padding: 0.3rem 0.65rem;
+  border-radius: 8px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #93c5fd;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+}
+
+[data-theme='light'] .finsim-intro-badge {
+  color: #1d4ed8;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.finsim-panel__risk {
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+  padding: 0.5rem 0.65rem;
+  border-radius: 10px;
+  background: rgba(251, 113, 133, 0.08);
+  border: 1px solid rgba(251, 113, 133, 0.15);
+}
+
+.finsim-feedback {
+  margin-top: 0.35rem;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
+  border: 1px solid var(--fs-border);
+  background: rgba(15, 23, 42, 0.5);
+}
+
+[data-theme='light'] .finsim-feedback {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.finsim-feedback--good {
+  border-color: rgba(52, 211, 153, 0.45);
+  background: linear-gradient(145deg, rgba(52, 211, 153, 0.12) 0%, rgba(15, 23, 42, 0.5) 100%);
+  box-shadow: 0 0 40px rgba(52, 211, 153, 0.08);
+}
+
+.finsim-feedback--bad {
+  border-color: rgba(251, 113, 133, 0.4);
+  background: linear-gradient(145deg, rgba(251, 113, 133, 0.1) 0%, rgba(15, 23, 42, 0.5) 100%);
+  box-shadow: 0 0 40px rgba(251, 113, 133, 0.06);
+}
+
+[data-theme='light'] .finsim-feedback--good {
+  background: linear-gradient(145deg, rgba(52, 211, 153, 0.15) 0%, rgba(255, 255, 255, 0.9) 100%);
+}
+
+[data-theme='light'] .finsim-feedback--bad {
+  background: linear-gradient(145deg, rgba(251, 113, 133, 0.12) 0%, rgba(255, 255, 255, 0.9) 100%);
+}
+
+.finsim-feedback h3 {
+  margin: 0 0 0.45rem;
+  font-size: 1.02rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.finsim-feedback p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.finsim-top-actions {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.finsim-exit {
+  padding: 0.45rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--fs-border);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.finsim-exit:hover {
+  color: var(--text);
+  border-color: var(--fs-border-strong);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* ─── Category columns ───────────────────────────────────────────────── */
+
+.finsim-cols {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0.5rem 0 0;
+}
+
+@media (max-width: 1100px) {
+  .finsim-cols {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .finsim-cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.finsim-col {
+  --cat: #64748b;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 196px;
+  padding: 0.65rem 0.5rem 0.55rem;
+  border-radius: 14px;
+  border: 1px solid var(--fs-border);
+  border-top: 3px solid var(--cat);
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--cat) 22%, transparent) 0%,
+    rgba(15, 23, 42, 0.88) 52%
+  );
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+}
+
+.finsim-col:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  border-color: color-mix(in srgb, var(--cat) 40%, transparent);
+}
+
+[data-theme='light'] .finsim-col {
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--cat) 18%, white) 0%,
+    rgba(255, 255, 255, 0.95) 55%
+  );
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+}
+
+.finsim-col__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  text-align: center;
+}
+
+.finsim-col__emoji {
+  font-size: 1.35rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.finsim-col__label {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text);
+}
+
+.finsim-col__hint {
+  font-size: 0.62rem;
+  line-height: 1.35;
+  color: var(--text-muted);
+  margin: 0.2rem 0 0;
+  text-align: center;
+  flex: 1;
+}
+
+.finsim-col__amt {
+  font-size: 1.15rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  margin: 0.4rem 0;
+  color: #f8fafc;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme='light'] .finsim-col__amt {
+  color: #0f172a;
+  text-shadow: none;
+}
+
+.finsim-col__btns {
+  display: flex;
+  gap: 0.35rem;
+  justify-content: center;
+  margin-top: auto;
+}
+
+.finsim-col__step {
+  flex: 1;
+  min-width: 0;
+  padding: 0.4rem 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.55);
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.finsim-col__step:hover {
+  background: color-mix(in srgb, var(--cat) 28%, rgba(15, 23, 42, 0.8));
+  border-color: color-mix(in srgb, var(--cat) 50%, transparent);
+  color: #fff;
+}
+
+[data-theme='light'] .finsim-col__step {
+  background: rgba(255, 255, 255, 0.85);
+  color: #334155;
+  border-color: rgba(15, 23, 42, 0.1);
+}
+
+.finsim-alloc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  margin-top: 0.85rem;
+}
+
+.finsim-btn--ghost {
+  border: 1px solid var(--fs-border-strong);
+  background: rgba(15, 23, 42, 0.35);
+  color: #cbd5e1;
+  padding: 0.65rem 1rem;
+  border-radius: 12px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+[data-theme='light'] .finsim-btn--ghost {
+  background: rgba(255, 255, 255, 0.7);
+  color: #475569;
+}
+
+.finsim-btn--ghost:hover {
+  color: var(--text);
+  border-color: rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.finsim-continue:disabled {
+  opacity: 0.42;
+  cursor: not-allowed;
+  filter: grayscale(0.3);
+  transform: none;
+  box-shadow: none;
+}

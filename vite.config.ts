@@ -13,6 +13,13 @@ export default defineConfig({
         secure: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
+      // OpenAI (FinSim GPT scenarios) — avoids browser CORS in development. Use a server proxy in production.
+      '/openai': {
+        target: 'https://api.openai.com',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/openai/, ''),
+      },
     },
   },
   test: {

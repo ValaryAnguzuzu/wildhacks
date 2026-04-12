@@ -48,32 +48,33 @@ export function HelpPanel({ open, onClose }: Props) {
           </button>
         </div>
         <p className="help-lead">
-          Sort each falling block into the column that matches the concept. Read the back
-          of a card when you need a hint — the timer keeps you honest.
+          Each month you get a paycheck. Assign <strong>every dollar</strong> across five
+          categories: Needs, Debt, Savings, Investing, and Wants — color-coded columns on
+          the right.
         </p>
         <ul className="help-shortcuts">
           <li>
-            <span className="kbd">←</span> <span className="kbd">→</span> Move
+            <span className="kbd">+25</span> / <span className="kbd">−25</span> move money
+            into or out of a category
           </li>
           <li>
-            <span className="kbd">Enter</span> <span className="kbd">↓</span> Drop
+            <strong>Split evenly</strong> divides the pool five ways (you can adjust after)
           </li>
           <li>
-            <span className="kbd">Space</span> Pause (Esc too)
+            <strong>Confirm allocation</strong> when remaining is $0 — or the timer applies
+            an even split
           </li>
           <li>
-            <span className="kbd">F</span> Flip card
-          </li>
-          <li>
-            <span className="kbd">H</span> Hint
+            Underfunding Needs or debt minimums triggers fees or interest in the feedback
           </li>
         </ul>
         <p className="help-touch">
-          Touch: tap a column to place · tap the block to flip.
+          Touch: tap +/− in each column. Lose if total debt crosses the limit shown on the
+          left.
         </p>
         <p className="help-foot">
-          Sound and appearance live in <strong>Settings</strong>. Your runs are saved on
-          this device only.
+          Appearance lives in <strong>Settings</strong>. Signed-in runs sync to{' '}
+          <strong>Stats</strong>.
         </p>
       </div>
     </div>

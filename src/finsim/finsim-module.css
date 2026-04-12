@@ -1,0 +1,375 @@
+/* FinSim self-contained module — no Tailwind; subtle state cues only */
+
+.finsim-module {
+  --fs-bg: linear-gradient(160deg, #0f172a 0%, #1e293b 45%, #0f172a 100%);
+  --fs-card: rgba(15, 23, 42, 0.72);
+  --fs-border: rgba(148, 163, 184, 0.25);
+  --fs-text: #e2e8f0;
+  --fs-muted: #94a3b8;
+  --fs-accent: #38bdf8;
+  --fs-good: #4ade80;
+  --fs-bad: #f87171;
+  --fs-warn: #fbbf24;
+
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+  color: var(--fs-text);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.finsim-module__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.25rem;
+}
+
+.finsim-module__sub {
+  color: var(--fs-muted);
+  font-size: 0.9rem;
+  margin: 0 0 1.5rem;
+}
+
+.finsim-module__grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .finsim-module__grid--2 {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.finsim-module__card {
+  background: var(--fs-card);
+  border: 1px solid var(--fs-border);
+  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  backdrop-filter: blur(8px);
+}
+
+.finsim-module__card h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+  color: var(--fs-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.finsim-module__stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  align-items: baseline;
+}
+
+.finsim-module__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.finsim-module__stat label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fs-muted);
+}
+
+.finsim-module__stat strong {
+  font-size: 1.35rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.finsim-module__stat--savings-up {
+  color: var(--fs-good);
+  animation: finsim-pulse-once 0.65s ease-out;
+}
+
+.finsim-module__stat--savings-down {
+  color: var(--fs-bad);
+  animation: finsim-pulse-once 0.65s ease-out;
+}
+
+.finsim-module__stat--debt-up {
+  color: var(--fs-bad);
+  animation: finsim-pulse-once 0.65s ease-out;
+}
+
+.finsim-module__stat--debt-down {
+  color: var(--fs-good);
+  animation: finsim-pulse-once 0.65s ease-out;
+}
+
+@keyframes finsim-pulse-once {
+  0% {
+    filter: brightness(1.35);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+.finsim-module__scenario-text {
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 0 0 1rem;
+}
+
+.finsim-module__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.finsim-module__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #bae6fd;
+}
+
+.finsim-module__chip--event {
+  background: rgba(251, 191, 36, 0.12);
+  border-color: rgba(251, 191, 36, 0.4);
+  color: #fde68a;
+}
+
+.finsim-module__pool {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--fs-border);
+  font-size: 0.9rem;
+  color: var(--fs-muted);
+}
+
+.finsim-module__pool strong {
+  color: var(--fs-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.finsim-module__categories {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.finsim-module__cat {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
+}
+
+@media (min-width: 480px) {
+  .finsim-module__cat {
+    grid-template-columns: 7rem 1fr 5.5rem;
+  }
+}
+
+.finsim-module__cat-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.finsim-module__cat-hint {
+  grid-column: 1 / -1;
+  font-size: 0.75rem;
+  color: var(--fs-muted);
+}
+
+@media (min-width: 480px) {
+  .finsim-module__cat-hint {
+    grid-column: 2;
+  }
+}
+
+.finsim-module__input {
+  width: 100%;
+  max-width: 7rem;
+  justify-self: end;
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--fs-border);
+  background: rgba(15, 23, 42, 0.9);
+  color: var(--fs-text);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.finsim-module__input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.finsim-module__remaining {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.finsim-module__remaining--ok {
+  color: var(--fs-good);
+}
+
+.finsim-module__remaining--bad {
+  color: var(--fs-bad);
+}
+
+.finsim-module__btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.finsim-module__btn {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #0ea5e9, #6366f1);
+  color: #f8fafc;
+  transition: transform 0.08s ease, filter 0.15s ease;
+}
+
+.finsim-module__btn:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.finsim-module__btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.finsim-module__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.finsim-module__btn--ghost {
+  background: transparent;
+  border: 1px solid var(--fs-border);
+  color: var(--fs-text);
+}
+
+.finsim-module__btn--warn {
+  background: linear-gradient(135deg, #f59e0b, #ea580c);
+}
+
+.finsim-module__alloc-summary {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--fs-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+}
+
+.finsim-module__loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--fs-muted);
+}
+
+/* Summary */
+
+.finsim-module__summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.finsim-module__summary-item {
+  border: 1px solid var(--fs-border);
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+  background: rgba(30, 41, 59, 0.45);
+}
+
+.finsim-module__summary-item header {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--fs-muted);
+  margin-bottom: 0.35rem;
+}
+
+.finsim-module__summary-item p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.finsim-module__impact {
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--fs-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.finsim-module__callout {
+  margin: 1rem 0;
+  padding: 1rem 1.1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  background: rgba(127, 29, 29, 0.25);
+}
+
+.finsim-module__callout h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  color: #fecaca;
+}
+
+.finsim-module__callout p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #fee2e2;
+}
+
+.finsim-module__tips {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.finsim-module__tips li {
+  padding: 0.65rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--fs-border);
+  font-size: 0.88rem;
+  line-height: 1.45;
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.finsim-module__tips strong {
+  color: var(--fs-accent);
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
