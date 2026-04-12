@@ -1,65 +1,96 @@
-import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import type { User } from 'firebase/auth';
+import {
+  EmailAuthProvider,
+  linkWithCredential,
+  onAuthStateChanged,
+  signInAnonymously,
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  updateProfile as firebaseUpdateProfile,
+} from 'firebase/auth';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 
-const STORAGE_KEY = 'prompTetris_user';
-
-export interface AuthUser {
-  email: string;
-  displayName: string;
-}
+import { auth } from '../config/firebase';
 
 interface AuthContextValue {
-  user: AuthUser | null;
-  signIn: (email: string, password: string, displayName: string) => void;
-  signOut: () => void;
-  updateProfile: (patch: Partial<Pick<AuthUser, 'displayName'>>) => void;
+  user: User | null;
+  loading: boolean;
+  signInWithEmail: (email: string, password: string, displayName: string) => Promise<void>;
+  signOut: () => Promise<void>;
+  updateProfile: (patch: { displayName?: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-function loadUser(): AuthUser | null {
-  if (typeof localStorage === 'undefined') return null;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const o = JSON.parse(raw) as unknown;
-    if (!o || typeof o !== 'object') return null;
-    const u = o as Record<string, unknown>;
-    if (typeof u.email !== 'string' || typeof u.displayName !== 'string') return null;
-    return { email: u.email, displayName: u.displayName };
-  } catch {
-    return null;
-  }
-}
-
 export function AuthProvider({ children }: React.PropsWithChildren) {
-  const [user, setUser] = useState<AuthUser | null>(() => loadUser());
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const signIn = useCallback((email: string, _password: string, displayName: string) => {
-    const next: AuthUser = {
-      email: email.trim(),
-      displayName: displayName.trim() || email.split('@')[0] || 'Player',
-    };
-    setUser(next);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (next) => {
+      if (!next) {
+        try {
+          await signInAnonymously(auth);
+        } catch (e) {
+          console.error('[auth] Anonymous sign-in failed', e);
+          setLoading(false);
+        }
+        return;
+      }
+      setUser(next);
+      setLoading(false);
+    });
+    return () => unsub();
   }, []);
 
-  const signOut = useCallback(() => {
-    setUser(null);
-    localStorage.removeItem(STORAGE_KEY);
+  const signInWithEmail = useCallback(
+    async (email: string, password: string, displayName: string) => {
+      const trimmedEmail = email.trim();
+      const cred = EmailAuthProvider.credential(trimmedEmail, password);
+      try {
+        if (auth.currentUser?.isAnonymous) {
+          await linkWithCredential(auth.currentUser, cred);
+        } else {
+          await signInWithEmailAndPassword(auth, trimmedEmail, password);
+        }
+      } catch (e: unknown) {
+        const code = (e as { code?: string }).code;
+        if (code === 'auth/email-already-in-use' && auth.currentUser?.isAnonymous) {
+          await signInWithEmailAndPassword(auth, trimmedEmail, password);
+        } else {
+          throw e;
+        }
+      }
+      const name = displayName.trim();
+      if (name && auth.currentUser) {
+        await firebaseUpdateProfile(auth.currentUser, { displayName: name });
+      }
+    },
+    [],
+  );
+
+  const signOut = useCallback(async () => {
+    await firebaseSignOut(auth);
+    await signInAnonymously(auth);
   }, []);
 
-  const updateProfile = useCallback((patch: Partial<Pick<AuthUser, 'displayName'>>) => {
-    setUser((prev) => {
-      if (!prev) return prev;
-      const next = { ...prev, ...patch };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-      return next;
+  const updateProfile = useCallback(async (patch: { displayName?: string }) => {
+    if (!auth.currentUser || patch.displayName === undefined) return;
+    await firebaseUpdateProfile(auth.currentUser, {
+      displayName: patch.displayName,
     });
   }, []);
 
   const value = useMemo(
-    () => ({ user, signIn, signOut, updateProfile }),
-    [user, signIn, signOut, updateProfile],
+    () => ({ user, loading, signInWithEmail, signOut, updateProfile }),
+    [user, loading, signInWithEmail, signOut, updateProfile],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -70,3 +101,5 @@ export function useAuth(): AuthContextValue {
   if (!ctx) throw new Error('useAuth must be used within AuthProvider');
   return ctx;
 }
+
+export type { User };
