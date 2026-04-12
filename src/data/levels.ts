@@ -9,11 +9,15 @@ export const LEVELS: LevelData[] = [
     learningGoal: 'Understand the end-to-end flow of an LLM system',
     timerSeconds: 12,
     columns: [
-      { id: 'input',     label: 'Input',          hint: 'Where does user text first arrive?' },
-      { id: 'tokenizer', label: 'Tokenizer',       hint: 'Breaks text into chunks the model understands' },
-      { id: 'context',   label: 'Context Window',  hint: "The model's working memory" },
-      { id: 'llm',       label: 'LLM',             hint: 'The neural network that generates responses' },
-      { id: 'output',    label: 'Output',           hint: 'The final text sent back to the user' },
+      { id: 'input', label: 'Input', hint: 'Where does user text first arrive?' },
+      {
+        id: 'tokenizer',
+        label: 'Tokenizer',
+        hint: 'Breaks text into chunks the model understands',
+      },
+      { id: 'context', label: 'Context Window', hint: "The model's working memory" },
+      { id: 'llm', label: 'LLM', hint: 'The neural network that generates responses' },
+      { id: 'output', label: 'Output', hint: 'The final text sent back to the user' },
     ],
     blocks: [
       {
@@ -68,10 +72,10 @@ export const LEVELS: LevelData[] = [
     timerSeconds: 10,
     hasApiCall: true,
     columns: [
-      { id: 'role',        label: 'Role',        hint: 'Who or what should the AI act as?' },
-      { id: 'context',     label: 'Context',     hint: 'Background info the AI needs' },
+      { id: 'role', label: 'Role', hint: 'Who or what should the AI act as?' },
+      { id: 'context', label: 'Context', hint: 'Background info the AI needs' },
       { id: 'instruction', label: 'Instruction', hint: 'The actual task or command' },
-      { id: 'format',      label: 'Format',      hint: 'How should the response look?' },
+      { id: 'format', label: 'Format', hint: 'How should the response look?' },
     ],
     blocks: [
       {
@@ -95,7 +99,7 @@ export const LEVELS: LevelData[] = [
         name: 'Explain in simple terms',
         color: '#f59e0b',
         description:
-          "The actual directive — what you want done. Instructions are the core of the prompt. Without a clear instruction, the AI guesses.",
+          'The actual directive — what you want done. Instructions are the core of the prompt. Without a clear instruction, the AI guesses.',
         correctColumn: 'instruction',
       },
       {
@@ -189,4 +193,245 @@ export const LEVELS: LevelData[] = [
       },
     ],
   },
+
+  // ─── LEVEL 4 — Fine-tuning ────────────────────────────────────────────────
+  {
+    id: 4,
+    title: 'Fine-tuning',
+    subtitle: 'From foundation model to your specific task',
+    learningGoal: 'Know how supervised fine-tuning and adapters adapt a base LLM',
+    timerSeconds: 10,
+    columns: [
+      {
+        id: 'pretrain',
+        label: 'Pre-training',
+        hint: 'Train on huge text with next-token loss — general capabilities',
+      },
+      {
+        id: 'task_data',
+        label: 'Task dataset',
+        hint: 'Curated examples for the behavior you want',
+      },
+      {
+        id: 'finetune',
+        label: 'Fine-tuning',
+        hint: 'Gradient updates on task loss — specialize the weights',
+      },
+      {
+        id: 'lora',
+        label: 'LoRA / adapters',
+        hint: 'Small trainable matrices; most weights stay frozen',
+      },
+      {
+        id: 'eval',
+        label: 'Evaluation',
+        hint: 'Metrics + human review on held-out data',
+      },
+    ],
+    blocks: [
+      {
+        id: 'l4-b1',
+        name: 'Next-token prediction on web-scale text',
+        color: '#38bdf8',
+        description:
+          'Pre-training teaches broad language patterns before any task-specific data.',
+        correctColumn: 'pretrain',
+      },
+      {
+        id: 'l4-b2',
+        name: '2k labeled support tickets with gold replies',
+        color: '#a855f7',
+        description: 'Task data gives the model concrete input/output pairs to imitate.',
+        correctColumn: 'task_data',
+      },
+      {
+        id: 'l4-b3',
+        name: 'Minimize cross-entropy on the instruction dataset',
+        color: '#f472b6',
+        description:
+          'Fine-tuning adjusts weights so the model improves on your objective.',
+        correctColumn: 'finetune',
+      },
+      {
+        id: 'l4-b4',
+        name: 'Low-rank update matrices only',
+        color: '#4ade80',
+        description:
+          'LoRA trains tiny additive weights — cheaper and less catastrophic forgetting.',
+        correctColumn: 'lora',
+      },
+      {
+        id: 'l4-b5',
+        name: 'Compare BLEU vs human ratings on a test split',
+        color: '#22c55e',
+        description: 'Evaluation tells you if fine-tuning actually helped real users.',
+        correctColumn: 'eval',
+      },
+      {
+        id: 'l4-b6',
+        name: 'Just add “please” to the system prompt',
+        color: '#f87171',
+        description:
+          'DISTRACTOR: Politeness tweaks help a bit — they are not a substitute for task data or fine-tuning.',
+        correctColumn: 'NONE',
+        isDistractor: true,
+      },
+    ],
+  },
+
+  // ─── LEVEL 5 — RAG ────────────────────────────────────────────────────────
+  {
+    id: 5,
+    title: 'RAG',
+    subtitle: 'Retrieval-augmented generation — ground the model in your docs',
+    learningGoal: 'Trace documents → chunks → vectors → retrieval → grounded answers',
+    timerSeconds: 10,
+    columns: [
+      { id: 'ingest', label: 'Ingest', hint: 'Bring sources into the pipeline' },
+      { id: 'chunk', label: 'Chunking', hint: 'Split text into embeddable pieces' },
+      { id: 'embed', label: 'Embed', hint: 'Turn chunks into vectors' },
+      { id: 'retrieve', label: 'Retrieve', hint: 'Search by semantic similarity' },
+      {
+        id: 'augment',
+        label: 'Augment prompt',
+        hint: 'Inject evidence before the LLM answers',
+      },
+    ],
+    blocks: [
+      {
+        id: 'l5-b1',
+        name: 'Sync Confluence + PDFs into a pipeline',
+        color: '#38bdf8',
+        description:
+          'Ingestion is the first step — without sources there is nothing to retrieve.',
+        correctColumn: 'ingest',
+      },
+      {
+        id: 'l5-b2',
+        name: '256-token chunks with 32-token overlap',
+        color: '#a855f7',
+        description: 'Chunking balances context size vs retrieval precision.',
+        correctColumn: 'chunk',
+      },
+      {
+        id: 'l5-b3',
+        name: 'Embedding model maps chunk → vector',
+        color: '#f472b6',
+        description: 'Embeddings place text in a space where similar meaning is nearby.',
+        correctColumn: 'embed',
+      },
+      {
+        id: 'l5-b4',
+        name: 'Top-5 nearest neighbors to the user query',
+        color: '#4ade80',
+        description: 'Retrieval pulls the most relevant evidence for this question.',
+        correctColumn: 'retrieve',
+      },
+      {
+        id: 'l5-b5',
+        name: 'Paste retrieved passages into the prompt',
+        color: '#22c55e',
+        description:
+          'Augmentation grounds generation — the model cites what you retrieved.',
+        correctColumn: 'augment',
+      },
+      {
+        id: 'l5-b6',
+        name: 'Train a 70B model from random weights',
+        color: '#f87171',
+        description:
+          'DISTRACTOR: RAG adds knowledge without full pre-training; it is not “train from scratch.”',
+        correctColumn: 'NONE',
+        isDistractor: true,
+      },
+    ],
+  },
+
+  // ─── LEVEL 6 — Embeddings ─────────────────────────────────────────────────
+  {
+    id: 6,
+    title: 'Embeddings',
+    subtitle: 'Meaning as geometry in vector space',
+    learningGoal: 'Understand what embedding vectors capture — and what they miss',
+    timerSeconds: 9,
+    columns: [
+      {
+        id: 'vector',
+        label: 'Vector',
+        hint: 'Fixed-length numeric representation of text',
+      },
+      {
+        id: 'similarity',
+        label: 'Similarity',
+        hint: 'Cosine / dot product between vectors',
+      },
+      {
+        id: 'semantic',
+        label: 'Semantics',
+        hint: 'Related concepts cluster — not keyword overlap',
+      },
+      {
+        id: 'contextual',
+        label: 'Contextual',
+        hint: 'Same word, different vectors depending on sentence',
+      },
+      {
+        id: 'limits',
+        label: 'Limits',
+        hint: 'Embeddings are not logic engines or fact checkers',
+      },
+    ],
+    blocks: [
+      {
+        id: 'l6-b1',
+        name: '768 floats per input span',
+        color: '#38bdf8',
+        description:
+          'An embedding is a point in ℝⁿ — the model maps text to coordinates.',
+        correctColumn: 'vector',
+      },
+      {
+        id: 'l6-b2',
+        name: 'Cosine similarity 0.91 between two FAQs',
+        color: '#a855f7',
+        description: 'Similarity scores rank which texts are “close” in meaning.',
+        correctColumn: 'similarity',
+      },
+      {
+        id: 'l6-b3',
+        name: '“King − man + woman ≈ queen” (classic analogy)',
+        color: '#f472b6',
+        description:
+          'Linear structure in embedding space often reflects semantic relations.',
+        correctColumn: 'semantic',
+      },
+      {
+        id: 'l6-b4',
+        name: '“Bank” as finance vs river bank',
+        color: '#4ade80',
+        description:
+          'Contextual embeddings (e.g. transformers) disambiguate by surrounding words.',
+        correctColumn: 'contextual',
+      },
+      {
+        id: 'l6-b5',
+        name: 'Toxic + benign strings can land nearby',
+        color: '#22c55e',
+        description:
+          'LIMITS: geometry can be misleading — safety needs more than cosine distance.',
+        correctColumn: 'limits',
+      },
+      {
+        id: 'l6-b6',
+        name: 'The embedding “knows” if a claim is true',
+        color: '#f87171',
+        description:
+          'DISTRACTOR: Embeddings encode similarity, not truth — factual check needs retrieval or tools.',
+        correctColumn: 'NONE',
+        isDistractor: true,
+      },
+    ],
+  },
 ];
+
+export const LEVEL_COUNT = LEVELS.length;

@@ -1,5 +1,10 @@
 export type GamePhase = 'welcome' | 'playing' | 'gameComplete';
-export type BlockPhaseInternal = 'idle' | 'active' | 'dropping' | 'feedback' | 'levelComplete';
+export type BlockPhaseInternal =
+  | 'idle'
+  | 'active'
+  | 'dropping'
+  | 'feedback'
+  | 'levelComplete';
 
 export interface BlockData {
   id: string;
@@ -27,6 +32,9 @@ export interface LevelData {
   hasApiCall?: boolean;
 }
 
+/** Placed blocks that were dismissed (distractors) use this instead of a column id. */
+export const DISMISS_PLACEMENT_ID = '__dismiss__';
+
 export interface PlacedBlock {
   block: BlockData;
   columnId: string;
@@ -38,6 +46,8 @@ export interface FeedbackData {
   correct: boolean;
   headline: string;
   detail: string;
+  /** Seconds removed from the next block's timer after a mistake. */
+  lostTimeSec?: number;
 }
 
 export interface LevelStats {
@@ -46,5 +56,7 @@ export interface LevelStats {
   correctCount: number;
   totalCount: number;
   bestStreak: number;
+  /** Sum of speed bonuses earned this level (fast answers). */
+  speedBonus: number;
   timeTakenMs: number;
 }
