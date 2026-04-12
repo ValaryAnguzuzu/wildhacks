@@ -15,22 +15,22 @@ PrompTetris is a short game loop for **active** learning: you rehearse how real 
 
 ## Levels
 
-| # | Theme | Focus |
-|---|--------|--------|
-| 1 | LLM Pipeline | Input → tokenizer → context → model → output |
-| 2 | Prompt Builder | Role, context, instruction, format |
-| 3 | Hallucination Swamp | True vs confidently wrong statements |
-| 4 | Fine-tuning | Pre-training, task data, adapters, evaluation |
-| 5 | RAG | Ingest → chunk → embed → retrieve → augment |
-| 6 | Embeddings | Vectors, similarity, semantics, limits |
+| #   | Theme               | Focus                                         |
+| --- | ------------------- | --------------------------------------------- |
+| 1   | LLM Pipeline        | Input → tokenizer → context → model → output  |
+| 2   | Prompt Builder      | Role, context, instruction, format            |
+| 3   | Hallucination Swamp | True vs confidently wrong statements          |
+| 4   | Fine-tuning         | Pre-training, task data, adapters, evaluation |
+| 5   | RAG                 | Ingest → chunk → embed → retrieve → augment   |
+| 6   | Embeddings          | Vectors, similarity, semantics, limits        |
 
 ## Features
 
-- Local stats across runs  
-- Answer key in-game and at `/answers`  
-- Pause and exit  
-- Distractor blocks you dismiss when they belong nowhere  
-- Timer that can speed up when you are on a streak  
+- Local stats across runs
+- Answer key in-game and at `/answers`
+- Pause and exit
+- Distractor blocks you dismiss when they belong nowhere
+- Timer that can speed up when you are on a streak
 
 ## Tech
 
@@ -49,17 +49,17 @@ Then open the URL the dev server prints (often `http://localhost:5173`).
 
 ## Scripts
 
-| Command | What it does |
-|---------|----------------|
-| `npm run dev` | Dev server |
-| `npm run build` | Typecheck + production build |
-| `npm run serve` | Preview the production build |
-| `npm run type-check` | TypeScript only |
-| `npm run lint` | Format + lint |
-| `npm test` | Tests (watch) |
-| `npm test -- --run` | Tests once |
-| `npm run test:ui` | Vitest UI |
-| `npm run test:coverage` | Coverage |
+| Command                 | What it does                 |
+| ----------------------- | ---------------------------- |
+| `npm run dev`           | Dev server                   |
+| `npm run build`         | Typecheck + production build |
+| `npm run serve`         | Preview the production build |
+| `npm run type-check`    | TypeScript only              |
+| `npm run lint`          | Format + lint                |
+| `npm test`              | Tests (watch)                |
+| `npm test -- --run`     | Tests once                   |
+| `npm run test:ui`       | Vitest UI                    |
+| `npm run test:coverage` | Coverage                     |
 
 ## Tests
 

@@ -455,6 +455,45 @@
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
+/* Quick actions: pin to top-right of fall lane, compact */
+.game-arena .falling-zone .block-pass-panel {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.45rem;
+  left: auto;
+  margin: 0;
+  z-index: 4;
+  max-width: min(calc(100% - 0.85rem), 268px);
+  padding: 0.22rem 0.32rem 0.24rem;
+}
+
+.game-arena .falling-zone .block-pass-panel__label {
+  font-size: 0.48rem;
+  margin-bottom: 0.22rem;
+  text-align: right;
+}
+
+.game-arena .falling-zone .block-pass-actions {
+  justify-content: flex-end;
+}
+
+.game-arena .falling-zone .block-pass-actions__solo {
+  max-width: 232px;
+}
+
+.game-arena .falling-zone .block-pass-btn {
+  flex: 1 1 104px;
+  padding: 0.26rem 0.36rem;
+}
+
+.game-arena .falling-zone .block-pass-btn__title {
+  font-size: 0.62rem;
+}
+
+.game-arena .falling-zone .block-pass-btn__sub {
+  font-size: 0.52rem;
+}
+
 .game-arena .falling-block {
   width: min(94%, 360px);
   min-height: 120px;
@@ -614,11 +653,145 @@
 .game-arena .feedback-bar {
   margin-top: auto;
   padding: 0.85rem 1.1rem;
-  min-height: 4rem;
+  min-height: auto;
   border-radius: 12px;
   background: rgba(15, 23, 42, 0.75);
   border: 1px solid rgba(51, 65, 85, 0.5);
   animation: feedback-slide 0.35s ease-out;
+}
+
+.game-arena .feedback-bar.fb-idle {
+  background: linear-gradient(145deg, rgba(15, 23, 42, 0.88), rgba(30, 27, 60, 0.55));
+  border-color: rgba(139, 92, 246, 0.22);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* Coach copy — idle + hint */
+.game-arena .fb-coach {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  text-align: left;
+}
+
+.game-arena .fb-coach--hint {
+  padding: 0.15rem 0;
+}
+
+.game-arena .fb-coach--distractor .fb-coach__badge {
+  background: rgba(127, 29, 29, 0.35);
+  border-color: rgba(248, 113, 113, 0.45);
+  color: #fecaca;
+}
+
+.game-arena .fb-coach__top {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.game-arena .fb-coach__badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.55rem;
+  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.12);
+  color: #7dd3fc;
+}
+
+.game-arena .fb-coach__badge--warn {
+  border-color: rgba(251, 191, 36, 0.4);
+  background: rgba(251, 191, 36, 0.12);
+  color: #fde68a;
+}
+
+.game-arena .fb-coach--hint .fb-coach__badge {
+  border-color: rgba(251, 191, 36, 0.5);
+  background: rgba(251, 191, 36, 0.15);
+  color: #fde68a;
+}
+
+.game-arena .fb-coach__lead {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+.game-arena .fb-coach__lead strong {
+  color: #f8fafc;
+  font-weight: 800;
+}
+
+.game-arena .fb-coach__lead--solo {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.88rem;
+}
+
+.game-arena .fb-coach__fine {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.4;
+  color: #94a3b8;
+}
+
+.game-arena .fb-coach__kbd {
+  display: inline;
+  padding: 0.12rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #cbd5e1;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(100, 116, 139, 0.45);
+}
+
+.game-arena .fb-coach__bullets {
+  margin: 0.15rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.game-arena .fb-coach__bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: #cbd5e1;
+}
+
+.game-arena .fb-coach__bullet-icon {
+  flex-shrink: 0;
+  width: 1.1rem;
+  height: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+  border: 1px solid rgba(74, 222, 128, 0.35);
+}
+
+.game-arena .fb-coach__bullet-icon--bad {
+  background: rgba(248, 113, 113, 0.15);
+  color: #fca5a5;
+  border-color: rgba(248, 113, 113, 0.35);
 }
 
 @keyframes feedback-slide {
@@ -898,15 +1071,107 @@
   filter: saturate(0.65);
 }
 
-/* Distractor strip */
-.distractor-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  justify-content: center;
-  padding: 0.5rem 0 0.25rem;
+/* Quick actions panel (below falling block) */
+.game-arena .block-pass-panel {
+  width: 100%;
+  max-width: 420px;
+  margin: 0.35rem auto 0;
+  padding: 0.55rem 0.65rem 0.6rem;
+  border-radius: 12px;
+  background: linear-gradient(165deg, rgba(15, 23, 42, 0.92), rgba(30, 27, 55, 0.75));
+  border: 1px solid rgba(139, 92, 246, 0.22);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 10px 36px rgba(0, 0, 0, 0.35);
 }
 
+.game-arena .block-pass-panel__label {
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 0.45rem;
+  text-align: center;
+}
+
+.distractor-actions,
+.game-arena .block-pass-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.game-arena .block-pass-actions__solo {
+  width: 100%;
+  max-width: 320px;
+}
+
+.game-arena .block-pass-btn {
+  flex: 1 1 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  min-height: 3.1rem;
+  padding: 0.5rem 0.65rem;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: center;
+  transition:
+    transform 0.12s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.game-arena .block-pass-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.game-arena .block-pass-btn__title {
+  font-size: 0.74rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #f1f5f9;
+}
+
+.game-arena .block-pass-btn__sub {
+  font-size: 0.62rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #94a3b8;
+}
+
+.game-arena .block-pass-btn--primary {
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  background: linear-gradient(160deg, rgba(56, 189, 248, 0.22), rgba(139, 92, 246, 0.12));
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.12);
+  color: #f0f9ff;
+}
+
+.game-arena .block-pass-btn--primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(56, 189, 248, 0.75);
+  box-shadow: 0 0 28px rgba(56, 189, 248, 0.2);
+}
+
+.game-arena .block-pass-btn--muted {
+  border: 1px solid rgba(100, 116, 139, 0.45);
+  background: rgba(15, 23, 42, 0.65);
+}
+
+.game-arena .block-pass-btn--muted:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: rgba(148, 163, 184, 0.55);
+  background: rgba(30, 41, 59, 0.75);
+}
+
+/* Legacy class names (if used elsewhere) */
 .distractor-btn {
   font-size: 0.72rem;
   font-weight: 700;
@@ -958,34 +1223,66 @@
   }
 }
 
-/* Pause */
-.pause-overlay {
+/* Pause — portaled to document.body (true modal popup, same pattern as level complete) */
+.pause-popup.overlay {
   position: fixed;
   inset: 0;
-  z-index: 150;
+  z-index: 550;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  background: rgba(3, 7, 18, 0.72);
-  backdrop-filter: blur(10px);
+  min-height: 100dvh;
+  padding: max(0.75rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right))
+    max(0.75rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+  background: rgba(5, 8, 14, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  animation: pause-popup-backdrop-in 0.2s ease-out;
 }
 
-.pause-card {
-  max-width: 360px;
-  width: 100%;
+@keyframes pause-popup-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.pause-popup-card {
+  width: min(100%, 380px);
+  flex-shrink: 0;
+  margin: auto;
   padding: 1.5rem 1.35rem;
   border-radius: 16px;
-  background: linear-gradient(165deg, rgba(30, 27, 75, 0.95), rgba(15, 23, 42, 0.98));
-  border: 1px solid rgba(139, 92, 246, 0.35);
   text-align: center;
+  background: linear-gradient(165deg, rgba(30, 27, 75, 0.97), rgba(15, 23, 42, 0.99));
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+    0 24px 80px rgba(0, 0, 0, 0.65),
+    0 0 48px rgba(139, 92, 246, 0.15);
+  animation: pause-popup-card-in 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes pause-popup-card-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 .pause-title {
   font-size: 1.25rem;
   font-weight: 800;
   color: #f8fafc;
-  margin-bottom: 0.35rem;
+  margin: 0 0 0.35rem;
 }
 
 .pause-hint {

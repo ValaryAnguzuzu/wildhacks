@@ -56,6 +56,7 @@ export function GameBoard({
   const [comboAnim, setComboAnim] = useState(0);
   const [dragPx, setDragPx] = useState(0);
   const dragRef = useRef({ startX: 0, active: false });
+  const pauseResumeRef = useRef<HTMLButtonElement>(null);
 
   const MAX_HINTS = 3;
   const numCols = level.columns.length;
@@ -84,6 +85,16 @@ export function GameBoard({
     setDragPx(0);
     dragRef.current = { startX: 0, active: false };
   }, [engine.currentBlock?.id]);
+
+  useEffect(() => {
+    if (!engine.isPaused || showOverlay) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    queueMicrotask(() => pauseResumeRef.current?.focus());
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [engine.isPaused, showOverlay]);
 
   // ── keyboard ──────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -505,24 +516,51 @@ export function GameBoard({
                   </div>
                 )}
 
-              {engine.phase === 'active' && engine.currentBlock?.isDistractor && (
-                <div className="distractor-actions">
-                  <button
-                    type="button"
-                    className="distractor-btn"
-                    onClick={() => engine.dismissDistractor()}
-                    disabled={engine.isPaused}
-                  >
-                    Not a fit — dismiss
-                  </button>
-                  <button
-                    type="button"
-                    className="distractor-btn distractor-btn--ghost"
-                    onClick={() => engine.dismissDistractor()}
-                    disabled={engine.isPaused}
-                  >
-                    I don’t know — skip
-                  </button>
+              {engine.phase === 'active' && engine.currentBlock && (
+                <div className="block-pass-panel">
+                  <div className="block-pass-panel__label">Quick actions</div>
+                  <div className="block-pass-actions">
+                    {engine.currentBlock.isDistractor ? (
+                      <>
+                        <button
+                          type="button"
+                          className="block-pass-btn block-pass-btn--primary"
+                          onClick={() => engine.dismissDistractor()}
+                          disabled={engine.isPaused}
+                        >
+                          <span className="block-pass-btn__title">
+                            Not a fit — dismiss
+                          </span>
+                          <span className="block-pass-btn__sub">
+                            Correct when it’s not a lane
+                          </span>
+                        </button>
+                        <button
+                          type="button"
+                          className="block-pass-btn block-pass-btn--muted"
+                          onClick={() => engine.skipDistractorAsMiss()}
+                          disabled={engine.isPaused}
+                        >
+                          <span className="block-pass-btn__title">
+                            I don’t know — skip
+                          </span>
+                          <span className="block-pass-btn__sub">Counts as a miss</span>
+                        </button>
+                      </>
+                    ) : (
+                      <button
+                        type="button"
+                        className="block-pass-btn block-pass-btn--muted block-pass-actions__solo"
+                        onClick={() => engine.passDontKnow()}
+                        disabled={engine.isPaused}
+                      >
+                        <span className="block-pass-btn__title">I don’t know: pass</span>
+                        <span className="block-pass-btn__sub">
+                          Same as a wrong lane: streak resets, shorter next timer
+                        </span>
+                      </button>
+                    )}
+                  </div>
                 </div>
               )}
 
@@ -614,21 +652,99 @@ export function GameBoard({
                 <div className="fb-detail">{engine.feedback.detail}</div>
               </>
             ) : engine.hintColumn !== null && engine.phase === 'active' ? (
-              <div className="fb-hint-text">
-                💡{' '}
-                {engine.currentBlock?.isDistractor
-                  ? 'Distractor — use Dismiss / drag away; do not place in a lane.'
-                  : `"${engine.currentBlock?.name}" belongs in the highlighted column`}
+              <div className="fb-coach fb-coach--hint">
+                <div className="fb-coach__top">
+                  <span className="fb-coach__badge">Hint</span>
+                </div>
+                {engine.currentBlock?.isDistractor ? (
+                  <>
+                    <p className="fb-coach__lead">
+                      Not a valid lane — <strong>dismiss</strong> or{' '}
+                      <strong>drag left</strong> to clear.
+                    </p>
+                    <p className="fb-coach__fine">
+                      “Skip” still counts as a miss. Dropping in a column costs time.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="fb-coach__lead">
+                      <strong>{engine.currentBlock?.name}</strong> belongs in the{' '}
+                      <strong>highlighted</strong> column.
+                    </p>
+                    <p className="fb-coach__fine">
+                      Or use <span className="fb-coach__kbd">I don’t know — pass</span>{' '}
+                      above if you’re stuck (counts as a miss).
+                    </p>
+                  </>
+                )}
               </div>
             ) : (
-              <div className="fb-idle-text">
-                {engine.phase === 'active'
-                  ? engine.currentBlock?.isDistractor
-                    ? `Dismiss “${engine.currentBlock.name}” or place incorrectly to lose time`
-                    : `Place “${engine.currentBlock?.name}” in the correct column`
-                  : engine.phase === 'dropping'
-                    ? 'Placing...'
-                    : ''}
+              <div
+                className={[
+                  'fb-coach',
+                  engine.phase === 'active' && engine.currentBlock?.isDistractor
+                    ? 'fb-coach--distractor'
+                    : '',
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+              >
+                {engine.phase === 'active' && engine.currentBlock ? (
+                  <>
+                    <div className="fb-coach__top">
+                      <span
+                        className={[
+                          'fb-coach__badge',
+                          engine.currentBlock.isDistractor ? 'fb-coach__badge--warn' : '',
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
+                      >
+                        {engine.currentBlock.isDistractor ? 'Distractor' : 'Your move'}
+                      </span>
+                    </div>
+                    {engine.currentBlock.isDistractor ? (
+                      <>
+                        <p className="fb-coach__lead">
+                          This block <strong>doesn’t match any lane</strong>. Clear it
+                          with dismiss or a left swipe — don’t force it into a column.
+                        </p>
+                        <ul className="fb-coach__bullets" aria-label="Distractor rules">
+                          <li>
+                            <span className="fb-coach__bullet-icon" aria-hidden="true">
+                              ✓
+                            </span>
+                            Dismiss = correct
+                          </li>
+                          <li>
+                            <span
+                              className="fb-coach__bullet-icon fb-coach__bullet-icon--bad"
+                              aria-hidden="true"
+                            >
+                              ✗
+                            </span>
+                            Skip or wrong lane = miss / penalty
+                          </li>
+                        </ul>
+                      </>
+                    ) : (
+                      <>
+                        <p className="fb-coach__lead">
+                          Align the arrow, then <strong>Drop</strong> when{' '}
+                          <strong>{engine.currentBlock.name}</strong> matches the lane.
+                        </p>
+                        <p className="fb-coach__fine">
+                          Stuck? Use <span className="fb-coach__kbd">Pass</span> — it
+                          scores as an incorrect answer (streak resets, shorter next
+                          timer).
+                        </p>
+                      </>
+                    )}
+                  </>
+                ) : engine.phase === 'dropping' ? (
+                  <p className="fb-coach__lead fb-coach__lead--solo">Placing…</p>
+                ) : null}
               </div>
             )}
           </div>
@@ -720,31 +836,41 @@ export function GameBoard({
         </aside>
       </div>
 
-      {engine.isPaused && !showOverlay && (
-        <div
-          className="pause-overlay"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Paused"
-        >
-          <div className="pause-card">
-            <div className="pause-title">Paused</div>
-            <p className="pause-hint">Press Esc or Resume to continue.</p>
-            <div className="pause-actions">
-              <button type="button" className="pause-btn" onClick={() => engine.resume()}>
-                Resume
-              </button>
-              <button
-                type="button"
-                className="pause-btn pause-btn--ghost"
-                onClick={onExit}
-              >
-                Exit to home
-              </button>
+      {engine.isPaused &&
+        !showOverlay &&
+        createPortal(
+          <div
+            className="overlay pause-popup"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="pause-dialog-title"
+          >
+            <div className="pause-popup-card">
+              <h2 id="pause-dialog-title" className="pause-title">
+                Paused
+              </h2>
+              <p className="pause-hint">Press Esc or Resume to continue.</p>
+              <div className="pause-actions">
+                <button
+                  ref={pauseResumeRef}
+                  type="button"
+                  className="pause-btn"
+                  onClick={() => engine.resume()}
+                >
+                  Resume
+                </button>
+                <button
+                  type="button"
+                  className="pause-btn pause-btn--ghost"
+                  onClick={onExit}
+                >
+                  Exit to home
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
 
       {showOverlay &&
         createPortal(
