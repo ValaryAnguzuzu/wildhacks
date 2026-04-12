@@ -1,155 +1,70 @@
-# Vite + React + TypeScript Template Updated for 2026
+# PrompTetris
 
-This starter combines React, TypeScript, Vite, Vitest, ESLint, and Prettier in a setup intended for Northwestern CS394 projects and similar coursework. The template now targets the 2026 major-version baseline verified in this repository on March 24, 2026.
+**Learn how LLMs work by playing.** A Wildhacks project that turns core AI literacy into a fast, Tetris-inspired game. Concepts fall as blocks; you sort them into the right columns before the timer runs out. Every placement includes teaching feedback—no silent failures.
 
-![394-2026-Screenshot](./resources/2026-screenshot.png)
+## What it is
 
-## Toolchain Baseline
+PrompTetris is a short game loop for **active** learning: you rehearse how real LLM systems are put together—pipelines, prompts, failure modes, fine-tuning, retrieval, and embeddings—while the app explains why each placement is correct or not. The aim is a mental model you can reuse when you read docs, write prompts, or debug behavior.
 
-- Node.js `22+` recommended
-- npm `10+`
-- React `19.2.x`
-- TypeScript `5.9.x`
-- ESLint `9.39.x`
-- Vite `8.0.x`
-- Vitest `4.1.x`
+## How to play
 
-You can find more about these in the following links: [Vite](https://vitejs.dev), [React](https://reactjs.org/), [Typescript](https://www.typescriptlang.org/), [Eslint](https://eslint.org/), [Prettier](https://prettier.io/), [Vitest](https://vitest.dev/), [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
+1. **Blocks fall** — Each block is an AI concept tied to a real pipeline or workflow, not trivia.
+2. **Sort quickly** — Move left or right, flip for definitions, and drop into the right column before time runs out.
+3. **Read the feedback** — Right and wrong answers both come with a short explanation.
+4. **Review** — Session stats and an answer key help you recap what stuck.
 
-## What's New in 2025/2026
+## Levels
 
-- **React 19** with the latest React DOM and TypeScript types
-- **Vite 8** for faster builds and dev server
-- **Vitest 4** with visual UI mode and V8 coverage reporting
-- **React Testing Library** with `@testing-library/jest-dom` for readable assertions and `@testing-library/user-event` for realistic user interaction simulation
-- **TypeScript 5.9** with strict mode enabled
-- **ESLint 9** using the new flat config format
-- All dependencies updated to their latest stable versions
+| # | Theme | Focus |
+|---|--------|--------|
+| 1 | LLM Pipeline | Input → tokenizer → context → model → output |
+| 2 | Prompt Builder | Role, context, instruction, format |
+| 3 | Hallucination Swamp | True vs confidently wrong statements |
+| 4 | Fine-tuning | Pre-training, task data, adapters, evaluation |
+| 5 | RAG | Ingest → chunk → embed → retrieve → augment |
+| 6 | Embeddings | Vectors, similarity, semantics, limits |
 
-## Installation
+## Features
 
-Clone the repo and install dependencies:
+- Local stats across runs  
+- Answer key in-game and at `/answers`  
+- Pause and exit  
+- Distractor blocks you dismiss when they belong nowhere  
+- Timer that can speed up when you are on a streak  
+
+## Tech
+
+React, TypeScript, Vite, and React Router. ESLint and Prettier for lint/format; Vitest and React Testing Library for tests. Use Node.js 22+ and npm 10+.
+
+The Prompt Builder level can show a streamed model reply in local development when the dev server is set up to call the model API; otherwise the app uses a built-in sample response so the level still works.
+
+## Setup
 
 ```bash
 npm install
+npm run dev
 ```
 
-If you use `nvm`, run:
-
-```bash
-nvm use
-```
-
-To create a fresh copy from GitHub:
-
-```bash
-npx degit toddwseattle/pretty-vitest-react-ts-template project-name
-```
+Then open the URL the dev server prints (often `http://localhost:5173`).
 
 ## Scripts
 
-- `npm run dev` starts the Vite dev server.
-- `npm run build` runs TypeScript and creates a production build.
-- `npm run type-check` runs the TypeScript compiler without emitting files.
-- `npm run lint` runs Prettier and ESLint across the repo.
-- `npm test` runs Vitest without the browser UI.
-- `npm test -- --run` runs the Vitest suite once without watch mode.
-- `npm run test:ui` starts the Vitest UI.
-  - The UI server is pinned to `127.0.0.1:51204`.
+| Command | What it does |
+|---------|----------------|
+| `npm run dev` | Dev server |
+| `npm run build` | Typecheck + production build |
+| `npm run serve` | Preview the production build |
+| `npm run type-check` | TypeScript only |
+| `npm run lint` | Format + lint |
+| `npm test` | Tests (watch) |
+| `npm test -- --run` | Tests once |
+| `npm run test:ui` | Vitest UI |
+| `npm run test:coverage` | Coverage |
 
-Install packages: `npm install`
+## Tests
 
-Start the dev server: `npm run dev`
+Vitest with jsdom; shared setup in `src/test/setup.ts`. Example tests live next to source (e.g. `src/app.test.tsx`).
 
-## Testing
+## Credits
 
-This template uses [Vitest](https://vitest.dev/) with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) for testing React components.
-
-**Note**: npm audit currently reports GHSA-rf6f-7fwh-wjgh via flatted; awaiting upstream fix in @vitest/ui / flat-cache. This is a dev only dependency do notinclud npm audit of dev dependencies in your ci workflow until this is resolved.
-
-### Running Tests
-
-```bash
-# Run tests in watch mode
-npm test
-
-# Run tests with the visual UI
-npm run test:ui
-
-# Run tests with coverage report
-npm run test:coverage
-```
-
-### Writing Tests with React Testing Library
-
-Tests live alongside your source files (e.g., `src/app.test.tsx` tests `src/App.tsx`). Here's a quick guide:
-
-**Rendering a component:**
-
-```tsx
-import { render, screen } from '@testing-library/react';
-import App from './App';
-
-test('renders a heading', () => {
-  render(<App />);
-  expect(screen.getByText('Hello World')).toBeInTheDocument();
-});
-```
-
-**Simulating user interactions with `userEvent`:**
-
-```tsx
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-
-test('button click increments counter', async () => {
-  const user = userEvent.setup();
-  render(<Counter />);
-  await user.click(screen.getByRole('button'));
-  expect(screen.getByText('count is: 1')).toBeInTheDocument();
-});
-```
-
-**Common queries (in order of priority):**
-
-1. `getByRole` - query by ARIA role (preferred for accessibility)
-2. `getByLabelText` - query by form label
-3. `getByPlaceholderText` - query by input placeholder
-4. `getByText` - query by visible text content
-5. `getByAltText` - query by image alt text
-
-### Testing Best Practices
-
-- **Query by role first.** Use `getByRole` when possible. It encourages accessible markup and tests your component the way users interact with it.
-- **Use `userEvent` over `fireEvent`.** `userEvent` simulates real browser behavior (focus, hover, keyboard events) while `fireEvent` dispatches a single DOM event. This catches more bugs.
-- **Avoid testing implementation details.** Don't test state variables or internal methods. Test what the user sees and does.
-- **Write descriptive test names.** A test name should explain what the component does, not how it does it. E.g., "shows error message when form is submitted empty" rather than "sets error state to true."
-- **One assertion per behavior.** Each test should verify one behavior. Multiple related assertions in a test are fine, but avoid testing unrelated behaviors together.
-
-### Test Setup
-
-The test environment is configured in `vite.config.ts`:
-
-- **Environment:** jsdom (simulates browser DOM)
-- **Globals:** enabled (no need to import `describe`, `test`, `expect` manually)
-- **Setup file:** `src/test/setup.ts` loads `@testing-library/jest-dom` matchers like `toBeInTheDocument()`
-- **Coverage:** V8 provider with 70% thresholds for statements, branches, functions, and lines
-
-## VS Code Setup
-
-For the smoothest editing experience:
-
-1. Install the ESLint extension.
-2. Install the Prettier extension.
-3. Enable `formatOnSave`.
-4. Open a `.tsx` file and confirm both ESLint and Prettier are active in the editor.
-
-## Pre-commit Hook
-
-The repo includes Husky setup and keeps the historical `pre-commit` lint flow in `package.json`. Running `npm run lint` before committing is still the safest way to ensure formatting and lint fixes are already applied.
-
-A `commit-msg` hook strips common Cursor IDE footer lines (for example `Co-authored-by: Cursor` or a `Made with Cursor` line) so those are not saved in commit messages.
-
-## Acknowledgments
-
-This template builds on earlier starter work from [theSwordBreaker](https://github.com/TheSwordBreaker/vite-reactts-eslint-prettier) and the React/Vitest teaching materials used in Northwestern CS394.
+Game design, levels, and UI are original to this project. The repo started from a standard Vite + React + TypeScript toolchain similar to common open-source starters.
