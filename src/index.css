@@ -673,7 +673,7 @@ body {
 
 .overlay-card {
   width: 100%;
-  max-width: 440px;
+  max-width: 520px;
   flex-shrink: 0;
   margin: auto;
   max-height: min(88vh, 760px);

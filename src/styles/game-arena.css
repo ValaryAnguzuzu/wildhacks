@@ -904,7 +904,8 @@
 }
 
 .overlay-card.level-complete-card {
-  width: min(100%, 440px);
+  position: relative;
+  width: min(100%, 520px);
   flex-shrink: 0;
   margin: auto;
   max-height: min(88vh, 760px);
@@ -916,6 +917,38 @@
     0 24px 80px rgba(0, 0, 0, 0.65),
     0 0 48px rgba(139, 92, 246, 0.15);
   animation: level-popup-card-in 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.level-complete-close {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.75);
+  color: #e2e8f0;
+  font-size: 1.35rem;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.level-complete-close:hover {
+  background: rgba(127, 29, 29, 0.45);
+  border-color: rgba(248, 113, 113, 0.55);
+  color: #fecaca;
 }
 
 @keyframes level-popup-card-in {
@@ -981,8 +1014,16 @@
   color: #cbd5e1;
 }
 
+.level-complete-card .ov-answer-key-head {
+  align-items: center;
+}
+
 .level-complete-card .ov-answer-key-title {
   color: #d1d9e6;
+}
+
+.level-complete-card .ov-answer-key-guide-link {
+  color: #7dd3fc;
 }
 
 .level-complete-card .answer-key-label {

@@ -16,6 +16,10 @@ interface Props {
   sessionScoreOffset: number;
   lastRunTotalScore: number;
   onLevelComplete: (stats: LevelStats) => void;
+  /** Fires when this level is cleared (overlay shown), so answer-key links work before Next. */
+  onLevelCleared?: (levelIndex: number) => void;
+  /** Confirmed from level-complete overlay: restart run from level 1. */
+  onRestartRun?: () => void;
   onExit: () => void;
 }
 
@@ -40,6 +44,8 @@ export function GameBoard({
   sessionScoreOffset,
   lastRunTotalScore,
   onLevelComplete,
+  onLevelCleared,
+  onRestartRun,
   onExit,
 }: Props) {
   const level = LEVELS[levelIndex];
@@ -179,6 +185,7 @@ export function GameBoard({
     levelCompleteHandled.current = true;
     statsRef.current = engine.getStats();
     setShowOverlay(true);
+    onLevelCleared?.(levelIndex);
     if (level.hasApiCall) {
       setClaudeLoading(true);
       setClaudeResponse('');
@@ -189,7 +196,7 @@ export function GameBoard({
         setClaudeLoading(false);
       });
     }
-  }, [engine.phase, level]);
+  }, [engine.phase, level, levelIndex, onLevelCleared]);
 
   const placedInColumn = (colId: string) =>
     engine.placedBlocks.filter((p) => p.columnId === colId);
@@ -202,6 +209,18 @@ export function GameBoard({
 
   const handleNext = () => {
     if (statsRef.current) onLevelComplete(statsRef.current);
+  };
+
+  const handleCloseLevelComplete = () => {
+    if (!onRestartRun) return;
+    if (
+      !window.confirm(
+        'Close this screen? Your run will restart from level 1 — progress in this session will be lost.',
+      )
+    ) {
+      return;
+    }
+    onRestartRun();
   };
 
   const accuracy =
@@ -881,6 +900,17 @@ export function GameBoard({
             aria-labelledby="level-complete-title"
           >
             <div className="overlay-card level-complete-card">
+              {onRestartRun ? (
+                <button
+                  type="button"
+                  className="level-complete-close"
+                  onClick={handleCloseLevelComplete}
+                  aria-label="Close and restart run from level 1"
+                  title="Close — restarts your run from level 1"
+                >
+                  ×
+                </button>
+              ) : null}
               <div className="ov-badge">LEVEL {level.id} COMPLETE</div>
               <h2 className="ov-title" id="level-complete-title">
                 {level.title}
@@ -925,15 +955,18 @@ export function GameBoard({
               )}
 
               <div className="ov-answer-key-block">
-                <h3 className="ov-answer-key-title">
-                  This level — answers & explanations
-                </h3>
-                <LevelAnswerKey level={level} placements={engine.placedBlocks} />
-                <p className="ov-answer-key-foot">
-                  <Link to={`/answers#level-${level.id}`}>
+                <div className="ov-answer-key-head">
+                  <h3 className="ov-answer-key-title">
+                    This level — answers & explanations
+                  </h3>
+                  <Link
+                    to={`/answers#level-${level.id}`}
+                    className="ov-answer-key-guide-link"
+                  >
                     Open full guide (all levels) →
                   </Link>
-                </p>
+                </div>
+                <LevelAnswerKey level={level} placements={engine.placedBlocks} />
               </div>
 
               {level.hasApiCall && (

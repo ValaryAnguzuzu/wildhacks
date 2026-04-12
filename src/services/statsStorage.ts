@@ -1,6 +1,8 @@
+import { LEVEL_COUNT } from '../data/levels';
 import { LevelStats } from '../types';
 
 const SESSIONS_KEY = 'prompTetris_sessions';
+const MAX_ANSWER_LEVEL_KEY = 'prompTetris_maxAnswerLevelUnlocked';
 
 export interface GameSessionRecord {
   id: string;
@@ -70,4 +72,29 @@ export function getBestTotalScore(): number {
 export function getLastRunTotalScore(): number {
   const s = loadSessions();
   return s.length > 0 ? s[0].totalScore : 0;
+}
+
+/** Highest level number (1…LEVEL_COUNT) whose answer guide is readable. Level 1 is always at least visible for new players. */
+export function getMaxAnswerLevelUnlocked(): number {
+  if (typeof localStorage === 'undefined') return 1;
+  const raw = localStorage.getItem(MAX_ANSWER_LEVEL_KEY);
+  if (!raw) {
+    const migrated = loadSessions().some((s) => s.levelScores.length >= LEVEL_COUNT)
+      ? LEVEL_COUNT
+      : 1;
+    localStorage.setItem(MAX_ANSWER_LEVEL_KEY, String(migrated));
+    return migrated;
+  }
+  const n = parseInt(raw, 10);
+  if (Number.isNaN(n)) return 1;
+  return Math.min(LEVEL_COUNT, Math.max(1, n));
+}
+
+/** Call when the player finishes a level (0-based index) in Play mode. */
+export function updateMaxAnswerLevelUnlocked(completedLevelIndex: number): void {
+  if (typeof localStorage === 'undefined') return;
+  const completedLevelNumber = completedLevelIndex + 1;
+  const prev = getMaxAnswerLevelUnlocked();
+  const next = Math.min(LEVEL_COUNT, Math.max(prev, completedLevelNumber));
+  localStorage.setItem(MAX_ANSWER_LEVEL_KEY, String(next));
 }

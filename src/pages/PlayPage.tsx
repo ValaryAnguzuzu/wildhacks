@@ -4,7 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { EndScreen } from '../components/EndScreen';
 import { GameBoard } from '../components/GameBoard';
 import { LEVEL_COUNT } from '../data/levels';
-import { getLastRunTotalScore, recordSession } from '../services/statsStorage';
+import {
+  getLastRunTotalScore,
+  recordSession,
+  updateMaxAnswerLevelUnlocked,
+} from '../services/statsStorage';
 import { GamePhase, LevelStats } from '../types';
 import { resumeAudioContext } from '../utilities/gameAudio';
 
@@ -13,8 +17,12 @@ export function PlayPage() {
   const [phase, setPhase] = useState<GamePhase>('playing');
   const [currentLevel, setCurrentLevel] = useState(0);
   const [allStats, setAllStats] = useState<LevelStats[]>([]);
-  const [gameStartTime] = useState(() => Date.now());
-  const [lastRunTotalScore] = useState(() => getLastRunTotalScore());
+  const [gameStartTime, setGameStartTime] = useState(() => Date.now());
+  const [lastRunTotalScore, setLastRunTotalScore] = useState(() =>
+    getLastRunTotalScore(),
+  );
+  /** Bumps when the player restarts mid-run so GameBoard fully remounts. */
+  const [runId, setRunId] = useState(0);
   const recorded = useRef(false);
 
   const sessionScoreOffset = allStats.reduce((a, s) => a + s.score, 0);
@@ -31,6 +39,7 @@ export function PlayPage() {
   }, [phase, allStats, gameStartTime]);
 
   const handleLevelComplete = (stats: LevelStats) => {
+    updateMaxAnswerLevelUnlocked(currentLevel);
     const updated = [...allStats, stats];
     setAllStats(updated);
     if (currentLevel < LEVEL_COUNT - 1) {
@@ -44,16 +53,27 @@ export function PlayPage() {
     navigate('/');
   };
 
+  const handleRestartRun = () => {
+    setCurrentLevel(0);
+    setAllStats([]);
+    setGameStartTime(Date.now());
+    setLastRunTotalScore(getLastRunTotalScore());
+    setRunId((n) => n + 1);
+    recorded.current = false;
+  };
+
   return (
     <div className="play-page">
       {phase === 'playing' && (
         <GameBoard
-          key={currentLevel}
+          key={`run-${runId}-lvl-${currentLevel}`}
           levelIndex={currentLevel}
           totalLevels={LEVEL_COUNT}
           sessionScoreOffset={sessionScoreOffset}
           lastRunTotalScore={lastRunTotalScore}
           onLevelComplete={handleLevelComplete}
+          onLevelCleared={updateMaxAnswerLevelUnlocked}
+          onRestartRun={handleRestartRun}
           onExit={() => navigate('/')}
         />
       )}
