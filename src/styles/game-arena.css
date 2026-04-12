@@ -929,12 +929,116 @@
   }
 }
 
-.level-complete-card .ov-title {
+.level-complete-card {
   color: #f1f5f9;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.level-complete-card .ov-title {
+  color: #f8fafc;
 }
 
 .level-complete-card .ov-stat-val {
+  color: #f1f5f9;
+}
+
+.level-complete-card .ov-stat-lbl {
+  color: #94a3b8;
+}
+
+.level-complete-card .ov-goal {
   color: #e2e8f0;
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+}
+
+.level-complete-card .ov-goal span:last-child {
+  color: #cbd5e1;
+}
+
+.level-complete-card .ov-claude-label {
+  color: #e2e8f0;
+}
+
+.level-complete-card .ov-prompt-preview {
+  color: #f1f5f9;
+  background: rgba(2, 6, 23, 0.94);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.level-complete-card .ov-claude-loading {
+  color: #cbd5e1;
+}
+
+.level-complete-card .ov-claude-response {
+  color: #f8fafc;
+  background: rgba(15, 23, 42, 0.97);
+  border-color: rgba(56, 189, 248, 0.38);
+}
+
+.level-complete-card .ov-next-preview-sub {
+  color: #cbd5e1;
+}
+
+.level-complete-card .ov-answer-key-title {
+  color: #d1d9e6;
+}
+
+.level-complete-card .answer-key-label {
+  color: #a1b0c4;
+}
+
+.level-complete-card .answer-key-value {
+  color: #f1f5f9;
+}
+
+.level-complete-card .answer-key-desc {
+  color: #d4dce8;
+}
+
+.level-complete-card .ov-next-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+@media (max-width: 380px) {
+  .level-complete-card .ov-next-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.level-complete-card .ov-home-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.82rem 0.75rem;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #e2e8f0;
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  border-radius: 999px;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.level-complete-card .ov-home-btn:hover {
+  border-color: rgba(56, 189, 248, 0.55);
+  color: #fff;
+  background: rgba(30, 41, 59, 0.95);
+}
+
+.level-complete-card .ov-next-btn {
+  width: auto;
+  margin: 0;
 }
 
 /* Final results — neon end screen (PlayPage) */

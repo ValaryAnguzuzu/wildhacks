@@ -955,11 +955,16 @@ export function GameBoard({
                 </div>
               )}
 
-              <button type="button" className="ov-next-btn" onClick={handleNext}>
-                {levelIndex < totalLevels - 1
-                  ? `Level ${level.id + 1} →`
-                  : 'See Final Results →'}
-              </button>
+              <div className="ov-next-actions">
+                <Link to="/" className="ov-home-btn">
+                  Home
+                </Link>
+                <button type="button" className="ov-next-btn" onClick={handleNext}>
+                  {levelIndex < totalLevels - 1
+                    ? `Level ${level.id + 1} →`
+                    : 'See Final Results →'}
+                </button>
+              </div>
             </div>
           </div>,
           document.body,
