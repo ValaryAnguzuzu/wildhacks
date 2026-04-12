@@ -35,6 +35,9 @@ export interface LevelData {
 /** Placed blocks that were dismissed (distractors) use this instead of a column id. */
 export const DISMISS_PLACEMENT_ID = '__dismiss__';
 
+/** Passed / skipped as “I don’t know” (counts as incorrect). */
+export const PASS_PLACEMENT_ID = '__pass__';
+
 export interface PlacedBlock {
   block: BlockData;
   columnId: string;

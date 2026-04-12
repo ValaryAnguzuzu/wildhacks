@@ -8,6 +8,7 @@ import {
   FeedbackData,
   LevelData,
   LevelStats,
+  PASS_PLACEMENT_ID,
   PlacedBlock,
 } from '../types';
 import { getAdaptiveTimerSeconds } from '../utilities/adaptiveTimer';
@@ -19,6 +20,12 @@ const WRONG_SCORE_PENALTY = 38;
 const WRONG_TIME_PENALTY_SEC = 5;
 const SPEED_BONUS_MAX = 48;
 const MIN_TIMER_SEC = 2;
+
+/** Start the falling block centered over the board (middle column index). */
+function defaultSelectedColumn(numCols: number): number {
+  if (numCols <= 1) return 0;
+  return Math.floor(numCols / 2);
+}
 
 function streakMultiplier(streakAfterCorrect: number): number {
   if (streakAfterCorrect >= 5) return 3;
@@ -63,6 +70,28 @@ function buildFeedback(
     correct: false,
     headline: `✗ Belongs in “${correctCol?.label ?? block.correctColumn}”`,
     detail: `You placed it in “${wrongCol?.label ?? placedColId}”. ${block.description} Streak lost. Next timer −${wrongTimePenaltySec}s.`,
+    lostTimeSec: wrongTimePenaltySec,
+  };
+}
+
+function buildFeedbackPassUnknown(
+  block: BlockData,
+  level: LevelData,
+  wrongTimePenaltySec: number,
+): FeedbackData {
+  if (block.isDistractor) {
+    return {
+      correct: false,
+      headline: '✗ “I don’t know” — should have dismissed',
+      detail: `${block.description} Streak lost. Next timer −${wrongTimePenaltySec}s.`,
+      lostTimeSec: wrongTimePenaltySec,
+    };
+  }
+  const correctCol = level.columns.find((c) => c.id === block.correctColumn);
+  return {
+    correct: false,
+    headline: '✗ I don’t know — counted as incorrect',
+    detail: `Correct lane was “${correctCol?.label ?? block.correctColumn}”. ${block.description} Streak lost. Next timer −${wrongTimePenaltySec}s.`,
     lostTimeSec: wrongTimePenaltySec,
   };
 }
@@ -121,6 +150,10 @@ export interface GameEngineReturn {
   pause: () => void;
   resume: () => void;
   dismissDistractor: () => void;
+  /** Non-distractor: surrender the block as a miss (same penalties as wrong placement). */
+  passDontKnow: () => void;
+  /** Distractor: “I don’t know — skip” counts as a miss (dismiss is the correct action). */
+  skipDistractorAsMiss: () => void;
   getStats: () => LevelStats;
 }
 
@@ -131,7 +164,7 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
     blockQueue: [],
     currentBlock: null,
     placedBlocks: [],
-    selectedColumn: 0,
+    selectedColumn: defaultSelectedColumn(level.columns.length),
     timeLeft: level.timerSeconds,
     timerMax: level.timerSeconds,
     phase: 'idle',
@@ -186,7 +219,7 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
     } else {
       s.current.currentBlock = q[0];
       s.current.blockQueue = q.slice(1);
-      s.current.selectedColumn = 0;
+      s.current.selectedColumn = defaultSelectedColumn(level.columns.length);
       const streakForAdaptive = s.current.streak;
       let nextMax = getAdaptiveTimerSeconds(level.timerSeconds, streakForAdaptive);
       if (s.current.pendingWrongTimePenalty > 0) {
@@ -213,7 +246,7 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
       blockQueue: shuffled.slice(1),
       currentBlock: shuffled[0],
       placedBlocks: [],
-      selectedColumn: 0,
+      selectedColumn: defaultSelectedColumn(level.columns.length),
       timeLeft: level.timerSeconds,
       timerMax: level.timerSeconds,
       phase: 'active',
@@ -352,6 +385,79 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
     }, 500);
   }, [stopTimer, rerender, finishFeedbackWindow]);
 
+  const passDontKnow = useCallback(() => {
+    if (s.current.isPaused || s.current.phase !== 'active' || !s.current.currentBlock)
+      return;
+    const block = s.current.currentBlock;
+    if (block.isDistractor) return;
+
+    stopTimer();
+
+    s.current.phase = 'dropping';
+    rerender();
+
+    setTimeout(() => {
+      s.current.totalCount += 1;
+      applyWrong();
+
+      const fb = buildFeedbackPassUnknown(block, level, WRONG_TIME_PENALTY_SEC);
+      s.current.placedBlocks = [
+        ...s.current.placedBlocks,
+        {
+          block,
+          columnId: PASS_PLACEMENT_ID,
+          correct: false,
+          feedbackMsg: fb.detail,
+        },
+      ];
+      s.current.feedback = fb;
+      s.current.hintColumn = null;
+      s.current.isFlipped = false;
+      s.current.phase = 'feedback';
+      rerender();
+
+      finishFeedbackWindow();
+    }, 500);
+  }, [level, stopTimer, rerender, finishFeedbackWindow]);
+
+  const skipDistractorAsMiss = useCallback(() => {
+    if (
+      s.current.isPaused ||
+      s.current.phase !== 'active' ||
+      !s.current.currentBlock?.isDistractor
+    )
+      return;
+
+    stopTimer();
+    const block = s.current.currentBlock;
+
+    s.current.phase = 'dropping';
+    rerender();
+
+    setTimeout(() => {
+      s.current.totalCount += 1;
+      applyWrong();
+
+      const fb = buildFeedbackPassUnknown(block, level, WRONG_TIME_PENALTY_SEC);
+      s.current.placedBlocks = [
+        ...s.current.placedBlocks,
+        {
+          block,
+          columnId: PASS_PLACEMENT_ID,
+          correct: false,
+          feedbackMsg: fb.detail,
+        },
+      ];
+      s.current.feedback = fb;
+      s.current.hintColumn = null;
+      s.current.isFlipped = false;
+      s.current.phase = 'feedback';
+      rerender();
+
+      finishFeedbackWindow();
+    }, 500);
+  }, [level, stopTimer, rerender, finishFeedbackWindow]);
+
   useEffect(() => {
     dropRef.current = drop;
   }, [drop]);
@@ -462,6 +568,8 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
     pause,
     resume,
     dismissDistractor,
+    passDontKnow,
+    skipDistractorAsMiss,
     getStats,
   };
 }

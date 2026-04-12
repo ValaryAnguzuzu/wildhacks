@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { DISMISS_PLACEMENT_ID, LevelData, PlacedBlock } from '../types';
+import {
+  DISMISS_PLACEMENT_ID,
+  LevelData,
+  PASS_PLACEMENT_ID,
+  PlacedBlock,
+} from '../types';
 
 function correctLaneLabel(
   level: LevelData,
@@ -17,6 +22,9 @@ function correctLaneLabel(
 function yourPlacementLabel(level: LevelData, p: PlacedBlock): string {
   if (p.columnId === DISMISS_PLACEMENT_ID) {
     return 'Dismissed';
+  }
+  if (p.columnId === PASS_PLACEMENT_ID) {
+    return 'I don’t know (pass)';
   }
   return level.columns.find((c) => c.id === p.columnId)?.label ?? p.columnId;
 }
