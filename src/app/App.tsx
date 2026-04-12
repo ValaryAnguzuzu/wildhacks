@@ -50,6 +50,18 @@ const Report = lazy(async () => {
   const m = await import('./screens/Report');
   return { default: m.Report };
 });
+const Advisor = lazy(async () => {
+  const m = await import('./screens/AdvisorScreen');
+  return { default: m.AdvisorScreen };
+});
+const AdvisorHistory = lazy(async () => {
+  const m = await import('./screens/AdvisorHistoryScreen');
+  return { default: m.AdvisorHistoryScreen };
+});
+const FinancialProfile = lazy(async () => {
+  const m = await import('./screens/FinancialProfileScreen');
+  return { default: m.FinancialProfileScreen };
+});
 
 function RouteFallback() {
   return (
@@ -80,6 +92,9 @@ function AppRoutes() {
             <Route path="/lesson/:lessonId" element={<Lesson />} />
             <Route path="/progress" element={<Progress />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/advisor" element={<Advisor />} />
+            <Route path="/advisor/history" element={<AdvisorHistory />} />
+            <Route path="/financial-profile" element={<FinancialProfile />} />
             <Route path="/result" element={<Result />} />
             <Route path="/report" element={<Report />} />
           </Route>

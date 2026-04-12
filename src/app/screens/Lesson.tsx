@@ -14,6 +14,7 @@ import {
 import { useLesson } from '@/hooks/useLesson';
 import { useStore } from '@/store/useStore';
 import type { LessonChoice } from '@/types/lesson';
+import { setAdvisorLessonContext } from '@/utils/advisorLessonContext';
 import {
   calculateXP,
   checkStreakUpdate,
@@ -192,6 +193,7 @@ export function Lesson() {
     }
 
     const countRes = await getSessionCount(user.uid);
+    setAdvisorLessonContext(lesson.scenario.conceptTag);
     navigate('/result', {
       state: {
         xp,

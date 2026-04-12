@@ -1,4 +1,4 @@
-import { Flame, Home, Map, Star, TrendingUp } from 'lucide-react';
+import { Flame, Home, Map, Star, TrendingUp, Wallet } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useStore } from '@/store/useStore';
@@ -33,6 +33,13 @@ export function TopNav() {
       label: 'Progress',
       path: '/progress',
       match: (p: string) => p === '/progress',
+    },
+    {
+      id: 'advisor',
+      icon: Wallet,
+      label: 'Advisor',
+      path: '/advisor',
+      match: (p: string) => p.startsWith('/advisor'),
     },
   ];
 

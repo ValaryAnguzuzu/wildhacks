@@ -12,6 +12,8 @@ interface ImportMetaEnv {
   readonly VITE_OPENAI_API_KEY?: string;
   /** Optional override for OpenAI base URL (e.g. same-origin proxy in production) */
   readonly VITE_OPENAI_URL?: string;
+  /** Anthropic API key for Fin advisor (hackathon: client-side only; use a backend in production) */
+  readonly VITE_CLAUDE_API_KEY?: string;
 }
 
 interface ImportMeta {

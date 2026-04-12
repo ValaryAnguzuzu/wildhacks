@@ -3,6 +3,7 @@ import { Timestamp } from 'firebase/firestore';
 import { Award, Calendar } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { auth } from '@/firebase/config';
 import { getUserSessionsSample } from '@/firebase/firestore';
@@ -17,6 +18,7 @@ function dayKey(d: Date) {
 }
 
 export function Profile() {
+  const navigate = useNavigate();
   const profile = useStore((s) => s.user);
   const progressMap = useStore((s) => s.progress);
   const uid = auth.currentUser?.uid;
@@ -180,6 +182,64 @@ export function Profile() {
             >
               {(profile?.xp ?? 0).toLocaleString()} XP · {profile?.streak ?? 0} day streak
             </p>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.08 }}
+          className="mb-8 p-4 md:p-5 rounded-[var(--radius-card)] border space-y-3"
+          style={{
+            backgroundColor: 'var(--surface)',
+            borderColor: 'var(--border-subtle)',
+          }}
+        >
+          <h2
+            style={{
+              fontSize: 'var(--font-subheading)',
+              fontWeight: 'var(--font-weight-semibold)',
+              color: 'var(--text-primary)',
+            }}
+          >
+            Financial advisor
+          </h2>
+          <p style={{ fontSize: 'var(--font-caption)', color: 'var(--text-secondary)' }}>
+            Chat with Fin or update the numbers used for personalized advice.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <button
+              type="button"
+              className="flex-1 py-3 rounded-[var(--radius-button)] font-semibold text-white"
+              style={{ backgroundColor: 'var(--teal)' }}
+              onClick={() => navigate('/advisor')}
+            >
+              Open advisor
+            </button>
+            <button
+              type="button"
+              className="flex-1 py-3 rounded-[var(--radius-button)] font-semibold border"
+              style={{
+                borderColor: 'var(--border-subtle)',
+                color: 'var(--text-primary)',
+                backgroundColor: 'var(--surface-elevated)',
+              }}
+              onClick={() => navigate('/financial-profile')}
+            >
+              Edit snapshot
+            </button>
+            <button
+              type="button"
+              className="flex-1 py-3 rounded-[var(--radius-button)] font-semibold border"
+              style={{
+                borderColor: 'var(--border-subtle)',
+                color: 'var(--text-secondary)',
+                backgroundColor: 'var(--surface-elevated)',
+              }}
+              onClick={() => navigate('/advisor/history')}
+            >
+              Past advice
+            </button>
           </div>
         </motion.div>
 

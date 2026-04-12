@@ -1,4 +1,5 @@
 import {
+  addDoc,
   arrayUnion,
   collection,
   doc,
@@ -11,6 +12,7 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  Timestamp,
   updateDoc,
   where,
 } from 'firebase/firestore';
@@ -427,5 +429,151 @@ export async function decrementHearts(
     return { data: true, error: null };
   } catch (e) {
     return { data: null, error: toError(e) };
+  }
+}
+
+/** Subdoc: `users/{uid}/financialProfile/default` */
+const financialProfileDoc = (uid: string) =>
+  doc(db, 'users', uid, 'financialProfile', 'default');
+
+export type FinancialProfileData = {
+  checking: number;
+  savings: number;
+  cash: number;
+  creditCardBalance: number;
+  creditCardLimit: number;
+  monthlyIncome: number;
+  monthlyExpenses: number;
+  updatedAt: Timestamp | null;
+};
+
+const zeroProfile = (): Omit<FinancialProfileData, 'updatedAt'> => ({
+  checking: 0,
+  savings: 0,
+  cash: 0,
+  creditCardBalance: 0,
+  creditCardLimit: 0,
+  monthlyIncome: 0,
+  monthlyExpenses: 0,
+});
+
+function readNumber(v: unknown): number {
+  if (typeof v === 'number' && !Number.isNaN(v)) return v;
+  return 0;
+}
+
+export async function getFinancialProfile(
+  uid: string,
+): Promise<{ data: FinancialProfileData; error: string | null }> {
+  try {
+    const snap = await getDoc(financialProfileDoc(uid));
+    if (!snap.exists()) {
+      return {
+        data: { ...zeroProfile(), updatedAt: null },
+        error: null,
+      };
+    }
+    const d = snap.data();
+    return {
+      data: {
+        checking: readNumber(d.checking),
+        savings: readNumber(d.savings),
+        cash: readNumber(d.cash),
+        creditCardBalance: readNumber(d.creditCardBalance),
+        creditCardLimit: readNumber(d.creditCardLimit),
+        monthlyIncome: readNumber(d.monthlyIncome),
+        monthlyExpenses: readNumber(d.monthlyExpenses),
+        updatedAt:
+          d.updatedAt && typeof (d.updatedAt as Timestamp).toDate === 'function'
+            ? (d.updatedAt as Timestamp)
+            : null,
+      },
+      error: null,
+    };
+  } catch (e) {
+    return { data: { ...zeroProfile(), updatedAt: null }, error: toError(e) };
+  }
+}
+
+export async function setFinancialProfile(
+  uid: string,
+  fields: Omit<FinancialProfileData, 'updatedAt'>,
+): Promise<{ data: true | null; error: string | null }> {
+  try {
+    await setDoc(financialProfileDoc(uid), {
+      ...fields,
+      updatedAt: serverTimestamp(),
+    });
+    return { data: true, error: null };
+  } catch (e) {
+    return { data: null, error: toError(e) };
+  }
+}
+
+export type AdvisorHistoryEntry = {
+  userQuestion: string;
+  advisorResponse: string;
+  verdict: 'yes' | 'no' | 'conditional' | null;
+  snapshot: Omit<FinancialProfileData, 'updatedAt'>;
+  savedAt: Timestamp;
+};
+
+export async function addAdvisorHistoryDoc(
+  uid: string,
+  payload: {
+    userQuestion: string;
+    advisorResponse: string;
+    verdict: 'yes' | 'no' | 'conditional' | null;
+    snapshot: Omit<FinancialProfileData, 'updatedAt'>;
+  },
+): Promise<{ data: string | null; error: string | null }> {
+  try {
+    const ref = await addDoc(collection(db, 'users', uid, 'advisorHistory'), {
+      ...payload,
+      savedAt: serverTimestamp(),
+    });
+    return { data: ref.id, error: null };
+  } catch (e) {
+    return { data: null, error: toError(e) };
+  }
+}
+
+export async function getAdvisorHistory(
+  uid: string,
+  max = 50,
+): Promise<{
+  data: Array<AdvisorHistoryEntry & { id: string }>;
+  error: string | null;
+}> {
+  try {
+    const q = query(
+      collection(db, 'users', uid, 'advisorHistory'),
+      orderBy('savedAt', 'desc'),
+      limit(max),
+    );
+    const snap = await getDocs(q);
+    const rows = snap.docs.map((d) => {
+      const x = d.data();
+      const snapData = x.snapshot as Record<string, unknown> | undefined;
+      return {
+        id: d.id,
+        userQuestion: String(x.userQuestion ?? ''),
+        advisorResponse: String(x.advisorResponse ?? ''),
+        verdict: (x.verdict ?? null) as AdvisorHistoryEntry['verdict'],
+        snapshot: {
+          checking: readNumber(snapData?.checking),
+          savings: readNumber(snapData?.savings),
+          cash: readNumber(snapData?.cash),
+          creditCardBalance: readNumber(snapData?.creditCardBalance),
+          creditCardLimit: readNumber(snapData?.creditCardLimit),
+          monthlyIncome: readNumber(snapData?.monthlyIncome),
+          monthlyExpenses: readNumber(snapData?.monthlyExpenses),
+        },
+        savedAt: x.savedAt as Timestamp,
+      };
+    });
+    return { data: rows, error: null };
+  } catch (e) {
+    return { data: [], error: toError(e) };
   }
 }
