@@ -138,6 +138,19 @@
   color: var(--text-muted);
 }
 
+.zigzag-control-note {
+  font-size: 0.88em;
+  opacity: 0.9;
+}
+
+#controls {
+  scroll-margin-top: calc(var(--nav-height, 56px) + 0.75rem);
+}
+
+.home-controls-band {
+  padding-top: clamp(1.75rem, 4vw, 2.75rem);
+}
+
 /* ─── Kid illustrations (CSS + emoji) ───────────────────────────────────── */
 
 .kid-art {
@@ -469,6 +482,12 @@
   max-width: 280px;
   aspect-ratio: auto;
   min-height: 180px;
+}
+
+.kid-art--keys--home {
+  max-width: 300px;
+  min-height: auto;
+  justify-content: center;
 }
 
 .kid-key-pill {

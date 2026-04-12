@@ -325,6 +325,7 @@
 /* ─── Body: sidebars + main ───────────────────────────────────────────────── */
 
 .arena-main {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -1180,6 +1181,11 @@
   color: #fff;
 }
 
+.arena-hud__icon-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .arena-hud__meta {
   display: flex;
   flex-wrap: wrap;
@@ -1312,8 +1318,9 @@
 
 .game-arena .block-pass-btn--muted:hover:not(:disabled) {
   transform: translateY(-1px);
-  border-color: rgba(148, 163, 184, 0.55);
-  background: rgba(30, 41, 59, 0.75);
+  border-color: rgba(56, 189, 248, 0.75);
+  box-shadow: 0 0 28px rgba(56, 189, 248, 0.2);
+  background: linear-gradient(160deg, rgba(56, 189, 248, 0.22), rgba(139, 92, 246, 0.12));
 }
 
 /* Legacy class names (if used elsewhere) */
@@ -1365,6 +1372,180 @@
   }
   40% {
     filter: brightness(1.15);
+  }
+}
+
+/* Level start — read lanes, then 3-2-1-GO before the round timer */
+.level-intro-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0.5rem 0.35rem 0.75rem;
+  overflow: auto;
+  background: rgba(5, 8, 14, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: level-intro-in 0.25s ease-out;
+}
+
+@keyframes level-intro-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.level-intro-card {
+  width: min(100%, 440px);
+  margin: auto 0;
+  padding: 1rem 1.1rem 1.15rem;
+  border-radius: 14px;
+  background: linear-gradient(165deg, rgba(30, 27, 60, 0.97), rgba(15, 23, 42, 0.99));
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+    0 16px 48px rgba(0, 0, 0, 0.45);
+}
+
+.level-intro-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: #f8fafc;
+}
+
+.level-intro-lead,
+.level-intro-foot {
+  margin: 0 0 0.65rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+
+.level-intro-foot {
+  margin-bottom: 0.85rem;
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+
+.level-intro-lanes {
+  list-style: none;
+  margin: 0 0 0.85rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  max-height: min(32vh, 220px);
+  overflow-y: auto;
+}
+
+.level-intro-lanes li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(51, 65, 85, 0.55);
+  text-align: left;
+}
+
+.level-intro-lane-name {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #e2e8f0;
+}
+
+.level-intro-lane-hint {
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: #94a3b8;
+}
+
+.level-intro-start {
+  width: 100%;
+  padding: 0.72rem 0.85rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  cursor: pointer;
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(139, 92, 246, 0.18));
+  color: #f8fafc;
+  transition:
+    transform 0.12s ease,
+    border-color 0.15s ease;
+}
+
+.level-intro-start:hover {
+  transform: scale(1.01);
+  border-color: rgba(167, 139, 250, 0.65);
+}
+
+.level-intro-kbd-hint {
+  margin: 0.55rem 0 0;
+  font-size: 0.68rem;
+  color: #64748b;
+  text-align: center;
+}
+
+.level-intro-kbd-hint kbd {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(100, 116, 139, 0.45);
+  color: #cbd5e1;
+}
+
+.countdown-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  background: rgba(5, 8, 14, 0.35);
+  animation: countdown-overlay-in 0.15s ease-out;
+}
+
+@keyframes countdown-overlay-in {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.countdown-overlay__num {
+  font-size: clamp(3.5rem, 14vw, 5.5rem);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #f8fafc;
+  text-shadow:
+    0 0 40px rgba(56, 189, 248, 0.55),
+    0 0 80px rgba(167, 139, 250, 0.35);
+  animation: countdown-pop 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes countdown-pop {
+  from {
+    transform: scale(0.88);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
 }
 

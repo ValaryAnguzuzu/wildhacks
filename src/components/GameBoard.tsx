@@ -63,6 +63,7 @@ export function GameBoard({
   const [dragPx, setDragPx] = useState(0);
   const dragRef = useRef({ startX: 0, active: false });
   const pauseResumeRef = useRef<HTMLButtonElement>(null);
+  const levelIntroStartRef = useRef<HTMLButtonElement>(null);
 
   const MAX_HINTS = 3;
   const numCols = level.columns.length;
@@ -93,6 +94,12 @@ export function GameBoard({
   }, [engine.currentBlock?.id]);
 
   useEffect(() => {
+    if (engine.phase === 'levelIntro') {
+      queueMicrotask(() => levelIntroStartRef.current?.focus());
+    }
+  }, [engine.phase]);
+
+  useEffect(() => {
     if (!engine.isPaused || showOverlay) return;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -106,11 +113,35 @@ export function GameBoard({
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (showOverlay && e.code === 'Escape') return;
+      if (engine.phase === 'levelIntro') {
+        if (
+          e.code === 'Enter' ||
+          e.code === 'NumpadEnter' ||
+          e.code === 'ArrowDown'
+        ) {
+          e.preventDefault();
+          engine.acknowledgeLevelIntro();
+        }
+        return;
+      }
+      if (engine.phase === 'countdown') return;
       if (e.code === 'Escape') {
         e.preventDefault();
         if (engine.isPaused) engine.resume();
         else engine.pause();
         return;
+      }
+      if (e.code === 'Space') {
+        if (engine.isPaused) {
+          e.preventDefault();
+          engine.resume();
+          return;
+        }
+        if (engine.phase === 'active' || engine.phase === 'dropping') {
+          e.preventDefault();
+          engine.pause();
+          return;
+        }
       }
       if (engine.isPaused || showOverlay) return;
       switch (e.code) {
@@ -122,9 +153,9 @@ export function GameBoard({
           e.preventDefault();
           engine.moveRight();
           break;
-        case 'Space':
         case 'Enter':
         case 'NumpadEnter':
+        case 'ArrowDown':
           e.preventDefault();
           engine.drop();
           break;
@@ -341,7 +372,11 @@ export function GameBoard({
               className="arena-hud__icon-btn"
               onClick={() => (engine.isPaused ? engine.resume() : engine.pause())}
               aria-label={engine.isPaused ? 'Resume' : 'Pause'}
-              title={engine.isPaused ? 'Resume (Esc)' : 'Pause (Esc)'}
+              title={engine.isPaused ? 'Resume (Esc or Space)' : 'Pause (Esc or Space)'}
+              disabled={
+                engine.phase === 'levelIntro' ||
+                engine.phase === 'countdown'
+              }
             >
               {engine.isPaused ? '▶' : '⏸'}
             </button>
@@ -396,9 +431,15 @@ export function GameBoard({
             <span>
               {engine.isPaused
                 ? 'PAUSED'
-                : engine.phase === 'active' || engine.phase === 'dropping'
-                  ? `${Math.ceil(engine.timeLeft)}s`
-                  : '—'}
+                : engine.phase === 'levelIntro'
+                  ? 'READ LANES'
+                  : engine.phase === 'countdown'
+                    ? engine.countdownDisplay === 'go'
+                      ? 'GO!'
+                      : String(engine.countdownDisplay ?? '—')
+                    : engine.phase === 'active' || engine.phase === 'dropping'
+                      ? `${Math.ceil(engine.timeLeft)}s`
+                      : '—'}
             </span>
           </div>
           <div className="arena-hud__timer-track">
@@ -412,7 +453,9 @@ export function GameBoard({
                 backgroundColor:
                   engine.phase === 'active' || engine.phase === 'dropping'
                     ? timerColor
-                    : 'rgba(51, 65, 85, 0.6)',
+                    : engine.phase === 'countdown' && engine.countdownDisplay === 'go'
+                      ? 'rgba(34, 197, 94, 0.85)'
+                      : 'rgba(51, 65, 85, 0.6)',
                 boxShadow:
                   timerPct <= 0.25 && engine.phase === 'active' && !engine.isPaused
                     ? '0 0 20px rgba(248, 113, 113, 0.55)'
@@ -431,24 +474,91 @@ export function GameBoard({
       >
         <aside className="arena-sidebar arena-sidebar--left" aria-label="Concept">
           <div className="arena-sidebar__title">Current concept</div>
-          <div className="arena-sidebar__concept">{engine.currentBlock?.name ?? '—'}</div>
+          <div className="arena-sidebar__concept">
+            {engine.phase === 'levelIntro' || engine.phase === 'countdown'
+              ? '—'
+              : (engine.currentBlock?.name ?? '—')}
+          </div>
           <div className="arena-sidebar__title" style={{ marginTop: '0.35rem' }}>
             Target lane
           </div>
           <div className="arena-sidebar__concept" style={{ fontSize: '0.82rem' }}>
-            {targetColLabel ?? '—'}
+            {engine.phase === 'levelIntro' || engine.phase === 'countdown'
+              ? '—'
+              : (targetColLabel ?? '—')}
           </div>
-          <div className="arena-sidebar__tip">{level.learningGoal}</div>
+          <div className="arena-sidebar__tip">
+            {engine.phase === 'levelIntro'
+              ? 'Scan every lane below: label + hint, before the timer starts. Then you’ll get a countdown!'
+              : engine.phase === 'countdown'
+                ? 'Get ready…'
+                : level.learningGoal}
+          </div>
         </aside>
 
         <div className="arena-main">
+          {engine.phase === 'levelIntro' ? (
+            <div
+              className="level-intro-overlay"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="level-intro-title"
+            >
+              <div className="level-intro-card">
+                <h2 className="level-intro-title" id="level-intro-title">
+                  Read the lanes first
+                </h2>
+                <p className="level-intro-lead">
+                  Each column at the bottom is a lane in this level. Use the{' '}
+                  <strong>title</strong> and <strong>hint</strong> on every lane to decide
+                  where each falling card belongs: then move, flip if needed, and drop.
+                </p>
+                <ul className="level-intro-lanes" aria-label="Lanes for this level">
+                  {level.columns.map((col) => (
+                    <li key={col.id}>
+                      <span className="level-intro-lane-name">{col.label}</span>
+                      <span className="level-intro-lane-hint">{col.hint}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="level-intro-foot">
+                  When you continue, you’ll get a short <strong>3-2-1</strong> countdown,
+                  then the round timer starts.
+                </p>
+                <button
+                  ref={levelIntroStartRef}
+                  type="button"
+                  className="level-intro-start"
+                  onClick={() => engine.acknowledgeLevelIntro()}
+                >
+                  Ready — start countdown
+                </button>
+                <p className="level-intro-kbd-hint">
+                  Or press <kbd>Enter</kbd> / <kbd>↓</kbd>
+                </p>
+              </div>
+            </div>
+          ) : null}
+          {engine.phase === 'countdown' ? (
+            <div className="countdown-overlay" aria-live="assertive">
+              <span className="countdown-overlay__num">
+                {engine.countdownDisplay === 'go' ? 'GO!' : engine.countdownDisplay}
+              </span>
+            </div>
+          ) : null}
           <div
             className={['board', arenaShake ? 'arena-shake' : '']
               .filter(Boolean)
               .join(' ')}
           >
             <div className="fall-lane-header">
-              <span className="fall-lane-label">FALL LANE</span>
+              <span className="fall-lane-label">
+                {engine.phase === 'levelIntro'
+                  ? 'READ LANES'
+                  : engine.phase === 'countdown'
+                    ? 'GET READY'
+                    : 'FALL LANE'}
+              </span>
               {comboPill && engine.phase === 'active' && (
                 <span
                   className={
@@ -711,7 +821,16 @@ export function GameBoard({
                   .filter(Boolean)
                   .join(' ')}
               >
-                {engine.phase === 'active' && engine.currentBlock ? (
+                {engine.phase === 'levelIntro' ? (
+                  <p className="fb-coach__lead fb-coach__lead--solo">
+                    Review the <strong>lane list</strong> in the overlay, then tap{' '}
+                    <strong>Ready</strong> for the countdown.
+                  </p>
+                ) : engine.phase === 'countdown' ? (
+                  <p className="fb-coach__lead fb-coach__lead--solo">
+                    Round begins after <strong>GO!</strong>
+                  </p>
+                ) : engine.phase === 'active' && engine.currentBlock ? (
                   <>
                     <div className="fb-coach__top">
                       <span
@@ -774,7 +893,11 @@ export function GameBoard({
             <button
               className="ctrl-btn"
               onClick={engine.moveLeft}
-              disabled={engine.isPaused}
+              disabled={
+                engine.isPaused ||
+                engine.phase === 'levelIntro' ||
+                engine.phase === 'countdown'
+              }
               aria-label="Move left"
             >
               ◀
@@ -782,7 +905,11 @@ export function GameBoard({
             <button
               className="ctrl-btn"
               onClick={engine.flip}
-              disabled={engine.isPaused}
+              disabled={
+                engine.isPaused ||
+                engine.phase === 'levelIntro' ||
+                engine.phase === 'countdown'
+              }
               aria-label="Flip block"
             >
               FLIP <kbd>F</kbd>
@@ -790,15 +917,24 @@ export function GameBoard({
             <button
               className="ctrl-btn drop-btn"
               onClick={() => engine.drop()}
-              disabled={engine.isPaused}
-              aria-label="Drop block (Space or Enter)"
+              disabled={
+                engine.isPaused ||
+                engine.phase === 'levelIntro' ||
+                engine.phase === 'countdown'
+              }
+              aria-label="Drop block (Enter or Down arrow)"
             >
-              DROP <kbd>SPACE</kbd>/<kbd>ENTER</kbd>
+              DROP <kbd>ENTER</kbd>/<kbd>↓</kbd>
             </button>
             <button
               className="ctrl-btn"
               onClick={engine.useHint}
-              disabled={engine.isPaused || engine.hintsLeft === 0}
+              disabled={
+                engine.isPaused ||
+                engine.hintsLeft === 0 ||
+                engine.phase === 'levelIntro' ||
+                engine.phase === 'countdown'
+              }
               aria-label="Use hint"
             >
               HINT ({engine.hintsLeft})
@@ -806,7 +942,11 @@ export function GameBoard({
             <button
               className="ctrl-btn"
               onClick={engine.moveRight}
-              disabled={engine.isPaused}
+              disabled={
+                engine.isPaused ||
+                engine.phase === 'levelIntro' ||
+                engine.phase === 'countdown'
+              }
               aria-label="Move right"
             >
               ▶
@@ -826,9 +966,11 @@ export function GameBoard({
                 title={b.name}
               />
             ))}
-            {engine.blockQueue.length === 0 && engine.phase !== 'levelComplete' && (
-              <span className="queue-last">last block!</span>
-            )}
+            {engine.blockQueue.length === 0 &&
+              engine.phase !== 'levelComplete' &&
+              engine.phase === 'active' && (
+                <span className="queue-last">last block!</span>
+              )}
           </div>
         </div>
 
@@ -870,7 +1012,7 @@ export function GameBoard({
               <h2 id="pause-dialog-title" className="pause-title">
                 Paused
               </h2>
-              <p className="pause-hint">Press Esc or Resume to continue.</p>
+              <p className="pause-hint">Press Esc, Space, or Resume to continue.</p>
               <div className="pause-actions">
                 <button
                   ref={pauseResumeRef}

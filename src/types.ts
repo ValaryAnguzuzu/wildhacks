@@ -1,6 +1,8 @@
 export type GamePhase = 'welcome' | 'playing' | 'gameComplete';
 export type BlockPhaseInternal =
   | 'idle'
+  | 'levelIntro'
+  | 'countdown'
   | 'active'
   | 'dropping'
   | 'feedback'

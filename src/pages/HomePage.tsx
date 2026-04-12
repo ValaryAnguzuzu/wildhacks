@@ -142,9 +142,12 @@ function VisualLevel({ color, num }: { color: string; num: number }) {
 
 function VisualControls() {
   return (
-    <div className="kid-art kid-art--keys" aria-hidden="true">
+    <div className="kid-art kid-art--keys kid-art--keys--home" aria-hidden="true">
       <span className="kid-key-pill">← →</span>
+      <span className="kid-key-pill kid-key-pill--wide">enter</span>
+      <span className="kid-key-pill">↓</span>
       <span className="kid-key-pill kid-key-pill--wide">space</span>
+      <span className="kid-key-pill">esc</span>
       <span className="kid-key-pill">F</span>
       <span className="kid-key-pill">H</span>
     </div>
@@ -199,6 +202,15 @@ export function HomePage() {
             <p className="home-micro">
               No account required · Optional sign-in keeps your name on this device
             </p>
+            <p className="home-hero-controls-jump">
+              <a href="#controls" className="home-hero-controls-jump__link">
+                Keyboard & touch controls
+              </a>
+              <span className="home-hero-controls-jump__hint" aria-hidden="true">
+                {' '}
+                · Enter/↓ drop · Space or Esc pause
+              </span>
+            </p>
             {lastRun ? (
               <aside className="home-last-run" aria-label="Your last completed run">
                 <div className="home-last-run-top">
@@ -218,6 +230,44 @@ export function HomePage() {
           </div>
           <div className="zigzag-visual">
             <VisualHeroPlay />
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="zigzag-band zigzag-band--controls home-controls-band"
+        id="controls"
+        aria-labelledby="controls-heading"
+      >
+        <div className="page-wrap zigzag-inner zigzag-inner--flip">
+          <div className="zigzag-copy">
+            <h2 className="zigzag-h3" id="controls-heading">
+              Controls
+            </h2>
+            <p className="zigzag-p">
+              Keyboard or touch — pick what feels good. Tap a column to place; tap the
+              block to read the back.
+            </p>
+            <ul className="zigzag-control-list">
+              <li>
+                <span className="kbd">← →</span> move
+              </li>
+              <li>
+                <span className="kbd">Enter</span> <span className="kbd">↓</span> drop
+              </li>
+              <li>
+                <span className="kbd">Space</span> pause <span className="zigzag-control-note">(Esc too)</span>
+              </li>
+              <li>
+                <span className="kbd">F</span> flip
+              </li>
+              <li>
+                <span className="kbd">H</span> hint
+              </li>
+            </ul>
+          </div>
+          <div className="zigzag-visual">
+            <VisualControls />
           </div>
         </div>
       </section>
@@ -354,40 +404,6 @@ export function HomePage() {
           </div>
         </section>
       ))}
-
-      <section
-        className="zigzag-band zigzag-band--controls"
-        aria-labelledby="controls-heading"
-      >
-        <div className="page-wrap zigzag-inner zigzag-inner--flip">
-          <div className="zigzag-copy">
-            <h2 className="zigzag-h3" id="controls-heading">
-              Controls
-            </h2>
-            <p className="zigzag-p">
-              Keyboard or touch — pick what feels good. Tap a column to place; tap the
-              block to read the back.
-            </p>
-            <ul className="zigzag-control-list">
-              <li>
-                <span className="kbd">← →</span> move
-              </li>
-              <li>
-                <span className="kbd">Space</span> drop
-              </li>
-              <li>
-                <span className="kbd">F</span> flip
-              </li>
-              <li>
-                <span className="kbd">H</span> hint
-              </li>
-            </ul>
-          </div>
-          <div className="zigzag-visual">
-            <VisualControls />
-          </div>
-        </div>
-      </section>
 
       <section className="section-y home-final-cta">
         <div className="page-wrap center">

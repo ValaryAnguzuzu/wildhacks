@@ -56,7 +56,10 @@ export function HelpPanel({ open, onClose }: Props) {
             <span className="kbd">←</span> <span className="kbd">→</span> Move
           </li>
           <li>
-            <span className="kbd">Space</span> Drop
+            <span className="kbd">Enter</span> <span className="kbd">↓</span> Drop
+          </li>
+          <li>
+            <span className="kbd">Space</span> Pause (Esc too)
           </li>
           <li>
             <span className="kbd">F</span> Flip card

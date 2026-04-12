@@ -119,6 +119,8 @@ interface InternalState {
   speedBonusTotal: number;
   pendingWrongTimePenalty: number;
   isPaused: boolean;
+  /** Set when `phase === 'countdown'` — 3, 2, 1, then "go". */
+  countdownDisplay: number | 'go' | null;
 }
 
 export interface GameEngineReturn {
@@ -140,6 +142,8 @@ export interface GameEngineReturn {
   totalCount: number;
   speedBonusTotal: number;
   isPaused: boolean;
+  /** 3, 2, 1, or "go" while pre-round countdown is running; null otherwise. */
+  countdownDisplay: number | 'go' | null;
   comboTier: 'none' | 'combo' | 'mega';
   moveLeft: () => void;
   moveRight: () => void;
@@ -155,6 +159,8 @@ export interface GameEngineReturn {
   /** Distractor: “I don’t know — skip” counts as a miss (dismiss is the correct action). */
   skipDistractorAsMiss: () => void;
   getStats: () => LevelStats;
+  /** After reading lane instructions — runs 3…2…1…GO then starts the round timer. */
+  acknowledgeLevelIntro: () => void;
 }
 
 export function useGameEngine(levelIndex: number): GameEngineReturn {
@@ -181,6 +187,7 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
     speedBonusTotal: 0,
     pendingWrongTimePenalty: 0,
     isPaused: false,
+    countdownDisplay: null,
   });
 
   const [, setTick] = useState(0);
@@ -188,6 +195,12 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const dropRef = useRef<((col?: number) => void) | null>(null);
+  const countdownTimeoutsRef = useRef<number[]>([]);
+
+  const clearCountdown = useCallback(() => {
+    countdownTimeoutsRef.current.forEach((id) => clearTimeout(id));
+    countdownTimeoutsRef.current = [];
+  }, []);
 
   const stopTimer = useCallback(() => {
     if (timerRef.current) {
@@ -210,6 +223,34 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
       }
     }, 1000);
   }, [stopTimer, rerender]);
+
+  const acknowledgeLevelIntro = useCallback(() => {
+    if (s.current.phase !== 'levelIntro') return;
+    clearCountdown();
+    s.current.phase = 'countdown';
+    const tickMs = 780;
+    const goMs = 620;
+    const showStep = (index: number) => {
+      if (index < 3) {
+        s.current.countdownDisplay = ([3, 2, 1] as const)[index];
+        rerender();
+        const id = window.setTimeout(() => showStep(index + 1), tickMs);
+        countdownTimeoutsRef.current.push(id);
+      } else {
+        s.current.countdownDisplay = 'go';
+        rerender();
+        const id = window.setTimeout(() => {
+          s.current.phase = 'active';
+          s.current.countdownDisplay = null;
+          s.current.levelStartTime = Date.now();
+          startTimer();
+          rerender();
+        }, goMs);
+        countdownTimeoutsRef.current.push(id);
+      }
+    };
+    showStep(0);
+  }, [clearCountdown, rerender, startTimer]);
 
   const advanceAfterFeedback = useCallback(() => {
     const q = s.current.blockQueue;
@@ -241,6 +282,7 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
 
   useEffect(() => {
     stopTimer();
+    clearCountdown();
     const shuffled = shuffle(level.blocks);
     s.current = {
       blockQueue: shuffled.slice(1),
@@ -249,7 +291,7 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
       selectedColumn: defaultSelectedColumn(level.columns.length),
       timeLeft: level.timerSeconds,
       timerMax: level.timerSeconds,
-      phase: 'active',
+      phase: 'levelIntro',
       isFlipped: false,
       feedback: null,
       hintColumn: null,
@@ -259,15 +301,18 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
       bestStreak: 0,
       correctCount: 0,
       totalCount: 0,
-      levelStartTime: Date.now(),
+      levelStartTime: 0,
       speedBonusTotal: 0,
       pendingWrongTimePenalty: 0,
       isPaused: false,
+      countdownDisplay: null,
     };
-    startTimer();
     rerender();
-    return () => stopTimer();
-  }, [levelIndex, level.timerSeconds, startTimer, stopTimer, rerender]);
+    return () => {
+      stopTimer();
+      clearCountdown();
+    };
+  }, [levelIndex, level.timerSeconds, clearCountdown, stopTimer, rerender]);
 
   const applyCorrect = (timeLeftSnap: number, timerMaxSnap: number) => {
     const newStreak = s.current.streak + 1;
@@ -530,7 +575,8 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
       totalCount: s.current.totalCount,
       bestStreak: s.current.bestStreak,
       speedBonus: s.current.speedBonusTotal,
-      timeTakenMs: Date.now() - s.current.levelStartTime,
+      timeTakenMs:
+        s.current.levelStartTime > 0 ? Date.now() - s.current.levelStartTime : 0,
     }),
     [level.id],
   );
@@ -558,6 +604,7 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
     totalCount: st.totalCount,
     speedBonusTotal: st.speedBonusTotal,
     isPaused: st.isPaused,
+    countdownDisplay: st.countdownDisplay,
     comboTier,
     moveLeft,
     moveRight,
@@ -571,5 +618,6 @@ export function useGameEngine(levelIndex: number): GameEngineReturn {
     passDontKnow,
     skipDistractorAsMiss,
     getStats,
+    acknowledgeLevelIntro,
   };
 }
