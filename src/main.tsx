@@ -2,6 +2,7 @@ import './index.css';
 import './styles/layout.css';
 import './styles/home-zigzag.css';
 import './styles/game-arena.css';
+import './styles/game-arena-theme.css';
 import './styles/answer-key.css';
 
 import React from 'react';

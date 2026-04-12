@@ -1,0 +1,524 @@
+/* Light theme — game board (PrompTetris arena) matches site chrome */
+
+[data-theme='light'] .game-container.game-arena {
+  --arena-glass: rgba(255, 255, 255, 0.88);
+  --arena-glass-border: rgba(148, 163, 184, 0.4);
+  --arena-grid: rgba(59, 130, 246, 0.12);
+  background:
+    radial-gradient(ellipse 100% 70% at 50% -15%, rgba(124, 58, 237, 0.08), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 100% 40%, rgba(8, 145, 178, 0.06), transparent),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 45%, #e8eef5 100%);
+}
+
+[data-theme='light'] .game-container.game-arena::before {
+  opacity: 0.35;
+}
+
+[data-theme='light'] .game-container.game-arena::after {
+  opacity: 0.4;
+}
+
+[data-theme='light'] .game-arena[data-level-theme='2'] {
+  background:
+    radial-gradient(ellipse 100% 55% at 50% 0%, rgba(254, 202, 202, 0.45), transparent 55%),
+    linear-gradient(180deg, #fff5f5 0%, #fef2f2 40%, #f8fafc 100%);
+}
+
+[data-theme='light'] .game-arena .arena-hud__timer-label {
+  color: #64748b;
+}
+
+[data-theme='light'] .game-arena .arena-score-label,
+[data-theme='light'] .game-arena .arena-streak-label {
+  color: #64748b;
+}
+
+[data-theme='light'] .game-arena .arena-sidebar__title {
+  color: #64748b;
+}
+
+[data-theme='light'] .game-arena .arena-sidebar__tip {
+  color: #64748b;
+}
+
+[data-theme='light'] .game-arena .arena-pipeline__row {
+  color: #475569;
+}
+
+[data-theme='light'] .game-arena .fall-lane-label {
+  color: #64748b;
+}
+
+[data-theme='light'] .game-arena .falling-zone .block-pass-panel__label {
+  color: #64748b;
+}
+
+[data-theme='light'] .game-arena .fb-coach--distractor .fb-coach__badge {
+  background: rgba(254, 226, 226, 0.9);
+  border-color: rgba(248, 113, 113, 0.45);
+  color: #b91c1c;
+}
+
+[data-theme='light'] .game-arena .fb-coach__bullet-icon {
+  background: rgba(220, 252, 231, 0.95);
+  color: #15803d;
+  border-color: rgba(34, 197, 94, 0.4);
+}
+
+[data-theme='light'] .game-arena .fb-coach__bullet-icon--bad {
+  background: rgba(254, 226, 226, 0.9);
+  color: #b91c1c;
+  border-color: rgba(248, 113, 113, 0.4);
+}
+
+[data-theme='light'] .game-arena .distractor-btn {
+  background: rgba(254, 226, 226, 0.85);
+  border-color: rgba(248, 113, 113, 0.5);
+  color: #991b1b;
+}
+
+[data-theme='light'] .game-arena .distractor-btn--ghost {
+  background: rgba(248, 250, 252, 0.95);
+  border-color: rgba(148, 163, 184, 0.45);
+  color: #64748b;
+}
+
+[data-theme='light'] .game-arena .col-selected {
+  border-color: rgba(8, 145, 178, 0.55);
+  box-shadow:
+    0 0 0 1px rgba(8, 145, 178, 0.2),
+    0 0 20px rgba(8, 145, 178, 0.12);
+}
+
+[data-theme='light'] .game-arena .col-hinted {
+  border-color: rgba(217, 119, 6, 0.55);
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+}
+
+/* HUD */
+[data-theme='light'] .game-arena .arena-hud {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset,
+    0 8px 28px rgba(15, 23, 42, 0.08);
+}
+
+[data-theme='light'] .game-arena .arena-lvl-num {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(8, 145, 178, 0.12));
+  border-color: rgba(124, 58, 237, 0.35);
+  color: #5b21b6;
+}
+
+[data-theme='light'] .game-arena .arena-lvl-title {
+  color: #0f172a;
+}
+
+[data-theme='light'] .game-arena .arena-lvl-sub {
+  color: #64748b;
+}
+
+[data-theme='light'] .game-arena .arena-flow-pill {
+  background: rgba(8, 145, 178, 0.12);
+  border-color: rgba(8, 145, 178, 0.4);
+  color: #0e7490;
+  box-shadow: none;
+}
+
+[data-theme='light'] .game-arena .arena-score-val {
+  background: linear-gradient(180deg, #0f172a 0%, #5b21b6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: none;
+}
+
+[data-theme='light'] .game-arena .arena-hud__mute {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(148, 163, 184, 0.45);
+  color: #475569;
+}
+
+[data-theme='light'] .game-arena .arena-hud__mute:hover {
+  border-color: rgba(124, 58, 237, 0.45);
+  color: #0f172a;
+}
+
+[data-theme='light'] .game-arena .arena-hud__timer-track {
+  background: rgba(241, 245, 249, 0.95);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+[data-theme='light'] .game-arena .arena-hud__meta,
+[data-theme='light'] .game-arena .arena-hud__meta strong {
+  color: #475569;
+}
+
+[data-theme='light'] .game-arena .arena-beat-last {
+  color: #15803d !important;
+}
+
+[data-theme='light'] .game-arena .arena-hud__icon-btn {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(148, 163, 184, 0.4);
+  color: #334155;
+}
+
+[data-theme='light'] .game-arena .arena-hud__icon-btn:hover {
+  border-color: rgba(8, 145, 178, 0.5);
+  color: #0f172a;
+}
+
+/* Sidebars */
+[data-theme='light'] .game-arena .arena-sidebar {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(148, 163, 184, 0.35);
+  color: #64748b;
+}
+
+[data-theme='light'] .game-arena .arena-sidebar__concept {
+  color: #0f172a;
+}
+
+[data-theme='light'] .game-arena .arena-sidebar__tip {
+  border-top-color: rgba(148, 163, 184, 0.45);
+}
+
+[data-theme='light'] .game-arena .arena-queue-count {
+  color: #0f172a;
+}
+
+[data-theme='light'] .game-arena .arena-pipeline__dot {
+  background: #cbd5e1;
+}
+
+/* Fall lane & zone */
+[data-theme='light'] .game-arena .falling-zone {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(241, 245, 249, 0.4) 100%);
+  border-color: rgba(124, 58, 237, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+[data-theme='light'] .game-arena .block-pass-panel {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.95), rgba(241, 245, 249, 0.9));
+  border-color: rgba(148, 163, 184, 0.4);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+}
+
+[data-theme='light'] .game-arena .block-pass-btn--primary {
+  border-color: rgba(8, 145, 178, 0.45);
+  background: linear-gradient(160deg, rgba(8, 145, 178, 0.12), rgba(124, 58, 237, 0.08));
+  box-shadow: none;
+}
+
+[data-theme='light'] .game-arena .block-pass-btn--muted {
+  background: rgba(248, 250, 252, 0.95);
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
+[data-theme='light'] .game-arena .block-pass-btn__title {
+  color: #0f172a;
+}
+
+[data-theme='light'] .game-arena .block-pass-btn__sub {
+  color: #64748b;
+}
+
+[data-theme='light'] .game-arena .block-face {
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.06) inset,
+    0 12px 32px rgba(15, 23, 42, 0.1);
+}
+
+[data-theme='light'] .game-arena .block-timer-track {
+  background: rgba(241, 245, 249, 0.95);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+[data-theme='light'] .game-arena .column {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+[data-theme='light'] .game-arena .column:hover {
+  background: rgba(248, 250, 252, 0.95);
+}
+
+[data-theme='light'] .game-arena .column.col-empty {
+  border-color: rgba(124, 58, 237, 0.22);
+  box-shadow:
+    inset 0 0 20px rgba(124, 58, 237, 0.04),
+    0 0 12px rgba(8, 145, 178, 0.06);
+}
+
+[data-theme='light'] .game-arena .col-label {
+  color: #334155;
+  border-bottom-color: rgba(148, 163, 184, 0.45);
+}
+
+[data-theme='light'] .game-arena .col-hint {
+  color: #64748b;
+}
+
+[data-theme='light'] .game-arena .placed-block {
+  background: rgba(241, 245, 249, 0.9);
+}
+
+/* Feedback & coach */
+[data-theme='light'] .game-arena .feedback-bar {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(148, 163, 184, 0.4);
+}
+
+[data-theme='light'] .game-arena .feedback-bar.fb-idle {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(241, 245, 249, 0.85));
+  border-color: rgba(124, 58, 237, 0.2);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+}
+
+[data-theme='light'] .game-arena .fb-coach__lead {
+  color: #1e293b;
+}
+
+[data-theme='light'] .game-arena .fb-coach__lead strong {
+  color: #0f172a;
+}
+
+[data-theme='light'] .game-arena .fb-coach__fine,
+[data-theme='light'] .game-arena .fb-coach__lead--solo {
+  color: #64748b;
+}
+
+[data-theme='light'] .game-arena .fb-coach__badge {
+  border-color: rgba(8, 145, 178, 0.35);
+  background: rgba(8, 145, 178, 0.1);
+  color: #0e7490;
+}
+
+[data-theme='light'] .game-arena .fb-coach__kbd {
+  color: #334155;
+  background: rgba(241, 245, 249, 0.95);
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
+[data-theme='light'] .game-arena .fb-coach__bullets li {
+  color: #475569;
+}
+
+[data-theme='light'] .game-arena .fb-headline {
+  color: #0f172a;
+}
+
+[data-theme='light'] .game-arena .fb-detail {
+  color: #475569;
+}
+
+[data-theme='light'] .game-arena .feedback-bar.fb-correct {
+  background: linear-gradient(135deg, rgba(22, 163, 74, 0.12), rgba(255, 255, 255, 0.95));
+  border-color: rgba(34, 197, 94, 0.4);
+}
+
+[data-theme='light'] .game-arena .feedback-bar.fb-wrong {
+  background: linear-gradient(135deg, rgba(254, 202, 202, 0.35), rgba(255, 255, 255, 0.95));
+  border-color: rgba(248, 113, 113, 0.45);
+}
+
+/* Controls */
+[data-theme='light'] .game-arena .ctrl-btn {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(148, 163, 184, 0.4);
+  color: #334155;
+}
+
+[data-theme='light'] .game-arena .ctrl-btn:hover:not(:disabled) {
+  border-color: rgba(124, 58, 237, 0.45);
+  color: #0f172a;
+}
+
+[data-theme='light'] .game-arena .drop-btn {
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.15), rgba(124, 58, 237, 0.1));
+  border-color: rgba(8, 145, 178, 0.45);
+}
+
+/* Pause modal */
+[data-theme='light'] .pause-popup.overlay {
+  background: rgba(241, 245, 249, 0.92);
+}
+
+[data-theme='light'] .pause-popup-card {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
+  border-color: rgba(148, 163, 184, 0.4);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset,
+    0 20px 50px rgba(15, 23, 42, 0.1);
+}
+
+[data-theme='light'] .pause-title {
+  color: #0f172a;
+}
+
+[data-theme='light'] .pause-hint {
+  color: #64748b;
+}
+
+[data-theme='light'] .pause-btn {
+  border-color: rgba(8, 145, 178, 0.45);
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.12), rgba(124, 58, 237, 0.08));
+  color: #0f172a;
+}
+
+[data-theme='light'] .pause-btn--ghost {
+  background: rgba(248, 250, 252, 0.95);
+  border-color: rgba(148, 163, 184, 0.45);
+  color: #64748b;
+}
+
+/* Level complete (portaled; still respect theme) */
+[data-theme='light'] .level-complete-popup.overlay {
+  background: rgba(241, 245, 249, 0.92);
+}
+
+[data-theme='light'] .overlay-card.level-complete-card {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
+  border-color: rgba(148, 163, 184, 0.4);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset,
+    0 24px 60px rgba(15, 23, 42, 0.12);
+}
+
+[data-theme='light'] .level-complete-card .ov-title {
+  color: #0f172a;
+}
+
+[data-theme='light'] .level-complete-card {
+  color: #334155;
+}
+
+[data-theme='light'] .level-complete-card .ov-stat-val {
+  color: #0f172a;
+}
+
+[data-theme='light'] .level-complete-card .ov-stat-lbl {
+  color: #64748b;
+}
+
+[data-theme='light'] .level-complete-card .ov-goal {
+  color: #334155;
+  background: rgba(241, 245, 249, 0.95);
+  border-color: rgba(148, 163, 184, 0.4);
+}
+
+[data-theme='light'] .level-complete-card .ov-goal span:last-child {
+  color: #475569;
+}
+
+[data-theme='light'] .level-complete-card .ov-claude-label {
+  color: #334155;
+}
+
+[data-theme='light'] .level-complete-card .ov-prompt-preview {
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(8, 145, 178, 0.35);
+}
+
+[data-theme='light'] .level-complete-card .ov-claude-loading {
+  color: #64748b;
+}
+
+[data-theme='light'] .level-complete-card .ov-claude-response {
+  color: #0f172a;
+  background: rgba(248, 250, 252, 0.98);
+  border-color: rgba(8, 145, 178, 0.3);
+}
+
+[data-theme='light'] .level-complete-card .ov-next-preview-sub {
+  color: #64748b;
+}
+
+[data-theme='light'] .level-complete-card .ov-answer-key-title {
+  color: #334155;
+}
+
+[data-theme='light'] .level-complete-card .ov-answer-key-guide-link {
+  color: #0e7490;
+}
+
+[data-theme='light'] .level-complete-card .answer-key-label {
+  color: #64748b;
+}
+
+[data-theme='light'] .level-complete-card .answer-key-value {
+  color: #0f172a;
+}
+
+[data-theme='light'] .level-complete-card .answer-key-desc {
+  color: #475569;
+}
+
+[data-theme='light'] .level-complete-card .ov-home-btn {
+  color: #334155;
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
+[data-theme='light'] .level-complete-card .ov-home-btn:hover {
+  border-color: rgba(8, 145, 178, 0.5);
+  color: #0f172a;
+  background: rgba(241, 245, 249, 0.98);
+}
+
+[data-theme='light'] .level-complete-close {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(148, 163, 184, 0.45);
+  color: #475569;
+}
+
+[data-theme='light'] .play-page {
+  background: var(--bg-deep);
+}
+
+[data-theme='light'] .end-screen.game-end-screen {
+  background:
+    radial-gradient(ellipse 100% 80% at 50% -10%, rgba(124, 58, 237, 0.12), transparent 55%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 50%, #e8eef5 100%);
+}
+
+[data-theme='light'] .end-screen.game-end-screen .end-card {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
+  border-color: rgba(148, 163, 184, 0.4);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset,
+    0 24px 60px rgba(15, 23, 42, 0.1);
+}
+
+[data-theme='light'] .end-screen.game-end-screen .end-badge {
+  color: #7c3aed;
+}
+
+[data-theme='light'] .end-screen.game-end-screen .end-title {
+  background: linear-gradient(180deg, #0f172a 0%, #5b21b6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: none;
+}
+
+[data-theme='light'] .end-screen.game-end-screen .end-time-message {
+  color: #475569;
+  background: rgba(241, 245, 249, 0.95);
+  border-color: rgba(8, 145, 178, 0.25);
+  box-shadow: none;
+}
+
+[data-theme='light'] .end-screen.game-end-screen .end-stat-hero-val {
+  text-shadow: none;
+}
+
+[data-theme='light'] .end-screen.game-end-screen .restart-btn {
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.15), rgba(124, 58, 237, 0.1));
+  border-color: rgba(8, 145, 178, 0.45);
+  color: #0f172a;
+}
+
+[data-theme='light'] .end-screen.game-end-screen .restart-btn:hover {
+  border-color: rgba(124, 58, 237, 0.5);
+  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.12);
+}

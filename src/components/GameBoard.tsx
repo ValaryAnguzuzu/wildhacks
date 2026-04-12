@@ -123,6 +123,8 @@ export function GameBoard({
           engine.moveRight();
           break;
         case 'Space':
+        case 'Enter':
+        case 'NumpadEnter':
           e.preventDefault();
           engine.drop();
           break;
@@ -789,9 +791,9 @@ export function GameBoard({
               className="ctrl-btn drop-btn"
               onClick={() => engine.drop()}
               disabled={engine.isPaused}
-              aria-label="Drop block"
+              aria-label="Drop block (Space or Enter)"
             >
-              DROP <kbd>SPACE</kbd>
+              DROP <kbd>SPACE</kbd>/<kbd>ENTER</kbd>
             </button>
             <button
               className="ctrl-btn"
