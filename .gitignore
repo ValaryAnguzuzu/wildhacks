@@ -15,3 +15,6 @@ docs/
 
 # Local IDE
 .cursor/
+
+# GCP / Firebase Admin (seed scripts) — never commit real keys
+scripts/serviceAccountKey.json

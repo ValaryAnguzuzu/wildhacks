@@ -1,25 +1,15 @@
 /// <reference types="vitest/config" />
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 import { defineConfig } from 'vite';
 
-// https://vitejs.dev/config/
+// https://vite.dev/config/
 export default defineConfig({
-  server: {
-    proxy: {
-      // Dev-only: forwards /api/* → Anthropic API (see claudeApi.ts). Use a backend in production.
-      '/api': {
-        target: 'https://api.anthropic.com',
-        changeOrigin: true,
-        secure: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-      // OpenAI (FinSim GPT scenarios) — avoids browser CORS in development. Use a server proxy in production.
-      '/openai': {
-        target: 'https://api.openai.com',
-        changeOrigin: true,
-        secure: true,
-        rewrite: (path) => path.replace(/^\/openai/, ''),
-      },
+  plugins: [react(), tailwindcss()],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
     },
   },
   test: {
@@ -43,6 +33,8 @@ export default defineConfig({
         '**/*.d.ts',
         '**/*.config.*',
         'src/main.tsx',
+        'src/app/components/ui/**',
+        'src/app/components/figma/**',
       ],
       thresholds: {
         statements: 70,
@@ -52,5 +44,4 @@ export default defineConfig({
       },
     },
   },
-  plugins: [react()],
 });

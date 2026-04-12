@@ -1,0 +1,1216 @@
+[
+  {
+    "id": "investing-w1l1",
+    "categoryId": "investing",
+    "world": 1,
+    "worldName": "Money basics",
+    "order": 1,
+    "title": "What the stock market actually is",
+    "concept": "The stock market is a place where people buy and sell small ownership stakes in companies. When you buy a share of Apple, you own a tiny piece of Apple — and if Apple grows, your piece grows with it. Most people think the market is like a casino. It's not. Casinos have guaranteed negative expected value. The stock market, over long periods, has always gone up.",
+    "takeaway": "Owning stocks means owning real businesses. Long-term, that has always paid off.",
+    "scenario": {
+      "situation": "Your friend says the stock market is just gambling and refuses to invest. You have $1,000 to put somewhere for the next 10 years. What do you do?",
+      "choices": [
+        { "id": "A", "text": "Put it in a savings account — at least it's safe" },
+        { "id": "B", "text": "Invest it in a broad index fund and leave it alone" },
+        { "id": "C", "text": "Wait until the market calms down before investing" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Safe, but your savings account pays around 0.5% interest while inflation runs at 3%. You're quietly losing purchasing power every year.",
+        "B": "Correct. A broad index fund over 10 years has historically returned around 10% per year. Your $1,000 becomes roughly $2,590.",
+        "C": "The market never truly calms down — it's always volatile. Waiting to invest is just missing gains. Time in the market beats timing the market."
+      },
+      "lesson": "Time in the market beats timing the market. Every year you wait costs you compounding.",
+      "conceptTag": "stock-market-basics"
+    }
+  },
+  {
+    "id": "investing-w1l2",
+    "categoryId": "investing",
+    "world": 1,
+    "worldName": "Money basics",
+    "order": 2,
+    "title": "How shares actually work",
+    "concept": "A share is a unit of ownership in a company. If a company is worth $1,000,000 and has 1,000,000 shares, each share is worth $1. When the company grows and becomes worth $2,000,000, your share is now worth $2. You didn't do anything — the business did the work. That's the point of owning shares.",
+    "takeaway": "Shares let you own a piece of a business and grow with it — without running it yourself.",
+    "scenario": {
+      "situation": "A company you invested in just announced record profits. You own 50 shares. What should you expect to happen?",
+      "choices": [
+        { "id": "A", "text": "Nothing — profits only help the CEO" },
+        {
+          "id": "B",
+          "text": "Your share price will likely rise as the company becomes more valuable"
+        },
+        { "id": "C", "text": "You should sell immediately before the price drops" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Not true. Company profits flow to shareholders through rising share prices and sometimes dividends. You are a part-owner.",
+        "B": "Correct. When a company earns more, it becomes more valuable, and share prices typically reflect that. Good news for shareholders.",
+        "C": "Selling after good news is usually the wrong move. Strong profits often signal continued growth, not an imminent crash."
+      },
+      "lesson": "When a company thrives, its shareholders thrive too. That's the entire premise of owning stocks.",
+      "conceptTag": "how-shares-work"
+    }
+  },
+  {
+    "id": "investing-w1l3",
+    "categoryId": "investing",
+    "world": 1,
+    "worldName": "Money basics",
+    "order": 3,
+    "title": "Bull markets vs bear markets",
+    "concept": "A bull market means prices are rising and investor confidence is high. A bear market means prices are falling — usually defined as a drop of 20% or more from a recent high. Bear markets feel terrifying but they're temporary. Every single bear market in history has eventually been followed by a bull market that reached new highs.",
+    "takeaway": "Bear markets are temporary. Investors who hold through them always come out ahead of those who panic and sell.",
+    "scenario": {
+      "situation": "The stock market has dropped 25% over the past 3 months. Your portfolio is down $2,000. The news is calling it a crash. What do you do?",
+      "choices": [
+        { "id": "A", "text": "Sell everything to stop the bleeding" },
+        { "id": "B", "text": "Hold your positions and keep investing if you can" },
+        { "id": "C", "text": "Move everything to gold" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Selling locks in your losses permanently. The market has recovered from every single downturn in history — but only for investors who stayed in.",
+        "B": "Correct. Downturns are the worst time to sell and the best time to buy more. Investors who held through the 2008 crash and 2020 crash saw record highs within 2 years.",
+        "C": "Gold is unpredictable and not a reliable long-term investment. Panic-moving assets during a crash is how investors permanently destroy wealth."
+      },
+      "lesson": "Every bear market has ended. Investors who stay in recover and profit. Those who sell lock in losses forever.",
+      "conceptTag": "bull-bear-markets"
+    }
+  },
+  {
+    "id": "investing-w1l4",
+    "categoryId": "investing",
+    "world": 1,
+    "worldName": "Money basics",
+    "order": 4,
+    "title": "Your first investment",
+    "concept": "Starting to invest doesn't require a lot of money. Many index funds let you start with $1. The most important thing isn't how much you invest — it's when you start. A 25-year-old who invests $100/month will have significantly more at retirement than a 35-year-old who invests $200/month. Time is the variable that matters most.",
+    "takeaway": "Start investing as early as possible, even with small amounts. Time beats money.",
+    "scenario": {
+      "situation": "You're 23 years old and just started your first job. You have $50 left over at the end of each month after expenses. What's the best move?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Wait until you earn more before investing — $50 is too small to matter"
+        },
+        {
+          "id": "B",
+          "text": "Start investing the $50 every month now in a simple index fund"
+        },
+        {
+          "id": "C",
+          "text": "Save the $50 in cash until you have at least $1,000, then invest"
+        }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "This is how most people lose a decade of compounding. $50/month starting at 23 becomes dramatically more than $200/month starting at 33. The amount matters less than the start date.",
+        "B": "Correct. $50/month starting at 23, assuming 8% annual returns, becomes around $175,000 by retirement. Waiting 10 years cuts that nearly in half.",
+        "C": "Saving to a $1,000 threshold means waiting months while missing compounding. Index funds accept any amount — invest the $50 now."
+      },
+      "lesson": "Starting small and early beats starting big and late. Compounding needs time more than it needs money.",
+      "conceptTag": "starting-to-invest"
+    }
+  },
+  {
+    "id": "investing-w1l5",
+    "categoryId": "investing",
+    "world": 1,
+    "worldName": "Money basics",
+    "order": 5,
+    "title": "Dividends — getting paid to hold",
+    "concept": "Some companies share their profits directly with shareholders through dividends — regular cash payments just for owning the stock. If you own 100 shares of a company that pays a $1 dividend per year, you receive $100 — without selling anything. Reinvesting those dividends buys more shares, which pay more dividends. This is compounding in its most visible form.",
+    "takeaway": "Dividends are passive income from ownership. Reinvesting them accelerates compounding dramatically.",
+    "scenario": {
+      "situation": "You receive a $200 dividend payment from a stock you own. What should you do with it?",
+      "choices": [
+        { "id": "A", "text": "Spend it — that's what it's for" },
+        { "id": "B", "text": "Reinvest it to buy more shares" },
+        { "id": "C", "text": "Move it to a savings account" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Fine when you need the income, but if you don't need it right now, spending dividends stops the compounding cycle.",
+        "B": "Correct. Reinvested dividends buy more shares, which generate more dividends, which buy more shares. This is how patient investors build serious wealth.",
+        "C": "Better than spending, but a savings account earning 1% underperforms a dividend-paying stock over the long run."
+      },
+      "lesson": "Reinvesting dividends turns passive income into compounding fuel. It's one of the most powerful wealth-building habits there is.",
+      "conceptTag": "dividends"
+    }
+  },
+  {
+    "id": "investing-w2l1",
+    "categoryId": "investing",
+    "world": 2,
+    "worldName": "Index investing",
+    "order": 1,
+    "title": "What an index fund is",
+    "concept": "An index fund is a collection of stocks designed to mirror a specific market index, like the S&P 500. Instead of picking individual winners, you own a tiny piece of hundreds or thousands of companies at once. When you buy one share of an S&P 500 index fund, you effectively own a piece of Apple, Microsoft, Amazon, and 497 other companies simultaneously.",
+    "takeaway": "Index funds give you instant diversification across hundreds of companies with a single purchase.",
+    "scenario": {
+      "situation": "You have $500 to invest. Your coworker is buying individual tech stocks. You're considering an S&P 500 index fund. Which is the smarter move for a beginner?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Buy individual tech stocks like your coworker — higher potential upside"
+        },
+        {
+          "id": "B",
+          "text": "Buy the S&P 500 index fund — instant diversification, lower risk"
+        },
+        { "id": "C", "text": "Split it 50/50 between both strategies" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Individual stock picking requires deep research and comes with concentrated risk. Studies show over 90% of active investors underperform index funds over 10+ years.",
+        "B": "Correct. An S&P 500 index fund has returned an average of about 10% per year over the past 50 years. For most investors, this is the single best strategy.",
+        "C": "Not terrible, but the index portion will likely outperform the individual stocks portion over time."
+      },
+      "lesson": "Index funds beat most professional stock pickers over long periods. They're boring on purpose — and that's why they work.",
+      "conceptTag": "index-funds"
+    }
+  },
+  {
+    "id": "investing-w2l2",
+    "categoryId": "investing",
+    "world": 2,
+    "worldName": "Index investing",
+    "order": 2,
+    "title": "Expense ratios — the silent fee",
+    "concept": "Every fund charges an expense ratio — an annual fee taken as a percentage of your investment. A 1% expense ratio on $100,000 costs you $1,000 per year. Over 30 years, that fee difference between a 1% fund and a 0.03% index fund could cost you over $100,000 in lost returns. The fee comes out automatically — you never see it leave — which is what makes it so easy to ignore.",
+    "takeaway": "A low expense ratio is one of the only guaranteed returns in investing. Minimize fees relentlessly.",
+    "scenario": {
+      "situation": "You're choosing between two S&P 500 funds. Fund A charges 0.03% per year. Fund B charges 1.2% per year but has a fancier name and more marketing. Which do you pick?",
+      "choices": [
+        { "id": "A", "text": "Fund B — higher fee probably means better management" },
+        {
+          "id": "B",
+          "text": "Fund A — both track the same index, so lower fees mean better returns"
+        },
+        { "id": "C", "text": "It doesn't matter — the fee difference is tiny" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "For index funds, higher fees don't mean better performance. Both funds track the exact same 500 companies. The only difference is how much they take from you.",
+        "B": "Correct. On $50,000 over 30 years, the difference between 0.03% and 1.2% is over $80,000 in your pocket. Always compare expense ratios.",
+        "C": "1.17% sounds small but on large amounts over long periods it's enormous. This is one of the most costly misconceptions in personal investing."
+      },
+      "lesson": "Two funds tracking the same index only differ in how much they charge you. Always choose the lower expense ratio.",
+      "conceptTag": "expense-ratios"
+    }
+  },
+  {
+    "id": "investing-w2l3",
+    "categoryId": "investing",
+    "world": 2,
+    "worldName": "Index investing",
+    "order": 3,
+    "title": "Dollar cost averaging",
+    "concept": "Dollar cost averaging means investing a fixed amount on a regular schedule — say $200 every month — regardless of whether the market is up or down. When prices are high, your $200 buys fewer shares. When prices are low, your $200 buys more shares. Over time, this averages out your cost and removes the stress of trying to pick the perfect moment to invest.",
+    "takeaway": "Invest the same amount on a fixed schedule. Remove emotion and market-timing from the equation entirely.",
+    "scenario": {
+      "situation": "The market just dropped 15%. You have $500 you were planning to invest. Your gut says to wait until it recovers. What should you do?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Wait until the market recovers to avoid buying at a bad time"
+        },
+        {
+          "id": "B",
+          "text": "Invest the $500 now — the dip means you're getting more shares for your money"
+        },
+        { "id": "C", "text": "Invest half now and save the rest for later" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Nobody knows when the market will recover — or if it will drop more first. Waiting is just missing opportunities. Dollar cost averaging removes this dilemma.",
+        "B": "Correct. A 15% dip means your $500 buys 15% more shares than it did last month. Market dips are sales for long-term investors.",
+        "C": "Splitting is emotionally comfortable but mathematically inferior to consistent full investment. Commit to a schedule and stick to it."
+      },
+      "lesson": "Market dips are discounts. A consistent investment schedule means you automatically buy more when prices are low.",
+      "conceptTag": "dollar-cost-averaging"
+    }
+  },
+  {
+    "id": "investing-w2l4",
+    "categoryId": "investing",
+    "world": 2,
+    "worldName": "Index investing",
+    "order": 4,
+    "title": "Diversification — don't put eggs in one basket",
+    "concept": "Diversification means spreading your investments across many different assets so no single failure can wipe you out. If you put everything in one company and that company fails, you lose everything. If you own 500 companies, one failure barely moves the needle. Index funds provide instant diversification — which is one major reason they're considered the gold standard for individual investors.",
+    "takeaway": "Diversification protects you from catastrophic loss. Concentration is how people get rich and how they go broke.",
+    "scenario": {
+      "situation": "Your uncle made a lot of money on Tesla stock and is urging you to put your entire $10,000 savings into it. What do you do?",
+      "choices": [
+        { "id": "A", "text": "Do it — he made money so the stock is clearly good" },
+        {
+          "id": "B",
+          "text": "Put a small amount in Tesla but keep most in a diversified index fund"
+        },
+        { "id": "C", "text": "Avoid Tesla entirely and stick with broad index funds" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Past performance doesn't predict future performance. Single stocks can drop 80% or go to zero. Putting your entire savings in one company is speculation, not investing.",
+        "B": "Correct. If you want exposure to a company you believe in, a small allocation is fine. But your core wealth should be diversified across hundreds of companies.",
+        "C": "Also a valid choice. Index funds are the lower-stress, historically superior strategy for most investors."
+      },
+      "lesson": "Concentration creates big wins and big losses. Diversification creates steady, reliable growth. Most people need the latter.",
+      "conceptTag": "diversification"
+    }
+  },
+  {
+    "id": "investing-w2l5",
+    "categoryId": "investing",
+    "world": 2,
+    "worldName": "Index investing",
+    "order": 5,
+    "title": "When to sell — and when not to",
+    "concept": "The urge to sell during a downturn is one of the most expensive emotions in investing. Most selling decisions are driven by fear, not logic. The right reasons to sell are: you need the money for a specific goal, your investment thesis has fundamentally changed, or you need to rebalance your portfolio. 'The market is scary right now' is not a reason to sell.",
+    "takeaway": "Selling during fear locks in losses. Have a plan for when you'll sell before you invest — and stick to it.",
+    "scenario": {
+      "situation": "You invested $5,000 in an index fund two years ago. It's now worth $4,200 due to a market downturn. You don't need the money for another 15 years. What do you do?",
+      "choices": [
+        { "id": "A", "text": "Sell now to cut your losses before it drops further" },
+        {
+          "id": "B",
+          "text": "Hold and potentially buy more — a 15-year timeline means this dip is irrelevant"
+        },
+        { "id": "C", "text": "Move it into bonds until the market stabilizes" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Selling locks in your $800 loss permanently. If history is any guide, the market will recover and exceed your original price — but only if you stay invested.",
+        "B": "Correct. With 15 years ahead, this dip is just noise. Long-term investors who ignore short-term fluctuations consistently outperform those who react to them.",
+        "C": "Moving to bonds during a downturn locks in losses and means you miss the recovery. This is the wrong time to change your strategy."
+      },
+      "lesson": "Your investment timeline determines how you should respond to downturns. A 15-year horizon makes a 2-year dip meaningless.",
+      "conceptTag": "when-to-sell"
+    }
+  },
+  {
+    "id": "budgeting-w1l1",
+    "categoryId": "budgeting",
+    "world": 1,
+    "worldName": "Building your foundation",
+    "order": 1,
+    "title": "The 50/30/20 rule",
+    "concept": "The 50/30/20 rule is a simple way to split your after-tax income. 50% goes to needs — rent, groceries, utilities, insurance. 30% goes to wants — restaurants, streaming, travel, anything enjoyable but not essential. 20% goes to savings and debt repayment. You don't need a complex spreadsheet. This one rule, applied consistently, builds wealth.",
+    "takeaway": "50% needs, 30% wants, 20% savings. Simple enough to actually follow.",
+    "scenario": {
+      "situation": "You take home $4,000 per month after taxes. Your rent is $1,400, groceries are $300, and utilities are $200. You're spending $800 on eating out and entertainment. How do you align with the 50/30/20 rule?",
+      "choices": [
+        { "id": "A", "text": "Your spending looks fine — no changes needed" },
+        {
+          "id": "B",
+          "text": "Cut wants to around $1,200 and redirect the difference to savings"
+        },
+        { "id": "C", "text": "Reduce needs like groceries to free up savings" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Not quite. Your needs ($1,900) are at 47.5% — fine. But you're only saving what's left over, not the target 20% ($800). Wants are eating your savings.",
+        "B": "Correct. Your needs are already under 50%. The gap is in savings. Bringing wants from $800 down to $1,200 frees up $800 monthly for savings — exactly 20%.",
+        "C": "Groceries are a need, not a want. Cutting them too aggressively isn't sustainable. The wants category is where the adjustment should happen."
+      },
+      "lesson": "Most budgets fail because wants slowly expand to fill the space savings should occupy. Protect the 20% first.",
+      "conceptTag": "50-30-20-rule"
+    }
+  },
+  {
+    "id": "budgeting-w1l2",
+    "categoryId": "budgeting",
+    "world": 1,
+    "worldName": "Building your foundation",
+    "order": 2,
+    "title": "The emergency fund — your financial immune system",
+    "concept": "An emergency fund is 3 to 6 months of living expenses kept in a savings account, untouched until an actual emergency. It's not exciting. It doesn't grow fast. But it is the single most important financial tool most people don't have. Without it, any unexpected expense — a car repair, a medical bill, a job loss — forces you into debt. With it, emergencies are just inconveniences.",
+    "takeaway": "An emergency fund is not optional. It's the foundation that makes every other financial goal possible.",
+    "scenario": {
+      "situation": "Your car needs a $1,200 repair. You have $200 in savings. What does having no emergency fund force you to do?",
+      "choices": [
+        { "id": "A", "text": "Put it on a credit card at 22% interest" },
+        { "id": "B", "text": "Ask family for money" },
+        {
+          "id": "C",
+          "text": "Both A and B are the kinds of painful choices an emergency fund prevents"
+        }
+      ],
+      "correct": "C",
+      "feedback": {
+        "A": "This is exactly what happens — a $1,200 repair becomes a $1,400+ debt once interest applies. One emergency starts a debt spiral.",
+        "B": "Borrowing from family strains relationships and is often more emotionally costly than the financial cost itself.",
+        "C": "Correct. The emergency fund exists specifically to prevent these situations. A $1,200 repair with 3 months of savings is an inconvenience. Without savings, it's a crisis."
+      },
+      "lesson": "Every month you don't have an emergency fund, you're one car repair or medical bill away from debt. Build it first.",
+      "conceptTag": "emergency-fund"
+    }
+  },
+  {
+    "id": "budgeting-w1l3",
+    "categoryId": "budgeting",
+    "world": 1,
+    "worldName": "Building your foundation",
+    "order": 3,
+    "title": "Good debt vs bad debt",
+    "concept": "Not all debt is equal. Good debt is borrowed money that has the potential to increase your net worth or income — a mortgage on an appreciating property, a student loan for a degree with strong earning potential, a business loan. Bad debt is borrowed money spent on things that lose value or provide no financial return — credit card balances for consumer goods, car loans for luxury vehicles, buy-now-pay-later for clothes.",
+    "takeaway": "Good debt builds wealth. Bad debt destroys it. The key question: does this debt help me earn or own more?",
+    "scenario": {
+      "situation": "You're considering two financial moves: taking a $20,000 student loan for a nursing degree or putting $5,000 of vacation spending on a credit card at 24% interest. How do you classify them?",
+      "choices": [
+        { "id": "A", "text": "Both are debt and both are bad — avoid all borrowing" },
+        {
+          "id": "B",
+          "text": "The student loan could be good debt; the credit card debt is bad debt"
+        },
+        { "id": "C", "text": "The credit card is fine if you pay it off within a year" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Avoiding all debt isn't realistic or optimal. A mortgage or student loan for a high-earning career can dramatically improve your financial position.",
+        "B": "Correct. A nursing degree increases your earning potential — the debt pays for itself. Credit card debt at 24% for a vacation means you're paying a premium for a memory.",
+        "C": "At 24% interest, every month you carry the balance it compounds. Paying $5,000 over 12 months could easily cost $6,000+. That's an expensive vacation."
+      },
+      "lesson": "Ask one question before borrowing: will this debt help me earn more or own more? If not, it's bad debt.",
+      "conceptTag": "good-debt-vs-bad-debt"
+    }
+  },
+  {
+    "id": "budgeting-w1l4",
+    "categoryId": "budgeting",
+    "world": 1,
+    "worldName": "Building your foundation",
+    "order": 4,
+    "title": "Credit scores — what they actually measure",
+    "concept": "Your credit score is a number between 300 and 850 that tells lenders how reliably you repay debt. It's calculated from five factors: payment history (35%), amounts owed (30%), length of credit history (15%), credit mix (10%), and new credit (10%). The most important thing you can do is pay every bill on time, every time. One missed payment can drop your score by 100 points and stay on your report for 7 years.",
+    "takeaway": "Pay on time, every time. That single habit accounts for 35% of your credit score.",
+    "scenario": {
+      "situation": "You forgot to pay your $45 credit card minimum last month. You just noticed. What should you do?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Pay it now — the damage is already done so it doesn't matter when"
+        },
+        {
+          "id": "B",
+          "text": "Pay it immediately and set up autopay so it never happens again"
+        },
+        { "id": "C", "text": "Wait until next month's statement to pay both at once" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Paying it now limits the damage. But without autopay, this will happen again. The real fix is making sure it's impossible to miss a payment.",
+        "B": "Correct. Paying immediately stops the late payment from becoming a derogatory mark (lenders typically report after 30 days). Autopay prevents recurrence. This is the complete answer.",
+        "C": "Waiting makes it worse. If the payment is reported as 30 days late, it stays on your credit report for 7 years and can cost you thousands in higher interest rates on future loans."
+      },
+      "lesson": "A single missed payment stays on your credit report for 7 years. Autopay is the simplest and most effective credit protection tool there is.",
+      "conceptTag": "credit-scores"
+    }
+  },
+  {
+    "id": "budgeting-w1l5",
+    "categoryId": "budgeting",
+    "world": 1,
+    "worldName": "Building your foundation",
+    "order": 5,
+    "title": "Lifestyle inflation — the wealth killer",
+    "concept": "Lifestyle inflation happens when your spending rises to match every increase in income. You get a raise, so you upgrade your car. You get a bonus, so you take a more expensive vacation. Each upgrade feels earned and reasonable in the moment. But over a career, lifestyle inflation is how people who earn a lot end up with very little. The antidote is keeping your lifestyle mostly fixed while income grows — and investing the difference.",
+    "takeaway": "Every raise is a fork in the road. Invest the difference before your lifestyle has a chance to absorb it.",
+    "scenario": {
+      "situation": "You just got a $500/month raise. Your current lifestyle is comfortable. What's the smartest move?",
+      "choices": [
+        { "id": "A", "text": "Upgrade your apartment — you've earned a better place" },
+        {
+          "id": "B",
+          "text": "Invest at least $400 of it and allow yourself $100 of lifestyle improvement"
+        },
+        { "id": "C", "text": "Keep it all in your checking account for now" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "A nicer apartment is lifestyle inflation in real time. A $500/month rent increase is $6,000/year that will never compound for you.",
+        "B": "Correct. You're allowed to enjoy a raise — but protecting most of it from lifestyle creep is how raises actually build wealth. $400/month invested over 20 years at 8% returns is over $235,000.",
+        "C": "Better than spending it, but cash sitting in a checking account earns nothing. Move it somewhere it grows."
+      },
+      "lesson": "Lifestyle inflation is invisible while it happens. The habit of investing raises before spending them is how wealth quietly accumulates.",
+      "conceptTag": "lifestyle-inflation"
+    }
+  },
+  {
+    "id": "budgeting-w2l1",
+    "categoryId": "budgeting",
+    "world": 2,
+    "worldName": "Spending with intention",
+    "order": 1,
+    "title": "Automating your savings",
+    "concept": "Automating savings means setting up an automatic transfer to your savings or investment account on every payday — before you have a chance to spend the money. The psychology is simple: you can't spend what you never see. Most people save what's left over at the end of the month. Automated savers save first and spend what's left. The second group ends up dramatically wealthier.",
+    "takeaway": "Automate savings on payday. Pay yourself first. Spend what remains.",
+    "scenario": {
+      "situation": "You want to save $300/month but keep failing because by the end of the month, it's already spent. What's the fix?",
+      "choices": [
+        { "id": "A", "text": "Try harder to spend less and save the leftovers" },
+        {
+          "id": "B",
+          "text": "Set up an automatic transfer of $300 to savings the day after payday"
+        },
+        { "id": "C", "text": "Move to a cheaper apartment to free up money" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Willpower is an unreliable savings strategy. The system is broken — the money is available to spend so it gets spent. Fix the system, not your discipline.",
+        "B": "Correct. Automation removes the decision entirely. The $300 moves before you have a chance to think about it. This one change typically saves more money than any willpower-based strategy.",
+        "C": "Moving is a dramatic and expensive solution to a problem that an automatic transfer solves completely for free."
+      },
+      "lesson": "Don't rely on willpower to save. Automate it. Money you never see never gets spent.",
+      "conceptTag": "automating-savings"
+    }
+  },
+  {
+    "id": "budgeting-w2l2",
+    "categoryId": "budgeting",
+    "world": 2,
+    "worldName": "Spending with intention",
+    "order": 2,
+    "title": "Sinking funds for big expenses",
+    "concept": "A sinking fund is money you set aside every month for a predictable future expense — car registration, holiday gifts, annual subscriptions, a vacation. Instead of being surprised by a $600 car insurance renewal, you save $50/month all year and it's waiting for you. Sinking funds turn irregular 'unexpected' expenses into planned, stress-free ones.",
+    "takeaway": "Most 'unexpected' expenses are actually predictable. Plan for them monthly so they never feel like emergencies.",
+    "scenario": {
+      "situation": "You spend about $1,200 on Christmas gifts each December and it always wrecks your budget. What's the sinking fund solution?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Put it on a credit card in December and pay it off over the next few months"
+        },
+        {
+          "id": "B",
+          "text": "Set aside $100/month starting in January so $1,200 is ready by December"
+        },
+        { "id": "C", "text": "Spend less on gifts to avoid the problem" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Credit card holiday spending at 20%+ interest is how a $1,200 gift budget becomes a $1,400 debt you're still paying in March. The holiday is over but the cost keeps growing.",
+        "B": "Correct. $100/month is barely noticeable. But by December you have exactly what you need, with zero stress and zero debt. That's the power of sinking funds.",
+        "C": "Spending less on gifts is a personal choice, but it doesn't solve the underlying cash flow problem. The sinking fund works regardless of how much you spend."
+      },
+      "lesson": "Christmas comes every December. So do car registrations, birthdays, and insurance renewals. Sinking funds make all of them boring instead of stressful.",
+      "conceptTag": "sinking-funds"
+    }
+  },
+  {
+    "id": "budgeting-w2l3",
+    "categoryId": "budgeting",
+    "world": 2,
+    "worldName": "Spending with intention",
+    "order": 3,
+    "title": "Net worth — the only number that matters",
+    "concept": "Net worth is simple: everything you own minus everything you owe. Assets (savings, investments, property value) minus liabilities (credit card debt, student loans, car loans, mortgage balance). This single number tells you more about your financial health than your income, your salary, or how nice your car is. A person earning $40,000 with no debt can have a higher net worth than someone earning $150,000 buried in debt.",
+    "takeaway": "Track net worth monthly. It's the scoreboard for your entire financial life.",
+    "scenario": {
+      "situation": "Your friend earns $120,000/year but has $80,000 in student debt, $15,000 in car loans, and $8,000 in credit card debt. You earn $55,000 but have no debt and $22,000 in savings. Who is in better financial shape?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Your friend — higher income always means better financial health"
+        },
+        {
+          "id": "B",
+          "text": "You — your net worth is positive while your friend's may be negative"
+        },
+        { "id": "C", "text": "It's impossible to say without more information" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Income is a cash flow number, not a wealth number. Your friend earns more but likely has a negative net worth. High income with high debt is a treadmill, not a ladder.",
+        "B": "Correct. Your net worth is at least +$22,000. Your friend's net worth is roughly -$103,000 in debt (not counting their assets). You are building wealth; they may be drowning in it.",
+        "C": "We have enough. Net worth = assets minus liabilities. The calculation clearly favors the person with savings and no debt."
+      },
+      "lesson": "Income is what you earn. Net worth is what you keep. Track the latter.",
+      "conceptTag": "net-worth"
+    }
+  },
+  {
+    "id": "budgeting-w2l4",
+    "categoryId": "budgeting",
+    "world": 2,
+    "worldName": "Spending with intention",
+    "order": 4,
+    "title": "The latte factor — is it real?",
+    "concept": "The 'latte factor' is the idea that cutting small daily expenses adds up to significant savings. A $6 daily coffee is $2,190/year. Invested at 8% for 30 years, that's over $246,000. Critics say this oversimplifies — you can't cut your way to wealth. Both sides have a point. Small cuts matter at the margin but won't compensate for structural problems like low income or excessive housing costs. The right framing: cut ruthlessly on things you don't value, spend generously on things you do.",
+    "takeaway": "Cut what you don't care about. Keep what you love. Focus on the big three: housing, transport, food.",
+    "scenario": {
+      "situation": "You're trying to find $300/month to redirect to savings. Which approach is more effective?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Cancel Netflix, Spotify, and your daily coffee — add up every small saving"
+        },
+        {
+          "id": "B",
+          "text": "Find a roommate to split rent — one change saves $400/month"
+        },
+        {
+          "id": "C",
+          "text": "Both matter, but restructuring a big fixed cost gives you more than dozens of small cuts"
+        }
+      ],
+      "correct": "C",
+      "feedback": {
+        "A": "Cutting subscriptions and coffee might save $80/month. It takes massive willpower for limited results. These cuts are fine for things you don't value, but shouldn't be the main strategy.",
+        "B": "One structural change — a roommate — saves more than eliminating every small luxury combined. Big fixed costs are where the real money is.",
+        "C": "Correct. Optimizing the big three (housing, transport, food) delivers 10x the savings of obsessing over small expenses. Cut the big stuff first, then examine small spending by value."
+      },
+      "lesson": "The 80/20 of budgeting: your biggest wins come from housing, transport, and food. Everything else is noise by comparison.",
+      "conceptTag": "latte-factor"
+    }
+  },
+  {
+    "id": "budgeting-w2l5",
+    "categoryId": "budgeting",
+    "world": 2,
+    "worldName": "Spending with intention",
+    "order": 5,
+    "title": "Zero-based budgeting",
+    "concept": "Zero-based budgeting means assigning every dollar a job until you reach zero — not zero in your account, but zero unassigned dollars. Income minus all expenses, savings, and investments equals zero. You're not restricting spending — you're being intentional about where every dollar goes. People who use zero-based budgeting typically find $200-400/month they didn't know they were spending.",
+    "takeaway": "Every dollar should have a purpose before the month starts. Unnamed money always disappears.",
+    "scenario": {
+      "situation": "You make $3,500/month and your tracked expenses add up to $2,900. You have $600 unaccounted for at the end of each month and you're not sure where it goes. What does zero-based budgeting fix?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Nothing — you have a $600 surplus so your budget is working"
+        },
+        {
+          "id": "B",
+          "text": "It forces you to assign that $600 to savings or specific categories before it disappears"
+        },
+        { "id": "C", "text": "It would reduce your spending by finding hidden expenses" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "A surplus sounds good but unassigned money rarely survives the month intact. It gets absorbed by impulse purchases and forgotten subscriptions. The surplus should be assigned.",
+        "B": "Correct. Zero-based budgeting captures that $600 and puts it to work — into investments, debt payoff, or a sinking fund — before it drifts away on unplanned spending.",
+        "C": "It might reveal some forgotten subscriptions, but the main power is in assigning all income before the month starts, not in finding what you're spending on."
+      },
+      "lesson": "Unassigned money evaporates. A zero-based budget gives every dollar a destination before the month begins.",
+      "conceptTag": "zero-based-budgeting"
+    }
+  },
+  {
+    "id": "taxes-w1l1",
+    "categoryId": "taxes",
+    "world": 1,
+    "worldName": "How taxes actually work",
+    "order": 1,
+    "title": "Tax brackets — the most misunderstood thing in finance",
+    "concept": "Most people think that moving into a higher tax bracket means all their income gets taxed at the higher rate. This is completely wrong. The US uses a marginal tax system. Only the dollars earned within each bracket get taxed at that rate. If you're in the 22% bracket, only the income above the 12% bracket threshold gets taxed at 22% — not your entire income. A raise will never result in you taking home less money.",
+    "takeaway": "A higher tax bracket only applies to income above that threshold, not your entire salary. Raises always increase take-home pay.",
+    "scenario": {
+      "situation": "Your friend refuses a $5,000 raise because 'it'll push me into a higher tax bracket and I'll end up with less money.' What do you tell them?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "They're right — the tax on the new bracket could offset the raise"
+        },
+        {
+          "id": "B",
+          "text": "They're wrong — marginal tax means only the new income is taxed at the higher rate, so the raise always increases take-home pay"
+        },
+        { "id": "C", "text": "It depends on their state taxes" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "This is the most common tax misconception in America. In a marginal system, a higher bracket never causes your total take-home pay to decrease.",
+        "B": "Correct. If the raise pushes $2,000 into the 22% bracket, only that $2,000 is taxed at 22%. The rest is taxed at exactly the same rates as before. A raise is always a win.",
+        "C": "State taxes don't change the fundamental logic of marginal brackets. The raise always results in more take-home pay, not less."
+      },
+      "lesson": "Tax brackets are marginal — higher rates only apply to income above each threshold. A raise will always increase your take-home pay.",
+      "conceptTag": "tax-brackets"
+    }
+  },
+  {
+    "id": "taxes-w1l2",
+    "categoryId": "taxes",
+    "world": 1,
+    "worldName": "How taxes actually work",
+    "order": 2,
+    "title": "Tax deductions vs tax credits",
+    "concept": "A tax deduction reduces the income you're taxed on. A tax credit reduces the actual tax you owe. A $1,000 deduction for someone in the 22% bracket saves $220. A $1,000 tax credit saves $1,000 — dollar for dollar. Credits are therefore significantly more valuable than deductions. Both are legal ways to reduce your tax bill, but they work completely differently.",
+    "takeaway": "Tax credits beat deductions. A credit saves you the full amount. A deduction only saves you a percentage.",
+    "scenario": {
+      "situation": "You're comparing two tax benefits: a $2,000 deduction and a $500 credit. You're in the 22% tax bracket. Which saves you more money?",
+      "choices": [
+        { "id": "A", "text": "The $2,000 deduction — bigger number wins" },
+        {
+          "id": "B",
+          "text": "The $500 credit — it saves you $500 flat while the deduction only saves $440"
+        },
+        { "id": "C", "text": "They save the same amount" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "The number is bigger but the savings is smaller. A $2,000 deduction in the 22% bracket saves you 22% of $2,000, which is $440.",
+        "B": "Correct. The $500 credit saves $500 directly off your tax bill. The $2,000 deduction saves $440. The smaller-sounding credit is actually worth $60 more.",
+        "C": "They are definitively not the same. $440 vs $500 is a meaningful difference, especially at larger amounts."
+      },
+      "lesson": "A tax credit is worth more than a deduction of the same size. Credits reduce your tax bill directly; deductions only reduce your taxable income.",
+      "conceptTag": "deductions-vs-credits"
+    }
+  },
+  {
+    "id": "taxes-w1l3",
+    "categoryId": "taxes",
+    "world": 1,
+    "worldName": "How taxes actually work",
+    "order": 3,
+    "title": "W-4 withholding — why you might owe or get a refund",
+    "concept": "Your W-4 tells your employer how much tax to withhold from each paycheck. If too much is withheld, you get a refund in April. If too little is withheld, you owe money. A big refund sounds like winning but it isn't — it means you gave the government an interest-free loan all year. The goal is to withhold as accurately as possible so you neither owe nor get a large refund.",
+    "takeaway": "A big tax refund means you overpaid all year. Adjust your W-4 so your withholding is accurate.",
+    "scenario": {
+      "situation": "You got a $3,200 tax refund. Your coworker says 'lucky you!' But is a large refund actually good news?",
+      "choices": [
+        { "id": "A", "text": "Yes — it's free money from the government" },
+        {
+          "id": "B",
+          "text": "No — it means you overpaid $267/month all year and lost out on that money's growth"
+        },
+        { "id": "C", "text": "It depends on what you spend the refund on" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "It's not free — it was your money all along. You just let the government hold it for up to 16 months with no interest.",
+        "B": "Correct. $3,200 / 12 months = $267/month you could have invested, paid down debt with, or used for your emergency fund. Adjust your W-4 to reclaim that cash flow.",
+        "C": "What you do with the refund is separate from whether getting a large one is smart. The smarter play is having that money throughout the year."
+      },
+      "lesson": "A big tax refund is an interest-free loan you gave the government. Adjust your W-4 to get that money in your paycheck instead.",
+      "conceptTag": "w4-withholding"
+    }
+  },
+  {
+    "id": "taxes-w1l4",
+    "categoryId": "taxes",
+    "world": 1,
+    "worldName": "How taxes actually work",
+    "order": 4,
+    "title": "Capital gains tax — what it is and how to minimize it",
+    "concept": "When you sell an investment for more than you paid, the profit is called a capital gain and it's taxable. Short-term capital gains (assets held less than a year) are taxed as ordinary income — up to 37%. Long-term capital gains (assets held more than a year) are taxed at 0%, 15%, or 20% depending on your income. This single tax difference is a major reason long-term investing beats short-term trading for most people.",
+    "takeaway": "Hold investments for at least one year to access the dramatically lower long-term capital gains tax rate.",
+    "scenario": {
+      "situation": "You bought a stock for $10,000. It's now worth $18,000. You're considering selling. You've owned it for 8 months. Should you sell now or wait 4 more months?",
+      "choices": [
+        { "id": "A", "text": "Sell now — the gain is the same either way" },
+        {
+          "id": "B",
+          "text": "Wait 4 more months — the tax rate on the $8,000 gain drops from ~22% to 15%"
+        },
+        { "id": "C", "text": "The timing doesn't matter for taxes" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "The gain is the same but the tax you pay on it is not. Selling now at short-term rates could cost you $1,760. Waiting and paying long-term rates could cost you $1,200. That's $560 saved by waiting 4 months.",
+        "B": "Correct. Four months of patience saves you hundreds of dollars in tax. This is one of the easiest legal tax minimization strategies available.",
+        "C": "Timing is everything when it comes to capital gains. Short-term vs long-term rates can mean the difference of thousands of dollars on a significant gain."
+      },
+      "lesson": "Holding an investment for just one year converts your gains from ordinary income tax rates to the much lower long-term capital gains rate.",
+      "conceptTag": "capital-gains-tax"
+    }
+  },
+  {
+    "id": "taxes-w1l5",
+    "categoryId": "taxes",
+    "world": 1,
+    "worldName": "How taxes actually work",
+    "order": 5,
+    "title": "Self-employment taxes — what freelancers don't expect",
+    "concept": "When you work for an employer, they pay half of your Social Security and Medicare taxes (7.65%) and you pay the other half. When you're self-employed, you pay both halves — 15.3% — on top of income tax. This surprises most new freelancers. The fix is to set aside 25-30% of every payment received into a separate account for taxes, and make quarterly estimated tax payments to the IRS to avoid penalties.",
+    "takeaway": "Self-employed income is taxed at 15.3% for Social Security/Medicare alone, before income tax. Set aside 25-30% of every payment.",
+    "scenario": {
+      "situation": "You start freelancing and earn $5,000 in your first month. You spend most of it. In April, your accountant says you owe $1,800 in taxes. You don't have it. How do you prevent this next year?",
+      "choices": [
+        { "id": "A", "text": "Earn more so you can afford the tax bill" },
+        {
+          "id": "B",
+          "text": "Set aside 30% of every freelance payment into a separate account and make quarterly estimated payments"
+        },
+        { "id": "C", "text": "Deduct as many expenses as possible to reduce the bill" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Earning more without changing your system just means a bigger tax bill next April. The income isn't the problem — the cash management is.",
+        "B": "Correct. Treating 30% of gross income as 'not your money' from the moment it arrives is the standard approach for every successful freelancer. Quarterly payments prevent the April panic.",
+        "C": "Deductions help at the margin but don't solve the cash management problem. You still need to set aside the tax money throughout the year."
+      },
+      "lesson": "Freelance income is pre-tax income. Set aside 25-30% immediately and pay quarterly. Never treat gross income as take-home pay.",
+      "conceptTag": "self-employment-taxes"
+    }
+  },
+  {
+    "id": "taxes-w2l1",
+    "categoryId": "taxes",
+    "world": 2,
+    "worldName": "Tax-advantaged accounts",
+    "order": 1,
+    "title": "The 401k — your employer's best kept secret",
+    "concept": "A 401k is a retirement account offered by employers where your contributions reduce your taxable income today. If you earn $60,000 and contribute $6,000, you only pay income tax on $54,000 that year. Your investments grow tax-deferred, meaning you don't pay tax on gains until you withdraw in retirement. If your employer matches contributions, that match is a guaranteed 50-100% instant return on your money before any investment growth.",
+    "takeaway": "A 401k with employer match is the closest thing to free money in personal finance. Always contribute enough to get the full match.",
+    "scenario": {
+      "situation": "Your employer matches 100% of 401k contributions up to 4% of your salary. You earn $60,000. You currently contribute 0%. What is this decision costing you annually?",
+      "choices": [
+        { "id": "A", "text": "Nothing — it's optional" },
+        {
+          "id": "B",
+          "text": "$2,400 per year in free employer contributions you're declining"
+        },
+        { "id": "C", "text": "It depends on how the market performs" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Technically optional, but economically you are leaving $2,400 on the table every year. Over a 30-year career at 8% growth, that unclaimed match is worth over $270,000.",
+        "B": "Correct. 4% of $60,000 = $2,400. That's what your employer will give you for free — but only if you contribute at least $2,400 yourself. Not participating is giving back part of your compensation.",
+        "C": "Market performance is irrelevant here. The match is a guaranteed 100% return on the matched portion before investment growth begins."
+      },
+      "lesson": "An employer 401k match is a guaranteed return before the market does anything. Not contributing to get the full match is the most expensive mistake in employee finance.",
+      "conceptTag": "401k"
+    }
+  },
+  {
+    "id": "taxes-w2l2",
+    "categoryId": "taxes",
+    "world": 2,
+    "worldName": "Tax-advantaged accounts",
+    "order": 2,
+    "title": "Roth IRA vs Traditional IRA — which is right for you",
+    "concept": "Both IRAs let you invest up to $7,000/year (2024) with tax advantages. Traditional IRA: you get a tax deduction now, pay taxes when you withdraw in retirement. Roth IRA: no deduction now, but all growth and withdrawals are completely tax-free in retirement. The right choice depends on whether you expect to be in a higher tax bracket now or in retirement. Young people in low brackets almost always benefit most from the Roth.",
+    "takeaway": "If you're young and in a low tax bracket, the Roth IRA is usually the better choice. Tax-free growth for 40 years is a remarkable gift.",
+    "scenario": {
+      "situation": "You're 24, earning $38,000/year (12% tax bracket), and choosing between a Roth IRA and a Traditional IRA. Which makes more sense?",
+      "choices": [
+        { "id": "A", "text": "Traditional IRA — the tax deduction now saves money" },
+        {
+          "id": "B",
+          "text": "Roth IRA — pay tax now at 12%, then never again on 40 years of growth"
+        },
+        { "id": "C", "text": "It doesn't matter — the math is the same" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "The deduction saves you 12% now. But in retirement, you'll likely be withdrawing large amounts and paying whatever tax rate exists then. Trading 12% now for an uncertain future rate is risky.",
+        "B": "Correct. At 24 with low income, you pay a small tax rate now to make your future growth completely tax-free. A Roth IRA started at 24 could hold hundreds of thousands by retirement — all withdrawable tax-free.",
+        "C": "The math is significantly different depending on your current vs future tax rate. For young, lower-income earners, the Roth is almost always the superior vehicle."
+      },
+      "lesson": "Young and lower income? The Roth IRA is almost always the right choice. Pay a small tax now for tax-free growth over decades.",
+      "conceptTag": "roth-vs-traditional-ira"
+    }
+  },
+  {
+    "id": "taxes-w2l3",
+    "categoryId": "taxes",
+    "world": 2,
+    "worldName": "Tax-advantaged accounts",
+    "order": 3,
+    "title": "The HSA — the ultimate triple tax advantage",
+    "concept": "A Health Savings Account (HSA) is the only account with a triple tax advantage: contributions are tax-deductible, growth is tax-free, and withdrawals for medical expenses are tax-free. After age 65, you can withdraw for any reason and simply pay income tax — making it function like a Traditional IRA. To qualify, you need a High Deductible Health Plan (HDHP). Many financial experts consider the HSA the single most tax-efficient account available.",
+    "takeaway": "If you qualify for an HSA, max it out. It's the only triple-tax-advantaged account that exists.",
+    "scenario": {
+      "situation": "You're healthy and rarely use medical care. You have access to an HSA through your high-deductible health plan. A coworker says HSAs are only for sick people. What do you say?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "They're right — only contribute if you expect medical expenses"
+        },
+        {
+          "id": "B",
+          "text": "They're wrong — healthy people benefit most because they can invest contributions and let them grow for decades"
+        },
+        { "id": "C", "text": "HSAs are too complicated to be worth it" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "This misses the investment opportunity entirely. Healthy people who rarely withdraw are actually the biggest HSA winners — every dollar grows tax-free for decades.",
+        "B": "Correct. Invest your HSA contributions, pay small medical expenses out of pocket, and let the HSA compound tax-free. After 65, it becomes a general-purpose retirement account. Healthy people should be the most enthusiastic HSA users.",
+        "C": "The mechanics are simple: contribute, invest, let it grow, use it for medical expenses tax-free. Or use it as a bonus retirement account. Not complicated."
+      },
+      "lesson": "The HSA is the most tax-efficient account that exists. Healthy people who invest their contributions and let them grow for decades benefit the most.",
+      "conceptTag": "hsa"
+    }
+  },
+  {
+    "id": "taxes-w2l4",
+    "categoryId": "taxes",
+    "world": 2,
+    "worldName": "Tax-advantaged accounts",
+    "order": 4,
+    "title": "Tax-loss harvesting — turning losses into savings",
+    "concept": "Tax-loss harvesting means selling an investment that has declined in value to realize the loss on paper, then immediately buying a similar investment to maintain your market exposure. The loss can offset capital gains or reduce your taxable income by up to $3,000/year. It sounds complex but the core idea is simple: the government lets you use investment losses to reduce your tax bill, so smart investors do exactly that.",
+    "takeaway": "Investment losses can reduce your taxes. Tax-loss harvesting is a legal strategy to turn a bad investment into a tax benefit.",
+    "scenario": {
+      "situation": "You have $5,000 in gains from selling a stock. You also have a different stock currently worth $2,000 less than you paid for it. What should you consider?",
+      "choices": [
+        { "id": "A", "text": "Hold the losing stock and hope it recovers" },
+        {
+          "id": "B",
+          "text": "Sell the losing stock to harvest the $2,000 loss and offset your gains, then buy a similar fund to maintain exposure"
+        },
+        { "id": "C", "text": "Sell everything and put it in a savings account" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Holding a losing position out of hope isn't a strategy. If you'd sell it if you didn't have a gain, you should sell it now and capture the tax benefit.",
+        "B": "Correct. Selling the losing stock harvests a $2,000 loss that offsets $2,000 of your $5,000 gain. You only pay tax on $3,000 instead of $5,000. Buying a similar fund keeps you in the market.",
+        "C": "Selling everything is overly dramatic. The goal is to capture the tax benefit while maintaining your investment strategy — not to exit the market."
+      },
+      "lesson": "The IRS allows investment losses to offset gains. Tax-loss harvesting turns losses into real tax savings without abandoning your investment strategy.",
+      "conceptTag": "tax-loss-harvesting"
+    }
+  },
+  {
+    "id": "taxes-w2l5",
+    "categoryId": "taxes",
+    "world": 2,
+    "worldName": "Tax-advantaged accounts",
+    "order": 5,
+    "title": "The standard deduction vs itemizing",
+    "concept": "Every taxpayer can reduce their taxable income by either taking the standard deduction ($14,600 for single filers in 2024) or itemizing actual deductions like mortgage interest, state taxes, and charitable donations. The rule is simple: take whichever is larger. The vast majority of Americans — about 87% — take the standard deduction because it's larger than what they'd get from itemizing. If your deductible expenses don't exceed the standard deduction, itemizing wastes time.",
+    "takeaway": "Add up your itemizable deductions. If they're less than $14,600 (single) or $29,200 (married), take the standard deduction and move on.",
+    "scenario": {
+      "situation": "You paid $6,000 in mortgage interest, $4,000 in state taxes, and donated $1,500 to charity last year. Should you itemize or take the standard deduction? You're a single filer.",
+      "choices": [
+        { "id": "A", "text": "Itemize — you have real deductible expenses" },
+        {
+          "id": "B",
+          "text": "Take the standard deduction — your itemized total is $11,500, less than the $14,600 standard deduction"
+        },
+        { "id": "C", "text": "Do both and pick whichever gives a bigger refund" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Having deductible expenses doesn't automatically make itemizing worthwhile. Your total ($11,500) is less than the standard deduction ($14,600). Taking the standard deduction saves you more.",
+        "B": "Correct. $6,000 + $4,000 + $1,500 = $11,500. The standard deduction is $14,600. Always take the larger number — in this case the standard deduction saves you an extra $3,100 of taxable income.",
+        "C": "You can only choose one, not both. The calculation is straightforward: whichever gives you the larger deduction is the correct choice."
+      },
+      "lesson": "Add up your deductions. If they're less than the standard deduction, stop itemizing and take the standard. Most people should.",
+      "conceptTag": "standard-vs-itemized-deductions"
+    }
+  },
+  {
+    "id": "realestate-w1l1",
+    "categoryId": "realEstate",
+    "world": 1,
+    "worldName": "Renting vs buying",
+    "order": 1,
+    "title": "Renting vs buying — the real math",
+    "concept": "Buying a home isn't automatically better than renting. The decision depends on how long you'll stay, local price-to-rent ratios, your down payment, and opportunity cost. A common rule: if you're staying less than 5 years, renting is often cheaper when you account for closing costs, maintenance, and the interest-heavy early years of a mortgage. If you're staying 7+ years and the numbers work, buying often wins. The decision is financial, not emotional.",
+    "takeaway": "Buying only beats renting if you stay long enough for appreciation and equity to overcome the upfront costs. Run the numbers — don't assume.",
+    "scenario": {
+      "situation": "You're 26, single, and just got a new job in a city you've never lived in. You're debating whether to rent or buy. You plan to stay 'maybe 2-3 years.' What's the smarter move?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Buy — real estate always appreciates and rent is just throwing money away"
+        },
+        {
+          "id": "B",
+          "text": "Rent — a 2-3 year timeline doesn't give the math enough time to work in buying's favor"
+        },
+        { "id": "C", "text": "Buy only if you can find a property below market value" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "'Rent is throwing money away' is one of the most persistent myths in personal finance. Rent buys you housing. A mortgage also buys interest, maintenance, property taxes, and closing costs. Early mortgage payments are mostly interest anyway.",
+        "B": "Correct. Closing costs alone are 2-5% of the purchase price. On a $300,000 home that's $6,000-$15,000 upfront. With a 2-3 year timeline, you likely won't break even — especially after accounting for the interest-heavy early mortgage payments.",
+        "C": "Even a below-market purchase doesn't overcome closing costs and low equity accumulation in the first 2-3 years."
+      },
+      "lesson": "Buying wins long-term. Renting wins short-term. The breakeven point is typically 4-7 years depending on the market. Know your timeline before deciding.",
+      "conceptTag": "rent-vs-buy"
+    }
+  },
+  {
+    "id": "realestate-w1l2",
+    "categoryId": "realEstate",
+    "world": 1,
+    "worldName": "Renting vs buying",
+    "order": 2,
+    "title": "How a mortgage works",
+    "concept": "A mortgage is a loan secured by property. You borrow a large amount, then repay it over 15 or 30 years with interest. Here's the part most people don't realize: in the early years, most of your monthly payment goes to interest, not principal. On a $300,000 mortgage at 7%, your first payment of around $2,000 might only reduce the loan balance by $250. The rest is interest. This is called amortization, and it's why paying extra toward principal early is so powerful.",
+    "takeaway": "Early mortgage payments are mostly interest. Paying even $100 extra per month toward principal can save tens of thousands over the life of the loan.",
+    "scenario": {
+      "situation": "You have a $280,000 mortgage at 6.5% over 30 years. Your monthly payment is $1,770. You can afford to pay $2,000/month. Should you pay the extra $230 toward principal?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "No — just make the minimum payment and invest the extra $230"
+        },
+        {
+          "id": "B",
+          "text": "Yes — extra principal payments significantly reduce the total interest paid and the loan term"
+        },
+        { "id": "C", "text": "It's not worth the hassle for only $230/month" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Investing the extra $230 could be the right call if your investment returns exceed your mortgage rate. At 6.5%, that's a high bar. It's worth calculating which is better for your specific situation.",
+        "B": "Correct. An extra $230/month on a 30-year mortgage at 6.5% saves approximately $74,000 in interest and pays off the loan 7 years early. That's a guaranteed 6.5% return.",
+        "C": "$230/month compounded over 30 years of interest savings is far from trivial. Small extra payments have outsized long-term impact due to how amortization works."
+      },
+      "lesson": "Extra mortgage principal payments give you a guaranteed return equal to your interest rate. On a high-rate mortgage, this often beats investing the difference.",
+      "conceptTag": "how-mortgages-work"
+    }
+  },
+  {
+    "id": "realestate-w1l3",
+    "categoryId": "realEstate",
+    "world": 1,
+    "worldName": "Renting vs buying",
+    "order": 3,
+    "title": "Down payments and PMI",
+    "concept": "A down payment is the upfront cash you put toward a home purchase. If you put down less than 20%, lenders typically require Private Mortgage Insurance (PMI) — an extra monthly fee (usually 0.5-1.5% of the loan amount annually) that protects the lender, not you. On a $300,000 loan, PMI can cost $150-$375/month. It goes away once you reach 20% equity. Putting 20% down eliminates PMI entirely and often gets you a better interest rate.",
+    "takeaway": "If you can reach 20% down, do it. PMI is a fee you pay that benefits the lender, not you.",
+    "scenario": {
+      "situation": "You're buying a $350,000 home. You have $45,000 saved (about 13%). You could borrow $25,000 more from your parents to reach 20% down and avoid PMI. Should you?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "No — buy now with 13% down and cancel PMI when you hit 20% equity"
+        },
+        {
+          "id": "B",
+          "text": "It depends on the PMI cost vs the cost of the family loan and your relationship risk"
+        },
+        { "id": "C", "text": "Yes — always reach 20% down no matter what it takes" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Not wrong, but incomplete. PMI on a $305,000 loan at 1% is about $254/month. Over the 2-4 years to reach 20% equity, that's $6,000-$12,000 in fees. Weigh that against borrowing from family.",
+        "B": "Correct. This is a nuanced decision. PMI costs are real and significant. A family loan at 0% interest is cheaper. But borrowing from family has relationship risk. Run the numbers and weigh the tradeoffs.",
+        "C": "Not always. If the family loan creates tension or comes with strings attached, the PMI might be worth paying for financial and relational independence."
+      },
+      "lesson": "PMI is a real monthly cost that benefits only your lender. Reaching 20% down eliminates it — but weigh all the options for how to get there.",
+      "conceptTag": "down-payment-pmi"
+    }
+  },
+  {
+    "id": "realestate-w1l4",
+    "categoryId": "realEstate",
+    "world": 1,
+    "worldName": "Renting vs buying",
+    "order": 4,
+    "title": "REITs — real estate without owning property",
+    "concept": "A Real Estate Investment Trust (REIT) is a company that owns income-producing real estate — office buildings, apartments, warehouses, hospitals. You can buy shares of a REIT like a stock. By law, REITs must distribute 90% of taxable income as dividends to shareholders. This means you can invest in real estate, receive regular income, and stay liquid — without ever buying a property, dealing with tenants, or maintaining a building.",
+    "takeaway": "REITs give you real estate exposure and income without the headaches of property ownership. They're a valid alternative to owning physical property.",
+    "scenario": {
+      "situation": "You want real estate exposure but don't have a down payment and don't want to be a landlord. What's the best option?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Wait until you save a down payment — real estate only counts if you own property"
+        },
+        {
+          "id": "B",
+          "text": "Buy shares in a REIT — instant real estate exposure, dividend income, and no management required"
+        },
+        { "id": "C", "text": "Invest in homebuilder stocks instead" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "REITs are legitimate real estate investments. The requirement to physically own property is a myth. Many sophisticated investors prefer REITs for their liquidity and lack of management burden.",
+        "B": "Correct. A REIT index fund gives you diversified real estate exposure across hundreds of properties. You receive quarterly dividends and can sell any time — none of which is true with physical property.",
+        "C": "Homebuilder stocks are equity investments in construction companies, not real estate investments. They don't behave the same way as owning real estate or REITs."
+      },
+      "lesson": "REITs give you real estate's income and appreciation potential without the down payment, management, or illiquidity of physical property.",
+      "conceptTag": "reits"
+    }
+  },
+  {
+    "id": "realestate-w1l5",
+    "categoryId": "realEstate",
+    "world": 1,
+    "worldName": "Renting vs buying",
+    "order": 5,
+    "title": "Home equity — what it is and how to use it",
+    "concept": "Home equity is the difference between what your home is worth and what you owe on it. If your home is worth $400,000 and you owe $250,000, you have $150,000 in equity. Equity grows as you pay down the mortgage and as the property appreciates in value. You can access equity through a Home Equity Line of Credit (HELOC) or cash-out refinance — but borrowing against your home means using it as collateral, which carries real risk if you can't repay.",
+    "takeaway": "Home equity is real wealth — but borrowing against it puts your home at risk. Use it wisely and only for things that increase your financial position.",
+    "scenario": {
+      "situation": "You have $80,000 in home equity. You're considering a HELOC to fund a kitchen renovation ($40,000) and a vacation ($15,000). Which use of equity makes sense?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Both — you earned the equity, you can spend it however you want"
+        },
+        {
+          "id": "B",
+          "text": "The renovation may make sense if it adds home value; the vacation does not"
+        },
+        { "id": "C", "text": "Neither — never borrow against your home" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Technically true — it's your equity. But using your home as collateral for a vacation means you could lose your home if you can't repay. A vacation doesn't improve your financial position.",
+        "B": "Correct. A kitchen renovation can add to the home's market value and is a reasonable use of a HELOC. A vacation does not increase the home's value or your net worth — and you're putting your home on the line to fund it.",
+        "C": "HELOCs have legitimate uses — home improvements, consolidating high-interest debt, or education. Never borrowing against your home is overly restrictive."
+      },
+      "lesson": "Home equity is powerful but borrowing against it risks your home. Use it for things that improve your financial position — not consumption.",
+      "conceptTag": "home-equity"
+    }
+  },
+  {
+    "id": "realestate-w2l1",
+    "categoryId": "realEstate",
+    "world": 2,
+    "worldName": "Investing in property",
+    "order": 1,
+    "title": "Rental property cash flow basics",
+    "concept": "Cash flow is the money left over after all expenses from a rental property. The formula: monthly rent minus mortgage, taxes, insurance, maintenance (budget 1% of property value annually), vacancy (budget 5-8% of rent), and property management (8-12% if you use a manager). Many beginner landlords forget maintenance and vacancy, turning 'profitable' properties into money losers. Positive cash flow is what makes a rental property a real investment.",
+    "takeaway": "Cash flow = rent minus all expenses. Beginner landlords almost always underestimate expenses. Budget for maintenance, vacancy, and management before you buy.",
+    "scenario": {
+      "situation": "A rental property rents for $2,000/month. Mortgage is $1,200, taxes are $200, insurance is $100. Your friend says it's $500/month cash flow. Are they right?",
+      "choices": [
+        { "id": "A", "text": "Yes — $2,000 minus $1,500 in known expenses is $500" },
+        {
+          "id": "B",
+          "text": "No — they forgot maintenance reserves, vacancy costs, and potential management fees"
+        },
+        { "id": "C", "text": "Maybe — it depends on how often tenants leave" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "This is the most common beginner landlord mistake. Only accounting for fixed known expenses ignores the real costs of property ownership.",
+        "B": "Correct. On a $250,000 property, maintenance reserves alone are ~$208/month (1% annually). Add 6% vacancy ($120/month) and the real cash flow is closer to $170/month — not $500. That changes the math significantly.",
+        "C": "Vacancy is only one missing factor. Maintenance is often the biggest surprise for new landlords and should always be budgeted."
+      },
+      "lesson": "Real cash flow accounts for mortgage, taxes, insurance, maintenance (1% annually), vacancy (5-8%), and management. Most beginner projections are too optimistic.",
+      "conceptTag": "rental-cash-flow"
+    }
+  },
+  {
+    "id": "realestate-w2l2",
+    "categoryId": "realEstate",
+    "world": 2,
+    "worldName": "Investing in property",
+    "order": 2,
+    "title": "The 1% rule for rental properties",
+    "concept": "The 1% rule is a quick filter for rental property investments: the monthly rent should be at least 1% of the purchase price. A $200,000 property should rent for at least $2,000/month. Properties that meet this rule are more likely to generate positive cash flow. It's not a guarantee — you still need to run full numbers — but it's a fast way to filter out deals that almost certainly won't work before spending time on deeper analysis.",
+    "takeaway": "Monthly rent should be at least 1% of purchase price. This is a quick filter, not a final decision — always run the full numbers.",
+    "scenario": {
+      "situation": "You're comparing two properties. Property A costs $180,000 and rents for $1,600/month. Property B costs $320,000 and rents for $2,200/month. Which passes the 1% rule?",
+      "choices": [
+        { "id": "A", "text": "Property B — higher rent means more income" },
+        {
+          "id": "B",
+          "text": "Property A — $1,600 is 0.89% of $180,000, which is close enough"
+        },
+        {
+          "id": "C",
+          "text": "Property A passes at 0.89% (close to 1%); Property B fails at 0.69% — significantly below the threshold"
+        }
+      ],
+      "correct": "C",
+      "feedback": {
+        "A": "Higher absolute rent doesn't mean better cash flow. The ratio of rent to purchase price is what determines whether expenses can be covered. Property B's ratio is weak.",
+        "B": "0.89% is close but not quite. Property A is borderline — worth deeper analysis. Property B at 0.69% is significantly below the threshold and likely a cash flow negative deal.",
+        "C": "Correct. Property A (0.89%) is borderline but worth analyzing further. Property B (0.69%) fails the 1% rule by a large margin and will likely be cash flow negative at current rents and expenses."
+      },
+      "lesson": "The 1% rule filters out deals that almost certainly won't cash flow. It's not perfect but it saves enormous time in evaluating rental properties.",
+      "conceptTag": "one-percent-rule"
+    }
+  },
+  {
+    "id": "realestate-w2l3",
+    "categoryId": "realEstate",
+    "world": 2,
+    "worldName": "Investing in property",
+    "order": 3,
+    "title": "Property taxes and what they fund",
+    "concept": "Property taxes are annual taxes paid to local governments based on the assessed value of your property. Rates vary enormously by location — from under 0.3% in Hawaii to over 2% in New Jersey. On a $350,000 home in a 1.5% tax state, that's $5,250/year or $437/month — a significant addition to housing costs that many homebuyers underestimate. Property taxes fund schools, roads, emergency services, and local government. They never go away and typically increase over time.",
+    "takeaway": "Property taxes are permanent and typically grow over time. Factor them into your total housing cost before buying.",
+    "scenario": {
+      "situation": "You're choosing between two identical $300,000 homes — one in a state with a 0.6% property tax rate and one with a 2.2% rate. How much does this difference cost annually?",
+      "choices": [
+        { "id": "A", "text": "About $500/year — not a meaningful difference" },
+        {
+          "id": "B",
+          "text": "About $4,800/year — a significant and permanent cost difference"
+        },
+        { "id": "C", "text": "Property taxes are deductible so the cost is minimal" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "0.6% of $300,000 = $1,800/year. 2.2% = $6,600/year. The difference is $4,800/year or $400/month — meaningful over a 30-year ownership period.",
+        "B": "Correct. $4,800/year for 30 years is $144,000 in additional taxes. This is a major factor in true housing cost that many buyers don't research before purchase.",
+        "C": "Property taxes are only deductible up to $10,000 total for state and local taxes (SALT deduction cap), and only if you itemize. The deduction doesn't eliminate the cost."
+      },
+      "lesson": "A 1.6% property tax rate difference on a $300,000 home costs $4,800/year more — for as long as you own the property. Research tax rates before you buy.",
+      "conceptTag": "property-taxes"
+    }
+  },
+  {
+    "id": "realestate-w2l4",
+    "categoryId": "realEstate",
+    "world": 2,
+    "worldName": "Investing in property",
+    "order": 4,
+    "title": "Real estate market cycles",
+    "concept": "Real estate markets move in cycles: recovery, expansion, hyper supply, and recession. These cycles are driven by employment, interest rates, population growth, and credit availability. Unlike stocks, real estate moves slowly — a market correction plays out over years, not days. The key insight for buyers: trying to time the real estate market is nearly impossible and usually counterproductive. Buying when you're financially ready and planning to hold long-term beats trying to predict the cycle.",
+    "takeaway": "Real estate cycles are real but slow. Trying to time them is difficult. Buying when you're financially ready and holding long-term is the proven strategy.",
+    "scenario": {
+      "situation": "Interest rates have risen to 7.5% and home prices have dropped 8% in your area over the past year. Friends are saying it's a bad time to buy. You have a 20% down payment, stable job, and plan to stay 10+ years. Should you wait?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Wait — rates might go lower and prices might drop further"
+        },
+        {
+          "id": "B",
+          "text": "Buy if the numbers work — a 10+ year timeline makes short-term market conditions largely irrelevant"
+        },
+        { "id": "C", "text": "Buy only if you can negotiate a further price reduction" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Rates might drop — or they might rise. Prices might fall more — or rebound. Nobody knows. A decade of ownership erases almost any short-term market timing mistake.",
+        "B": "Correct. With a 20% down payment, stable income, and a 10-year timeline, the current rate and price environment matters far less than your personal financial readiness. The cost of waiting — in rent, in lost equity, in opportunity — is often higher than the cost of an imperfect entry.",
+        "C": "Negotiating is always smart, but making the purchase conditional on a further drop introduces the same timing risk as waiting entirely."
+      },
+      "lesson": "Real estate is a long game. Your financial readiness and holding period matter far more than the current market cycle.",
+      "conceptTag": "real-estate-cycles"
+    }
+  },
+  {
+    "id": "realestate-w2l5",
+    "categoryId": "realEstate",
+    "world": 2,
+    "worldName": "Investing in property",
+    "order": 5,
+    "title": "House hacking — living for free",
+    "concept": "House hacking means buying a multi-unit property, living in one unit, and renting out the others. The rental income covers your mortgage — sometimes entirely. A duplex where one unit rents for $1,200 and your mortgage is $1,800 means you're paying only $600 to live somewhere you're also building equity. It's one of the most effective wealth-building strategies available to young buyers, and FHA loans allow it with just 3.5% down on properties up to 4 units.",
+    "takeaway": "House hacking lets tenants pay your mortgage while you build equity. It's one of the fastest paths to financial independence available to young people.",
+    "scenario": {
+      "situation": "You're 27 and considering two options: buy a $320,000 single-family home with a $1,900 mortgage, or buy a $380,000 duplex with a $2,200 mortgage and rent the other unit for $1,400/month. Which builds wealth faster?",
+      "choices": [
+        {
+          "id": "A",
+          "text": "The single-family home — simpler and no landlord responsibilities"
+        },
+        {
+          "id": "B",
+          "text": "The duplex — your effective housing cost is $800/month while you build equity in a larger asset"
+        },
+        {
+          "id": "C",
+          "text": "They're equivalent — the higher price of the duplex offsets the rental income"
+        }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Simplicity has value, but the financial math strongly favors the duplex. You're paying $1,100/month more for the single-family home in true housing cost ($1,900 vs $800).",
+        "B": "Correct. The duplex costs $800/month effective housing after rental income — vs $1,900 for the house. That $1,100/month difference, invested over 10 years, is potentially over $190,000. And you own a larger, more valuable asset.",
+        "C": "The numbers don't work out equally. Effective housing cost, equity accumulation, and asset size all favor the duplex significantly."
+      },
+      "lesson": "House hacking turns your home into an income-producing asset. Tenants pay your mortgage while you live essentially for free and build equity.",
+      "conceptTag": "house-hacking"
+    }
+  }
+]

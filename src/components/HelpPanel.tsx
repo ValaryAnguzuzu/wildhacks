@@ -58,11 +58,12 @@ export function HelpPanel({ open, onClose }: Props) {
             into or out of a category
           </li>
           <li>
-            <strong>Split evenly</strong> divides the pool five ways (you can adjust after)
+            <strong>Split evenly</strong> runs a playful distribution animation so you can
+            watch dollars move into each bucket — then tweak any column you like
           </li>
           <li>
-            <strong>Confirm allocation</strong> when remaining is $0 — or the timer applies
-            an even split
+            <strong>Confirm allocation</strong> when remaining is $0 — or the timer
+            applies an even split
           </li>
           <li>
             Underfunding Needs or debt minimums triggers fees or interest in the feedback
