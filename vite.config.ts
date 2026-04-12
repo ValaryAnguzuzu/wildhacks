@@ -4,6 +4,17 @@ import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    proxy: {
+      // Dev-only: forwards /api/* → Anthropic API (see claudeApi.ts). Use a backend in production.
+      '/api': {
+        target: 'https://api.anthropic.com',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',
