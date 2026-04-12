@@ -1,19 +1,20 @@
-import './index.css';
-import './styles/layout.css';
-import './styles/home-zigzag.css';
-import './styles/game-arena.css';
-import './styles/game-arena-theme.css';
-import './styles/answer-key.css';
-import './styles/finsim.css';
+import './styles/index.css';
 
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
-import App from './App';
+import { AuthProvider } from '@/context/AuthContext';
+import { queryClient } from '@/lib/queryClient';
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+import App from './app/App';
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </QueryClientProvider>
+  </StrictMode>,
 );

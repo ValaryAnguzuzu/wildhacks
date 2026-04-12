@@ -1,28 +1,23 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import type { LevelStats } from '@/types/lesson';
 import {
   type CategoryAllocation,
   emptyAllocation,
   sumAllocation,
-} from '../data/gameCategories';
+} from '@/utils/gameLogic';
+
 import {
   evaluateAllocation,
-  FINSIM_SCENARIO,
-  FIN_SIM_MAX_DEBT,
   FIN_SIM_ROUND_COUNT,
-  finSimResourcesLose,
+  FINSIM_SCENARIO,
   type FinSimResources,
+  finSimResourcesLose,
   type FinSimRound,
   type FinSimStep,
-} from '../data/finSimScenario';
-import type { LevelStats } from '../types';
+} from '../content/finSimScenario';
 
-export type FinSimUiPhase =
-  | 'roundIntro'
-  | 'step'
-  | 'feedback'
-  | 'gameWon'
-  | 'gameLost';
+export type FinSimUiPhase = 'roundIntro' | 'step' | 'feedback' | 'gameWon' | 'gameLost';
 
 function cloneRes(r: FinSimResources): FinSimResources {
   return { savings: r.savings, debt: r.debt, investing: r.investing };
@@ -32,7 +27,7 @@ function equalSplit(pool: number): CategoryAllocation {
   const a = emptyAllocation();
   const ids = ['needs', 'debt', 'savings', 'investing', 'wants'] as const;
   const base = Math.floor(pool / 5);
-  let rem = pool - base * 5;
+  const rem = pool - base * 5;
   ids.forEach((id, i) => {
     a[id] = base + (i < rem ? 1 : 0);
   });
@@ -73,7 +68,8 @@ export function useFinSimEngine(): UseFinSimEngineReturn {
     debt: 520,
     investing: 75,
   });
-  const [allocationDraft, setAllocationDraft] = useState<CategoryAllocation>(emptyAllocation);
+  const [allocationDraft, setAllocationDraft] =
+    useState<CategoryAllocation>(emptyAllocation);
   const [score, setScore] = useState(0);
   const [streak, setStreak] = useState(0);
   const [bestStreak, setBestStreak] = useState(0);
@@ -88,6 +84,7 @@ export function useFinSimEngine(): UseFinSimEngineReturn {
   const [timeLeft, setTimeLeft] = useState(0);
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const splitAnimRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timeoutFiredRef = useRef(false);
   const timerArmedRef = useRef(false);
 
@@ -165,7 +162,13 @@ export function useFinSimEngine(): UseFinSimEngineReturn {
   }, [roundIndex, stepIndex, stopTimer]);
 
   const applyEvalResult = useCallback(
-    (next: FinSimResources, headline: string, detail: string, good: boolean, scoreDelta: number) => {
+    (
+      next: FinSimResources,
+      headline: string,
+      detail: string,
+      good: boolean,
+      scoreDelta: number,
+    ) => {
       setResources(next);
       bumpDecisionStats(good, scoreDelta);
       const lost = finSimResourcesLose(next);
@@ -210,8 +213,66 @@ export function useFinSimEngine(): UseFinSimEngineReturn {
 
   const splitPoolEvenly = useCallback(() => {
     if (phase !== 'step' || !currentStep || currentStep.kind !== 'allocate') return;
-    setAllocationDraft(equalSplit(currentStep.pool));
+    // Animated fill: slowly move dollars into each category so the player sees
+    // the distribution and can adjust — more playful than an instant set.
+    const target = equalSplit(currentStep.pool);
+    // clear any previous animation
+    if (splitAnimRef.current) {
+      clearInterval(splitAnimRef.current);
+      splitAnimRef.current = null;
+    }
+
+    setAllocationDraft((prev) => {
+      // If already matches target, nothing to animate
+      const same = (
+        ['needs', 'debt', 'savings', 'investing', 'wants'] as (keyof CategoryAllocation)[]
+      ).every((k) => prev[k] === target[k]);
+      if (same) return prev;
+      // Start from current draft (may be empty) and animate towards target
+      const current = { ...prev } as Record<string, number>;
+
+      splitAnimRef.current = setInterval(() => {
+        // On each tick, bump one category that hasn't reached target yet.
+        let done = true;
+        const ids: (keyof CategoryAllocation)[] = [
+          'needs',
+          'debt',
+          'savings',
+          'investing',
+          'wants',
+        ];
+        for (const id of ids) {
+          if (current[id] < target[id]) {
+            current[id] += 1;
+            done = false;
+            break;
+          } else if (current[id] > target[id]) {
+            current[id] -= 1;
+            done = false;
+            break;
+          }
+        }
+        // Push update
+        setAllocationDraft({ ...(current as CategoryAllocation) });
+        if (done && splitAnimRef.current) {
+          clearInterval(splitAnimRef.current);
+          splitAnimRef.current = null;
+        }
+      }, 80);
+
+      return prev;
+    });
   }, [currentStep, phase]);
+
+  // ensure animation timer is cleared when phase or step changes or on unmount
+  useEffect(() => {
+    return () => {
+      if (splitAnimRef.current) {
+        clearInterval(splitAnimRef.current);
+        splitAnimRef.current = null;
+      }
+    };
+  }, [roundIndex, stepIndex, phase]);
 
   useEffect(() => {
     if (phase !== 'step' || !currentStep || currentStep.kind !== 'allocate') {
@@ -282,7 +343,7 @@ export function useFinSimEngine(): UseFinSimEngineReturn {
     const n = FIN_SIM_ROUND_COUNT;
     const base = Math.floor(Math.max(0, score) / n);
     const rem = Math.max(0, score) - base * n;
-    return FINSIM_SCENARIO.map((round, i) => ({
+    return FINSIM_SCENARIO.map((round: FinSimRound, i: number) => ({
       levelId: round.month,
       score: base + (i === n - 1 ? rem : 0),
       correctCount: i === 0 ? goodDecisions : 0,
