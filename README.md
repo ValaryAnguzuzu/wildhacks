@@ -1,70 +1,80 @@
-# PrompTetris
+# FinLife
 
-**Learn how LLMs work by playing.** A Wildhacks project that turns core AI literacy into a fast, Tetris-inspired game. Concepts fall as blocks; you sort them into the right columns before the timer runs out. Every placement includes teaching feedback—no silent failures.
+**Money is a skill.** FinLife is a bite-sized financial literacy web app with a Duolingo-style loop: pick a topic, learn a concept, pass a scenario quiz, earn XP, and keep your streak. Progress syncs to Firebase so learners can pick up where they left off on any device.
 
-## What it is
+## What it does
 
-PrompTetris is a short game loop for **active** learning: you rehearse how real LLM systems are put together—pipelines, prompts, failure modes, fine-tuning, retrieval, and embeddings—while the app explains why each placement is correct or not. The aim is a mental model you can reuse when you read docs, write prompts, or debug behavior.
+- **Paths** — Categories such as investing, budgeting, taxes, and real estate, organized into worlds and ordered lessons.
+- **Lessons** — Short concept copy, a takeaway, then a **scenario quiz** with feedback on each choice.
+- **Progress** — XP, streak, hearts, simulated net worth, and per-category progress (lessons completed, worlds unlocked, concepts unlocked).
+- **Squads** — Optional learning groups: share an invite code, compare **weekly XP** (ISO week) on a squad leaderboard, and keep pace with friends.
+- **Theme** — **Light** and **dark** modes; preference is stored in the browser (`localStorage` via `next-themes`).
 
-## How to play
+Lesson content is loaded from **Firestore** when available (`content/lessons/items`); if the query fails or returns nothing, the app falls back to bundled **`src/content/lessons.json`**.
 
-1. **Blocks fall** — Each block is an AI concept tied to a real pipeline or workflow, not trivia.
-2. **Sort quickly** — Move left or right, flip for definitions, and drop into the right column before time runs out.
-3. **Read the feedback** — Right and wrong answers both come with a short explanation.
-4. **Review** — Session stats and an answer key help you recap what stuck.
+## Tech stack
 
-## Levels
+| Area          | Choice                                                                                 |
+| ------------- | -------------------------------------------------------------------------------------- |
+| UI            | React 19, TypeScript, Vite 8                                                           |
+| Styling       | Tailwind CSS 4, CSS variables (`src/styles/theme.css`)                                 |
+| Routing       | React Router 7                                                                         |
+| Server data   | Firebase Authentication + Cloud Firestore                                              |
+| Client state  | Zustand (session + hydrated profile/progress), TanStack Query (lessons/sessions, etc.) |
+| UI primitives | Radix-based components under `src/app/components/ui/`                                  |
 
-| #   | Theme               | Focus                                         |
-| --- | ------------------- | --------------------------------------------- |
-| 1   | LLM Pipeline        | Input → tokenizer → context → model → output  |
-| 2   | Prompt Builder      | Role, context, instruction, format            |
-| 3   | Hallucination Swamp | True vs confidently wrong statements          |
-| 4   | Fine-tuning         | Pre-training, task data, adapters, evaluation |
-| 5   | RAG                 | Ingest → chunk → embed → retrieve → augment   |
-| 6   | Embeddings          | Vectors, similarity, semantics, limits        |
-
-## Features
-
-- Local stats across runs
-- Answer key in-game and at `/answers`
-- Pause and exit
-- Distractor blocks you dismiss when they belong nowhere
-- Timer that can speed up when you are on a streak
-
-## Tech
-
-React, TypeScript, Vite, and React Router. ESLint and Prettier for lint/format; Vitest and React Testing Library for tests. Use Node.js 22+ and npm 10+.
-
-The Prompt Builder level can show a streamed model reply in local development when the dev server is set up to call the model API; otherwise the app uses a built-in sample response so the level still works.
+**Node.js 22+** and a current npm are required (`engines` in `package.json`).
 
 ## Setup
 
-```bash
-npm install
-npm run dev
-```
+1. **Install dependencies**
 
-Then open the URL the dev server prints (often `http://localhost:5173`).
+   ```bash
+   npm install
+   ```
+
+2. **Environment** — Copy `.env.example` to `.env` and add your Firebase web app keys from the Firebase console (Project settings → General → Your apps). Optional variables in `.env.example` (e.g. OpenAI) are only needed if you wire up related experiments; core learning flows use Firebase only.
+
+3. **Firestore rules** — Deploy `firestore.rules` to your Firebase project so users can read/write their own data and use squads/invites as defined in the rules.
+
+4. **Run locally**
+
+   ```bash
+   npm run dev
+   ```
+
+   Open the URL Vite prints (usually `http://localhost:5173`).
+
+Optional: populate lesson documents with `npm run seed` or `npm run seed:content` if your repo includes the matching scripts and Firebase admin setup.
 
 ## Scripts
 
-| Command                 | What it does                 |
-| ----------------------- | ---------------------------- |
-| `npm run dev`           | Dev server                   |
-| `npm run build`         | Typecheck + production build |
-| `npm run serve`         | Preview the production build |
-| `npm run type-check`    | TypeScript only              |
-| `npm run lint`          | Format + lint                |
-| `npm test`              | Tests (watch)                |
-| `npm test -- --run`     | Tests once                   |
-| `npm run test:ui`       | Vitest UI                    |
-| `npm run test:coverage` | Coverage                     |
+| Command                 | What it does                  |
+| ----------------------- | ----------------------------- |
+| `npm run dev`           | Vite dev server               |
+| `npm run build`         | `tsc` + production build      |
+| `npm run serve`         | Preview the production build  |
+| `npm run type-check`    | TypeScript only               |
+| `npm run lint`          | Prettier + ESLint             |
+| `npm test`              | Vitest (watch)                |
+| `npm test -- --run`     | Vitest once                   |
+| `npm run test:ui`       | Vitest UI                     |
+| `npm run test:coverage` | Coverage report               |
+| `npm run seed`          | Seed lessons (see `scripts/`) |
+| `npm run seed:content`  | Seed content (see `scripts/`) |
 
 ## Tests
 
-Vitest with jsdom; shared setup in `src/test/setup.ts`. Example tests live next to source (e.g. `src/app.test.tsx`).
+Vitest with jsdom; shared setup in `src/test/setup.ts`. Domain logic is covered alongside utilities (e.g. `src/utils/gameLogic.test.ts`).
+
+## Repo layout (high level)
+
+- `src/app/` — Screens, app shell, shared layout/nav.
+- `src/components/` — Cross-cutting UI (e.g. theme toggle, celebrations).
+- `src/firebase/` — Firebase config, auth helpers, Firestore API, squad helpers.
+- `src/content/` — Local lesson JSON and related content.
+- `playground/` — Separate small Vite app for experiments (see `playground/README.md`).
 
 ## Credits
 
-Game design, levels, and UI are original to this project. The repo started from a standard Vite + React + TypeScript toolchain similar to common open-source starters.
+FinLife is a Wildhacks-style learning product; the toolchain follows common Vite + React + TypeScript patterns. Firebase powers auth and persistence; lesson and squad behavior are implemented in this repository.
