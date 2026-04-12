@@ -1,7 +1,8 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { clearSessions, GameSessionRecord, loadSessions } from '../services/statsStorage';
+import { useAuth } from '../context/AuthContext';
+import { clearSessions, type GameSessionRecord, loadSessions } from '../services/statsStorage';
 
 function formatDuration(ms: number): string {
   const s = Math.round(ms / 1000);
@@ -18,7 +19,13 @@ function formatDate(ts: number): string {
 }
 
 export function StatsPage() {
-  const [sessions, setSessions] = useState<GameSessionRecord[]>(() => loadSessions());
+  const { loading: authLoading } = useAuth();
+  const [sessions, setSessions] = useState<GameSessionRecord[]>([]);
+
+  useEffect(() => {
+    if (authLoading) return;
+    void loadSessions().then(setSessions);
+  }, [authLoading]);
 
   const best = useMemo(
     () => sessions.reduce((m, r) => Math.max(m, r.totalScore), 0),
@@ -26,9 +33,9 @@ export function StatsPage() {
   );
 
   const handleClear = () => {
-    if (!window.confirm('Clear all saved game sessions on this device?')) return;
-    clearSessions();
-    setSessions([]);
+    if (!window.confirm('Clear all saved game sessions in the cloud for this account?'))
+      return;
+    void clearSessions().then(() => setSessions([]));
   };
 
   return (
@@ -37,8 +44,8 @@ export function StatsPage() {
         <header className="page-header">
           <h1 className="page-title">Your stats</h1>
           <p className="page-desc">
-            Completed runs are saved only on this device so you can see how you improve
-            over time.
+            Completed runs are saved to your Firebase account so you can see how you
+            improve over time across devices.
           </p>
           <p className="page-desc stats-study-link">
             <Link to="/answers">Answer keys & explanations (all levels)</Link> —
@@ -57,7 +64,9 @@ export function StatsPage() {
           </div>
         </div>
 
-        {sessions.length === 0 ? (
+        {authLoading ? (
+          <p className="page-desc">Loading stats…</p>
+        ) : sessions.length === 0 ? (
           <div className="empty-state">
             <p>No completed runs yet.</p>
             <Link to="/play" className="btn-primary-lg">

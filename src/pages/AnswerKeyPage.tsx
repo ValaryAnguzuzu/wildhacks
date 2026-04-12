@@ -1,17 +1,25 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
+import { useAuth } from '../context/AuthContext';
 import { LevelAnswerKey } from '../components/LevelAnswerKey';
 import { LEVELS } from '../data/levels';
 import { getMaxAnswerLevelUnlocked } from '../services/statsStorage';
 
 export function AnswerKeyPage() {
+  const { loading: authLoading } = useAuth();
   const { hash } = useLocation();
   const navigate = useNavigate();
   const [notice, setNotice] = useState<string | null>(null);
-  const maxUnlocked = getMaxAnswerLevelUnlocked();
+  const [maxUnlocked, setMaxUnlocked] = useState(1);
 
   useEffect(() => {
+    if (authLoading) return;
+    void getMaxAnswerLevelUnlocked().then(setMaxUnlocked);
+  }, [authLoading]);
+
+  useEffect(() => {
+    if (authLoading) return;
     if (!hash) {
       setNotice(null);
       return;
@@ -31,7 +39,7 @@ export function AnswerKeyPage() {
     requestAnimationFrame(() => {
       document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
-  }, [hash, maxUnlocked, navigate]);
+  }, [authLoading, hash, maxUnlocked, navigate]);
 
   const onLockedToc = (levelNum: number) => {
     setNotice(

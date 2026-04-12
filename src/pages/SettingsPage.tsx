@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { clearSessions } from '../services/statsStorage';
 import { isMuted, setMuted } from '../utilities/gameAudio';
 
 export function SettingsPage() {
+  const { signOut } = useAuth();
   const { theme, setTheme } = useTheme();
   const [soundOff, setSoundOff] = React.useState(isMuted());
 
@@ -16,23 +18,31 @@ export function SettingsPage() {
   };
 
   const clearData = () => {
-    if (!window.confirm('Clear all local game sessions? Profile sign-in is kept.'))
+    if (
+      !window.confirm(
+        'Clear all completed runs stored in Firebase for this account? Theme and sound stay on this device.',
+      )
+    )
       return;
-    clearSessions();
+    void clearSessions();
   };
 
   const nuclear = () => {
     if (
       !window.confirm(
-        'Remove sign-in, stats, theme, and sound prefs from this browser? This cannot be undone.',
+        'Reset this browser: clear cloud session history, sign out and start a new guest, and remove theme and sound preferences. This cannot be undone.',
       )
     )
       return;
-    clearSessions();
-    localStorage.removeItem('prompTetris_user');
-    localStorage.removeItem('prompTetrisTheme');
-    localStorage.removeItem('prompTetrisMute');
-    window.location.reload();
+    void (async () => {
+      await clearSessions();
+      await signOut();
+      localStorage.removeItem('prompTetris_user');
+      localStorage.removeItem('prompTetrisTheme');
+      localStorage.removeItem('prompTetrisMute');
+      localStorage.removeItem('prompTetris_migrated_to_firestore_v1');
+      window.location.reload();
+    })();
   };
 
   return (
@@ -40,7 +50,8 @@ export function SettingsPage() {
       <div className="page-wrap narrow">
         <h1 className="page-title">Settings</h1>
         <p className="page-desc">
-          Theme, sound, and data preferences stay on this device.
+          Theme and sound stay on this device. Game runs and unlocks sync to your Firebase
+          account.
         </p>
 
         <section className="settings-block">
@@ -77,10 +88,10 @@ export function SettingsPage() {
           <h2 className="settings-heading">Data</h2>
           <div className="stack-btns tight">
             <button type="button" className="btn-ghost" onClick={clearData}>
-              Clear session history only
+              Clear cloud session history
             </button>
             <button type="button" className="btn-ghost danger" onClick={nuclear}>
-              Reset all local data
+              Reset browser and cloud stats
             </button>
           </div>
         </section>

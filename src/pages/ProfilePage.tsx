@@ -5,14 +5,34 @@ import { useAuth } from '../context/AuthContext';
 import { getBestTotalScore, loadSessions } from '../services/statsStorage';
 
 export function ProfilePage() {
-  const { user, updateProfile, signOut } = useAuth();
-  const [name, setName] = useState(user?.displayName ?? '');
+  const { user, loading: authLoading, updateProfile, signOut } = useAuth();
+  const [name, setName] = useState('');
+  const [sessionsCount, setSessionsCount] = useState(0);
+  const [best, setBest] = useState<number | null>(null);
+
   useEffect(() => {
     if (!user) return;
-    setName(user.displayName);
+    setName(user.displayName ?? '');
   }, [user]);
-  const sessions = loadSessions().length;
-  const best = getBestTotalScore();
+
+  useEffect(() => {
+    if (authLoading || !user) return;
+    void Promise.all([loadSessions(), getBestTotalScore()]).then(([rows, b]) => {
+      setSessionsCount(rows.length);
+      setBest(b);
+    });
+  }, [authLoading, user]);
+
+  if (authLoading) {
+    return (
+      <div className="page-pad page-narrow">
+        <div className="page-wrap">
+          <h1 className="page-title">Profile</h1>
+          <p className="page-desc">Loading…</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!user) {
     return (
@@ -33,21 +53,36 @@ export function ProfilePage() {
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    updateProfile({ displayName: name.trim() || user.displayName });
+    updateProfile({
+      displayName: (name.trim() || user.displayName) ?? undefined,
+    });
   };
+
+  const emailLine = user.email ?? (user.isAnonymous ? 'Guest (anonymous)' : '—');
 
   return (
     <div className="page-pad">
       <div className="page-wrap narrow">
         <h1 className="page-title">Profile</h1>
-        <p className="page-desc">Local profile — data stays in your browser.</p>
+        <p className="page-desc">
+          Game progress and stats sync to Firebase. Add an email to keep the same account
+          across browsers.
+        </p>
+
+        {user.isAnonymous ? (
+          <p className="page-desc">
+            You&apos;re playing as a guest.{' '}
+            <Link to="/sign-in">Link an email</Link> so your runs stay tied to you if you
+            switch devices.
+          </p>
+        ) : null}
 
         <div className="profile-card">
           <div className="profile-avatar" aria-hidden="true">
-            {(user.displayName || '?').slice(0, 1).toUpperCase()}
+            {(user.displayName || user.email || '?').slice(0, 1).toUpperCase()}
           </div>
           <div className="profile-meta">
-            <p className="profile-email">{user.email}</p>
+            <p className="profile-email">{emailLine}</p>
             <form className="profile-form" onSubmit={handleSave}>
               <label className="form-field">
                 <span>Display name</span>
@@ -63,11 +98,13 @@ export function ProfilePage() {
         <div className="stats-inline">
           <div>
             <span className="stats-inline-label">Sessions recorded</span>
-            <span className="stats-inline-val">{sessions}</span>
+            <span className="stats-inline-val">{sessionsCount}</span>
           </div>
           <div>
             <span className="stats-inline-label">Best score (all time)</span>
-            <span className="stats-inline-val">{best || '—'}</span>
+            <span className="stats-inline-val">
+              {best === null ? '—' : best || '—'}
+            </span>
           </div>
         </div>
 
@@ -78,8 +115,13 @@ export function ProfilePage() {
           <Link to="/stats" className="btn-secondary-lg">
             Full stats
           </Link>
+          {user.isAnonymous ? (
+            <Link to="/sign-in" className="btn-secondary-lg">
+              Link email account
+            </Link>
+          ) : null}
           <button type="button" className="btn-ghost danger" onClick={signOut}>
-            Sign out
+            {user.isAnonymous ? 'New guest session' : 'Sign out'}
           </button>
         </div>
       </div>

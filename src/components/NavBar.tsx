@@ -7,7 +7,7 @@ import { HelpPanel } from './HelpPanel';
 
 export function NavBar() {
   const { theme, toggleTheme } = useTheme();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
@@ -52,9 +52,12 @@ export function NavBar() {
           <NavLink to="/settings" className={linkClass}>
             Settings
           </NavLink>
-          {user ? (
-            <span className="nav-user-pill" title={user.email}>
-              {user.displayName}
+          {authLoading ? null : user && !user.isAnonymous ? (
+            <span
+              className="nav-user-pill"
+              title={user.email ?? user.displayName ?? undefined}
+            >
+              {user.displayName?.trim() || user.email || 'Player'}
             </span>
           ) : (
             <NavLink to="/sign-in" className={linkClass}>

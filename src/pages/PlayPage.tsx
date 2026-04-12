@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useAuth } from '../context/AuthContext';
 import { EndScreen } from '../components/EndScreen';
 import { GameBoard } from '../components/GameBoard';
 import { LEVEL_COUNT } from '../data/levels';
@@ -14,13 +15,12 @@ import { resumeAudioContext } from '../utilities/gameAudio';
 
 export function PlayPage() {
   const navigate = useNavigate();
+  const { loading: authLoading } = useAuth();
   const [phase, setPhase] = useState<GamePhase>('playing');
   const [currentLevel, setCurrentLevel] = useState(0);
   const [allStats, setAllStats] = useState<LevelStats[]>([]);
   const [gameStartTime, setGameStartTime] = useState(() => Date.now());
-  const [lastRunTotalScore, setLastRunTotalScore] = useState(() =>
-    getLastRunTotalScore(),
-  );
+  const [lastRunTotalScore, setLastRunTotalScore] = useState(0);
   /** Bumps when the player restarts mid-run so GameBoard fully remounts. */
   const [runId, setRunId] = useState(0);
   const recorded = useRef(false);
@@ -32,14 +32,21 @@ export function PlayPage() {
   }, []);
 
   useEffect(() => {
+    if (authLoading) return;
+    void getLastRunTotalScore().then(setLastRunTotalScore);
+  }, [authLoading]);
+
+  useEffect(() => {
     if (phase !== 'gameComplete' || allStats.length !== LEVEL_COUNT || recorded.current)
       return;
     recorded.current = true;
-    recordSession(allStats, Date.now() - gameStartTime);
+    void recordSession(allStats, Date.now() - gameStartTime).then(() => {
+      void getLastRunTotalScore().then(setLastRunTotalScore);
+    });
   }, [phase, allStats, gameStartTime]);
 
   const handleLevelComplete = (stats: LevelStats) => {
-    updateMaxAnswerLevelUnlocked(currentLevel);
+    void updateMaxAnswerLevelUnlocked(currentLevel);
     const updated = [...allStats, stats];
     setAllStats(updated);
     if (currentLevel < LEVEL_COUNT - 1) {
@@ -57,7 +64,7 @@ export function PlayPage() {
     setCurrentLevel(0);
     setAllStats([]);
     setGameStartTime(Date.now());
-    setLastRunTotalScore(getLastRunTotalScore());
+    void getLastRunTotalScore().then(setLastRunTotalScore);
     setRunId((n) => n + 1);
     recorded.current = false;
   };

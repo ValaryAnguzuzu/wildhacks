@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { loadSessions } from '../services/statsStorage';
+import { useAuth } from '../context/AuthContext';
+import { loadSessions, type GameSessionRecord } from '../services/statsStorage';
 
 const LEVEL_PREVIEWS = [
   {
@@ -155,7 +156,13 @@ function VisualControls() {
 }
 
 export function HomePage() {
-  const lastRun = loadSessions()[0];
+  const { loading: authLoading } = useAuth();
+  const [lastRun, setLastRun] = useState<GameSessionRecord | undefined>(undefined);
+
+  useEffect(() => {
+    if (authLoading) return;
+    void loadSessions().then((rows) => setLastRun(rows[0]));
+  }, [authLoading]);
 
   return (
     <div className="home home-zigzag">
@@ -211,7 +218,7 @@ export function HomePage() {
                 · Enter/↓ drop · Space or Esc pause
               </span>
             </p>
-            {lastRun ? (
+            {!authLoading && lastRun ? (
               <aside className="home-last-run" aria-label="Your last completed run">
                 <div className="home-last-run-top">
                   <span className="home-last-run-label">Last run</span>

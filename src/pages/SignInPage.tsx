@@ -4,14 +4,26 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export function SignInPage() {
-  const { user, signIn } = useAuth();
+  const { user, loading: authLoading, signInWithEmail } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  if (user) {
+  if (authLoading) {
+    return (
+      <div className="page-pad page-narrow">
+        <div className="page-wrap">
+          <h1 className="page-title">Sign in</h1>
+          <p className="page-desc">Loading…</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (user && !user.isAnonymous && user.email) {
     return (
       <div className="page-pad page-narrow">
         <div className="page-wrap">
@@ -33,7 +45,7 @@ export function SignInPage() {
     );
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     if (!email.includes('@')) {
@@ -44,17 +56,36 @@ export function SignInPage() {
       setError('Password must be at least 4 characters.');
       return;
     }
-    signIn(email, password, displayName);
-    navigate('/profile');
+    setSubmitting(true);
+    try {
+      await signInWithEmail(email, password, displayName);
+      navigate('/profile');
+    } catch (err: unknown) {
+      const code = (err as { code?: string }).code;
+      const message =
+        code === 'auth/weak-password'
+          ? 'Password is too weak.'
+          : code === 'auth/invalid-email'
+            ? 'Invalid email address.'
+            : code === 'auth/wrong-password' || code === 'auth/invalid-credential'
+              ? 'Wrong email or password.'
+              : (err as Error)?.message ?? 'Could not sign in. Try again.';
+      setError(message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="page-pad page-narrow">
       <div className="page-wrap">
-        <h1 className="page-title">Sign in</h1>
+        <h1 className="page-title">
+          {user?.isAnonymous ? 'Link an email' : 'Sign in'}
+        </h1>
         <p className="page-desc">
-          Sign in to personalize your name in the nav. Everything stays on this device —
-          no server, no cloud account.
+          {user?.isAnonymous
+            ? 'Add an email and password to keep your progress if you clear cookies or use another device. Your current guest stats are merged into this account.'
+            : 'Sign in with email and password.'}
         </p>
 
         <form className="form-card" onSubmit={handleSubmit}>
@@ -90,8 +121,12 @@ export function SignInPage() {
             />
           </label>
           {error ? <p className="form-error">{error}</p> : null}
-          <button type="submit" className="btn-primary-lg full-width">
-            Continue
+          <button
+            type="submit"
+            className="btn-primary-lg full-width"
+            disabled={submitting}
+          >
+            {submitting ? 'Please wait…' : 'Continue'}
           </button>
         </form>
 
