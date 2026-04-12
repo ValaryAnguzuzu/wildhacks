@@ -1,0 +1,139 @@
+[
+  {
+    "id": "budgeting-w1l1",
+    "categoryId": "budgeting",
+    "world": 1,
+    "order": 1,
+    "title": "A budget is just a plan, not a punishment",
+    "concept": "A budget tells your money where to go instead of wondering where it went. It isn't about shame — it's clarity. Most anxiety around money comes from guessing, not from the numbers themselves.",
+    "takeaway": "Naming your priorities makes spending feel intentional.",
+    "scenario": {
+      "situation": "Every month you swear you'll save more, but by day 20 your checking account is almost empty and you don't know why.",
+      "choices": [
+        { "id": "A", "text": "Try harder next month without tracking anything" },
+        {
+          "id": "B",
+          "text": "Track spending for one month, then assign every dollar a job"
+        },
+        { "id": "C", "text": "Only use credit cards so it doesn't feel real" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Hope isn't a system. You need a simple map of in vs out.",
+        "B": "Correct. Awareness first, then a plan. That's how budgets stick.",
+        "C": "Credit doesn't erase spending — it delays and often adds interest."
+      },
+      "lesson": "You can't steer what you don't measure.",
+      "conceptTag": "budget-mindset"
+    }
+  },
+  {
+    "id": "budgeting-w1l2",
+    "categoryId": "budgeting",
+    "world": 1,
+    "order": 2,
+    "title": "The 50/30/20 starting frame",
+    "concept": "A common starter split: about 50% needs, 30% wants, 20% savings/debt payoff. It's a guideline, not gospel — adjust to your city, family, and goals.",
+    "takeaway": "Separate needs from wants before debating small treats.",
+    "scenario": {
+      "situation": "After rent and groceries, you have $800 left. You want concerts, dining out, and to build an emergency fund.",
+      "choices": [
+        { "id": "A", "text": "Spend freely — you'll save whatever is left" },
+        {
+          "id": "B",
+          "text": "Decide a minimum savings amount first, then plan wants with what's left"
+        },
+        { "id": "C", "text": "Put 100% to savings and never enjoy life" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Leftovers saving rarely works — lifestyle expands to fill the gap.",
+        "B": "Correct. Pay your future self first, then enjoy the rest guilt-free.",
+        "C": "All-or-nothing budgets usually snap. Sustainability beats perfection."
+      },
+      "lesson": "Automate or schedule savings so they aren't an afterthought.",
+      "conceptTag": "503020-rule"
+    }
+  },
+  {
+    "id": "budgeting-w1l3",
+    "categoryId": "budgeting",
+    "world": 1,
+    "order": 3,
+    "title": "Emergency funds: boring and powerful",
+    "concept": "An emergency fund is cash you can access quickly when life happens — job loss, medical bills, a dead laptop. It keeps you from high-interest debt when the world gets loud.",
+    "takeaway": "Start small, then grow to 3–6 months of essentials.",
+    "scenario": {
+      "situation": "You have $400 in savings and a $2,000 credit card limit. Your car needs $900 in repairs tomorrow.",
+      "choices": [
+        {
+          "id": "A",
+          "text": "Put the repair on the card and worry about interest later"
+        },
+        {
+          "id": "B",
+          "text": "Use savings if you can, then rebuild the fund before extras"
+        },
+        { "id": "C", "text": "Skip the repair and hope for the best" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Cards are a tool, but revolving balances turn shocks into long-term costs.",
+        "B": "Correct. That's what the fund is for — then you refill it like a bill.",
+        "C": "Avoiding the problem often makes it more expensive and dangerous."
+      },
+      "lesson": "Cash buffers turn emergencies into inconveniences.",
+      "conceptTag": "emergency-fund"
+    }
+  },
+  {
+    "id": "budgeting-w2l1",
+    "categoryId": "budgeting",
+    "world": 2,
+    "order": 1,
+    "title": "Subscriptions that quietly drain you",
+    "concept": "Small monthly charges feel harmless alone, but stacked they rival a rent increase. Auditing subscriptions is one of the fastest wins in personal finance.",
+    "takeaway": "Cancel what you forgot you had. Keep what you truly use.",
+    "scenario": {
+      "situation": "You tally subscriptions and find $140/month in apps, boxes, and trials you barely touch.",
+      "choices": [
+        { "id": "A", "text": "Ignore it — it's only a few dollars each" },
+        { "id": "B", "text": "Cut or pause the low-value ones and redirect savings" },
+        { "id": "C", "text": "Add more services to get 'better value'" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "$140/month is $1,680/year — real money that could fund goals.",
+        "B": "Correct. Trim ruthlessly, keep joy on purpose.",
+        "C": "More services rarely fix a leak — they multiply it."
+      },
+      "lesson": "Recurring charges deserve a quarterly review.",
+      "conceptTag": "subscription-audit"
+    }
+  },
+  {
+    "id": "budgeting-w2l2",
+    "categoryId": "budgeting",
+    "world": 2,
+    "order": 2,
+    "title": "Sinking funds for predictable surprises",
+    "concept": "A sinking fund is savings for expenses you know are coming — holidays, annual insurance, replacing a phone. You divide the cost across months so it never feels like a crisis.",
+    "takeaway": "Predictable expenses shouldn't feel like emergencies.",
+    "scenario": {
+      "situation": "Your $1,200 annual insurance bill hits in November and wrecks your plan every year.",
+      "choices": [
+        { "id": "A", "text": "Wing it each November" },
+        { "id": "B", "text": "Save $100/month into a labeled sinking fund" },
+        { "id": "C", "text": "Skip insurance to free up cash" }
+      ],
+      "correct": "B",
+      "feedback": {
+        "A": "Annual bills are predictable — planning is kindness to your future self.",
+        "B": "Correct. Smooth cash flow beats panic withdrawals.",
+        "C": "Skipping coverage trades a small bill for huge tail risk."
+      },
+      "lesson": "Name the goal and automate the transfer.",
+      "conceptTag": "sinking-funds"
+    }
+  }
+]

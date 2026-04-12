@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom/vitest';
+
 import { vi } from 'vitest';
 
 const mockUser = {
@@ -10,12 +11,10 @@ const mockUser = {
 
 vi.mock('firebase/auth', () => ({
   getAuth: vi.fn(() => ({})),
-  onAuthStateChanged: vi.fn(
-    (_auth: unknown, cb: (u: typeof mockUser | null) => void) => {
-      queueMicrotask(() => cb(mockUser));
-      return vi.fn();
-    },
-  ),
+  onAuthStateChanged: vi.fn((_auth: unknown, cb: (u: typeof mockUser | null) => void) => {
+    queueMicrotask(() => cb(mockUser));
+    return vi.fn();
+  }),
   signInAnonymously: vi.fn(() => Promise.resolve({ user: mockUser })),
   signInWithEmailAndPassword: vi.fn(),
   signOut: vi.fn(() => Promise.resolve()),
