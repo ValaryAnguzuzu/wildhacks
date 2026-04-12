@@ -32,6 +32,8 @@ export type ProfileUser = {
   netWorth: number;
   skillLevel: string | null;
   activeCategory: string | null;
+  /** Learning squad (weekly XP race with friends). */
+  activeGroupId: string | null;
   streakFreezes: number;
   /** Set when a long absence breaks a streak so a freeze can restore the prior value. */
   recoverableStreak?: number | null;

@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useCallback, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { FloatingThemeToggle } from '@/components/FloatingThemeToggle';
 import {
   getLessonsForCategory,
   getSessionCount,
@@ -11,6 +12,7 @@ import {
   patchUser,
   updateUser,
 } from '@/firebase/firestore';
+import { incrementSquadWeeklyXp } from '@/firebase/groups';
 import { useLesson } from '@/hooks/useLesson';
 import { useStore } from '@/store/useStore';
 import type { LessonChoice } from '@/types/lesson';
@@ -182,6 +184,10 @@ export function Lesson() {
         : null,
     });
 
+    if (xp > 0 && user.activeGroupId) {
+      void incrementSquadWeeklyXp(user.uid, user.activeGroupId, xp);
+    }
+
     await applyStreakFollowUps();
 
     if (worldUnlocked && newWorldNumber) {
@@ -276,7 +282,8 @@ export function Lesson() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col md:items-center md:pt-8 md:pb-16 bg-[var(--background)]">
+    <div className="min-h-screen flex flex-col md:items-center md:pt-8 md:pb-16 bg-[var(--background)] relative">
+      <FloatingThemeToggle />
       <div className="w-full md:max-w-3xl md:px-6">
         <div className="sticky top-0 z-10 md:relative md:top-auto bg-[var(--background)]">
           <div className="flex items-center justify-between px-6 md:px-0 py-4">

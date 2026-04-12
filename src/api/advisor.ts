@@ -1,6 +1,6 @@
 import type { FinancialProfileData } from '@/firebase/firestore';
 
-type ClaudeMessage = { role: 'user' | 'assistant'; content: string };
+type ChatTurn = { role: 'user' | 'assistant'; content: string };
 
 type ProfileForPrompt = Pick<
   FinancialProfileData,
@@ -92,50 +92,112 @@ Remember: you know their numbers. Use them. Reference actual figures from their 
 
 function extractAssistantText(data: unknown): string {
   const d = data as {
-    content?: Array<{ type?: string; text?: string }>;
+    choices?: Array<{ message?: { content?: string | null } }>;
   };
-  const block = d.content?.[0];
-  if (block?.type === 'text' && typeof block.text === 'string') return block.text;
-  return '';
+  const c = d.choices?.[0]?.message?.content;
+  return typeof c === 'string' && c.length > 0 ? c : '';
+}
+
+/** Safe hints for OpenAI-style error JSON (Groq uses the same shape). */
+function chatCompletionFailureHint(
+  data: unknown,
+  provider: 'groq' | 'openai',
+): string | null {
+  const d = data as { error?: { code?: string; type?: string; message?: string } };
+  const code = d.error?.code;
+  const type = d.error?.type;
+  const msg = (d.error?.message ?? '').toLowerCase();
+
+  if (code === 'insufficient_quota' || type === 'insufficient_quota') {
+    return provider === 'openai'
+      ? 'OpenAI is blocking API calls due to quota or billing limits. The API is billed separately from ChatGPT Plus — open platform.openai.com, go to Billing, and check limits / monthly budget.'
+      : 'Groq quota was exceeded. Wait a bit or check your limits at console.groq.com.';
+  }
+  if (code === 'invalid_api_key' || msg.includes('invalid api key')) {
+    return provider === 'openai'
+      ? 'OpenAI rejected the API key. Confirm VITE_OPENAI_API_KEY in .env.'
+      : 'Groq rejected the API key. Confirm VITE_GROQ_API_KEY in .env.';
+  }
+  if (code === 'rate_limit_exceeded' || msg.includes('rate limit')) {
+    return 'Too many requests. Wait a few seconds and try again.';
+  }
+  return null;
 }
 
 /**
- * Calls Anthropic Messages API from the browser.
- * TODO: Route this through a Firebase Cloud Function (or other backend) in production so the API key is never shipped to clients.
+ * Fin advisor LLM: prefers Groq (free-tier friendly, OpenAI-compatible) when VITE_GROQ_API_KEY is set; otherwise OpenAI.
+ * TODO: Route through a backend in production so API keys are not in the client bundle.
  */
 export async function askAdvisor(
   userMessage: string,
   financialProfile: ProfileForPrompt | null,
-  conversationHistory: ClaudeMessage[],
+  conversationHistory: ChatTurn[],
 ): Promise<string> {
-  const key = import.meta.env.VITE_CLAUDE_API_KEY;
-  if (!key?.trim()) {
-    throw new Error('Advisor is not configured. Add your API key in the environment.');
-  }
+  const groqKey = import.meta.env.VITE_GROQ_API_KEY?.trim();
+  const openaiKey = import.meta.env.VITE_OPENAI_API_KEY?.trim();
 
   const systemPrompt = buildSystemPrompt(financialProfile);
+  const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+    { role: 'system', content: systemPrompt },
+    ...conversationHistory,
+    { role: 'user', content: userMessage },
+  ];
 
-  const response = await fetch('https://api.anthropic.com/v1/messages', {
+  if (groqKey) {
+    const model =
+      import.meta.env.VITE_GROQ_ADVISOR_MODEL?.trim() || 'llama-3.3-70b-versatile';
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${groqKey}`,
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: 1024,
+        messages,
+      }),
+    });
+    const data: unknown = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const hint = chatCompletionFailureHint(data, 'groq');
+      throw new Error(hint ?? 'The advisor could not respond. Try again in a moment.');
+    }
+    const text = extractAssistantText(data);
+    if (!text) {
+      throw new Error('The advisor returned an empty response. Try again.');
+    }
+    return text;
+  }
+
+  if (!openaiKey) {
+    throw new Error(
+      'Advisor is not configured. Add VITE_GROQ_API_KEY (free tier at console.groq.com) or VITE_OPENAI_API_KEY in .env.',
+    );
+  }
+
+  const base =
+    import.meta.env.VITE_OPENAI_URL?.replace(/\/$/, '') ?? 'https://api.openai.com/v1';
+  const model = import.meta.env.VITE_OPENAI_ADVISOR_MODEL?.trim() || 'gpt-4o-mini';
+
+  const response = await fetch(`${base}/chat/completions`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': key,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
+      Authorization: `Bearer ${openaiKey}`,
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-5',
+      model,
       max_tokens: 1024,
-      system: systemPrompt,
-      messages: [...conversationHistory, { role: 'user', content: userMessage }],
+      messages,
     }),
   });
 
   const data: unknown = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    // Do not surface API error bodies to the user (may contain sensitive details).
-    throw new Error('The advisor could not respond. Try again in a moment.');
+    const hint = chatCompletionFailureHint(data, 'openai');
+    throw new Error(hint ?? 'The advisor could not respond. Try again in a moment.');
   }
 
   const text = extractAssistantText(data);

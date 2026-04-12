@@ -62,6 +62,18 @@ const FinancialProfile = lazy(async () => {
   const m = await import('./screens/FinancialProfileScreen');
   return { default: m.FinancialProfileScreen };
 });
+const Squad = lazy(async () => {
+  const m = await import('./screens/Squad');
+  return { default: m.Squad };
+});
+const SquadCreate = lazy(async () => {
+  const m = await import('./screens/SquadCreate');
+  return { default: m.SquadCreate };
+});
+const SquadJoin = lazy(async () => {
+  const m = await import('./screens/SquadJoin');
+  return { default: m.SquadJoin };
+});
 
 function RouteFallback() {
   return (
@@ -97,6 +109,9 @@ function AppRoutes() {
             <Route path="/financial-profile" element={<FinancialProfile />} />
             <Route path="/result" element={<Result />} />
             <Route path="/report" element={<Report />} />
+            <Route path="/squad" element={<Squad />} />
+            <Route path="/squad/create" element={<SquadCreate />} />
+            <Route path="/squad/join" element={<SquadJoin />} />
           </Route>
           <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="*" element={<Navigate to="/home" replace />} />

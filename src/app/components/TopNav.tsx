@@ -1,6 +1,7 @@
-import { Flame, Home, Map, Star, TrendingUp, Wallet } from 'lucide-react';
+import { Flame, Home, Map, Star, TrendingUp, Users, Wallet } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { useStore } from '@/store/useStore';
 import { userInitials } from '@/utils/initials';
 
@@ -40,6 +41,13 @@ export function TopNav() {
       label: 'Advisor',
       path: '/advisor',
       match: (p: string) => p.startsWith('/advisor'),
+    },
+    {
+      id: 'squad',
+      icon: Users,
+      label: 'Squad',
+      path: '/squad',
+      match: (p: string) => p.startsWith('/squad'),
     },
   ];
 
@@ -133,6 +141,7 @@ export function TopNav() {
                 </span>
               </div>
             </div>
+            <ThemeToggle />
             <button
               type="button"
               className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm cursor-pointer"

@@ -5,6 +5,7 @@ import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { auth } from '@/firebase/config';
 import { getUserSessionsSample } from '@/firebase/firestore';
 import { useCategoryLessonLists } from '@/hooks/useCategoryLessonLists';
@@ -281,6 +282,15 @@ export function Profile() {
               </div>
             </div>
           ))}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.12 }}
+          className="mb-8"
+        >
+          <ThemeToggle variant="row" />
         </motion.div>
 
         <motion.div

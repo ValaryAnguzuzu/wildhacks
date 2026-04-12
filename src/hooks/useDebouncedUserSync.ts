@@ -30,6 +30,7 @@ export function useDebouncedUserSync() {
         netWorth: u.netWorth,
         skillLevel: u.skillLevel,
         activeCategory: u.activeCategory,
+        activeGroupId: u.activeGroupId ?? null,
         streakFreezes: u.streakFreezes,
         displayName: u.displayName ?? '',
         email: u.email ?? '',

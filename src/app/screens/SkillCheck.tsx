@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { FloatingThemeToggle } from '@/components/FloatingThemeToggle';
 import { useAuth } from '@/context/AuthContext';
 import { updateUser } from '@/firebase/firestore';
 import { useStore } from '@/store/useStore';
@@ -82,6 +83,7 @@ export function SkillCheck() {
               netWorth: 10000,
               skillLevel,
               activeCategory: null,
+              activeGroupId: null,
               streakFreezes: 0,
               recoverableStreak: null,
             });
@@ -93,7 +95,8 @@ export function SkillCheck() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col px-6 py-8">
+    <div className="min-h-screen flex flex-col px-6 py-8 relative bg-[var(--background)]">
+      <FloatingThemeToggle />
       <div className="flex gap-2 mb-12">
         {questions.map((_, i) => (
           <div
