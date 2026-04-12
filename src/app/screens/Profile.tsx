@@ -4,9 +4,9 @@ import { Award, Calendar } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 
-import { getLocalLessonsForCategory } from '@/content/lessons';
 import { auth } from '@/firebase/config';
 import { getUserSessionsSample } from '@/firebase/firestore';
+import { useCategoryLessonLists } from '@/hooks/useCategoryLessonLists';
 import { useStore } from '@/store/useStore';
 import { CATEGORY_META, CATEGORY_ORDER, type CategoryId } from '@/utils/categoryMeta';
 
@@ -21,6 +21,7 @@ export function Profile() {
   const progressMap = useStore((s) => s.progress);
   const uid = auth.currentUser?.uid;
   const [mounted, setMounted] = useState(false);
+  const { lessonsByCategory, isLoading: lessonsLoading } = useCategoryLessonLists();
 
   useEffect(() => setMounted(true), []);
 
@@ -65,7 +66,7 @@ export function Profile() {
   }, [progressMap]);
 
   const categories = CATEGORY_ORDER.map((id) => {
-    const lessons = getLocalLessonsForCategory(id);
+    const lessons = lessonsByCategory[id] ?? [];
     const done = progressMap[id]?.lessonsComplete?.length ?? 0;
     const total = lessons.length || 1;
     const pct = Math.round((done / total) * 100);
@@ -99,7 +100,7 @@ export function Profile() {
     0,
   );
 
-  if (!mounted || isLoading) {
+  if (!mounted || isLoading || lessonsLoading) {
     return (
       <Layout>
         <div className="px-6 py-8 space-y-4 max-w-lg mx-auto">

@@ -1,8 +1,10 @@
-import { Check, ChevronLeft, Lock, Play, Zap } from 'lucide-react';
+import { Check, ChevronLeft, Lock, Play, SquareCheck, Star, Zap } from 'lucide-react';
 import { motion, useAnimation } from 'motion/react';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { auth } from '@/firebase/config';
+import { getProgress } from '@/firebase/firestore';
 import { useLessonsForCategory } from '@/hooks/useLessonsForCategory';
 import { useStore } from '@/store/useStore';
 import { CATEGORY_META, type CategoryId, displayCategoryId } from '@/utils/categoryMeta';
@@ -30,7 +32,8 @@ function LessonNode({
   categoryColor: string;
 }) {
   const isAvailable = lesson.status === 'available';
-  const isComplete = lesson.status === 'complete' || lesson.status === 'perfect';
+  const isPerfect = lesson.status === 'perfect';
+  const isComplete = lesson.status === 'complete' || isPerfect;
   const isLocked = lesson.status === 'locked';
   const isBoss = lesson.isBoss;
   const controls = useAnimation();
@@ -55,12 +58,21 @@ function LessonNode({
         <motion.button
           type="button"
           onClick={() => void handleClick()}
+          aria-label={
+            isLocked
+              ? 'Locked lesson'
+              : isPerfect
+                ? 'Perfect score — tap to revisit'
+                : isComplete
+                  ? 'Completed — tap to revisit'
+                  : 'Available lesson'
+          }
           whileInView={{ opacity: 1, scale: 1 }}
           initial={{ opacity: 0.85, scale: 0.96 }}
           viewport={{ once: true, margin: '-20%' }}
           whileTap={!isLocked ? { scale: 0.95 } : {}}
           animate={
-            isAvailable
+            isAvailable && !isComplete
               ? {
                   scale: [1, 1.12, 1],
                 }
@@ -82,11 +94,28 @@ function LessonNode({
             opacity: isLocked ? 0.4 : 1,
           }}
         >
-          {isComplete && <Check size={20} color="white" />}
-          {isAvailable && <Play size={20} fill="white" color="white" />}
+          {isPerfect && (
+            <div className="relative flex items-center justify-center">
+              <Star size={22} fill="white" color="white" className="drop-shadow-sm" />
+            </div>
+          )}
+          {!isPerfect && isComplete && (
+            <SquareCheck
+              size={22}
+              strokeWidth={2.25}
+              color="white"
+              className="drop-shadow-sm"
+            />
+          )}
+          {isAvailable &&
+            !isComplete &&
+            (isBoss ? (
+              <Zap size={20} color="white" />
+            ) : (
+              <Play size={20} fill="white" color="white" />
+            ))}
           {isLocked && <Lock size={16} style={{ color: 'var(--text-muted)' }} />}
-          {isBoss && !isComplete && !isLocked && <Zap size={20} color="white" />}
-          {isAvailable && (
+          {isAvailable && !isComplete && (
             <motion.div
               className="absolute inset-0 rounded-full border-2 pointer-events-none"
               style={{ borderColor: categoryColor }}
@@ -108,19 +137,38 @@ function LessonNode({
             className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] px-2 py-1 rounded bg-[var(--surface-elevated)] border border-[var(--border-subtle)] opacity-0 hover:opacity-100 pointer-events-none lg:pointer-events-auto transition-opacity z-20"
             style={{ color: 'var(--text-secondary)' }}
           >
-            {lesson.name} · Revisit
+            {lesson.status === 'perfect'
+              ? `${lesson.name} · Perfect · Revisit`
+              : `${lesson.name} · Done · Revisit`}
           </div>
         )}
       </motion.div>
       <div className={`flex-1 ${position === 'left' ? 'text-left' : 'text-right'}`}>
         <div
+          className={`inline-flex items-center gap-1.5 max-w-full ${position === 'left' ? '' : 'flex-row-reverse'}`}
           style={{
             fontSize: 'var(--font-caption)',
             color: isLocked ? 'var(--text-muted)' : 'var(--text-secondary)',
             fontWeight: 'var(--font-weight-medium)',
           }}
         >
-          {lesson.name}
+          {isPerfect && (
+            <Star
+              size={14}
+              fill={categoryColor}
+              color={categoryColor}
+              className="flex-shrink-0"
+            />
+          )}
+          {!isPerfect && isComplete && (
+            <SquareCheck
+              size={14}
+              strokeWidth={2.5}
+              className="flex-shrink-0"
+              style={{ color: categoryColor }}
+            />
+          )}
+          <span>{lesson.name}</span>
         </div>
       </div>
     </div>
@@ -132,6 +180,7 @@ export function Learn() {
   const navigate = useNavigate();
   const profile = useStore((s) => s.user);
   const progressMap = useStore((s) => s.progress);
+  const setProgress = useStore((s) => s.setProgress);
 
   const categoryId =
     displayCategoryId(rawCat) ??
@@ -144,6 +193,14 @@ export function Learn() {
     isError,
     refetch,
   } = useLessonsForCategory(categoryId);
+
+  useEffect(() => {
+    const uid = auth.currentUser?.uid;
+    if (!uid) return;
+    void getProgress(uid, categoryId).then(({ data }) => {
+      setProgress(categoryId, data);
+    });
+  }, [categoryId, setProgress]);
 
   const progress = progressMap[categoryId] ?? {
     worldsUnlocked: 1,

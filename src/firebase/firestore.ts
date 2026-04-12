@@ -15,7 +15,7 @@ import {
   where,
 } from 'firebase/firestore';
 
-import type { CategoryProgress, Lesson } from '@/types/lesson';
+import type { CategoryProgress, Lesson, LessonScenario } from '@/types/lesson';
 import { checkWorldUnlock, type MarkLessonPayload } from '@/utils/gameLogic';
 
 import { db } from './config';
@@ -34,27 +34,58 @@ const defaultProgress = (): CategoryProgress => ({
 
 let localLessonsCache: Lesson[] | null = null;
 
-function normalizeLesson(raw: Lesson, lessonId?: string): Lesson {
-  const resolvedId = raw.id ?? lessonId ?? raw.lessonId;
+type LessonDoc = Partial<Lesson> & {
+  scenario?: LessonScenario;
+  questions?: unknown;
+};
+
+function resolveScenario(raw: LessonDoc): LessonScenario | null {
+  if (raw.scenario && typeof raw.scenario === 'object') return raw.scenario;
+  if (Array.isArray(raw.questions) && raw.questions.length > 0) {
+    const first = raw.questions[0];
+    if (first && typeof first === 'object') return first as LessonScenario;
+  }
+  return null;
+}
+
+/** Normalize Firestore / cache JSON into the app `Lesson` shape (doc id → lessonId). */
+export function normalizeLesson(raw: unknown, docId: string): Lesson {
+  const r = raw as LessonDoc;
+  const scenario = resolveScenario(r);
+  if (!scenario) {
+    throw new Error(`Lesson document ${docId} is missing scenario or questions`);
+  }
+  const resolvedId = String(r.id ?? r.lessonId ?? docId);
+  const questions = Array.isArray(r.questions)
+    ? (r.questions as LessonScenario[])
+    : undefined;
   return {
-    ...raw,
     id: resolvedId,
-    lessonId: raw.lessonId ?? resolvedId,
+    lessonId: String(r.lessonId ?? r.id ?? docId),
+    categoryId: String(r.categoryId ?? ''),
+    world: Number(r.world ?? 0),
+    order: Number(r.order ?? 0),
+    title: String(r.title ?? ''),
+    concept: String(r.concept ?? ''),
+    takeaway: String(r.takeaway ?? ''),
+    scenario,
+    questions,
   };
 }
 
 async function loadLocalLessons(): Promise<Lesson[]> {
   if (localLessonsCache) return localLessonsCache;
   const mod = await import('@/content/lessons.json');
-  const lessons = (mod.default as Lesson[]).map((lesson) =>
-    normalizeLesson(lesson, lesson.id),
-  );
+  const rows = mod.default as unknown[];
+  const lessons = rows.map((row, i) => {
+    const id = String((row as { id?: string }).id ?? i);
+    return normalizeLesson(row, id);
+  });
   localLessonsCache = lessons;
   return lessons;
 }
 
 async function getLocalLessonsForCategory(categoryId: string): Promise<Lesson[]> {
-  console.warn('[offline] Using local lesson cache');
   const allLessons = await loadLocalLessons();
   return allLessons
     .filter((lesson) => lesson.categoryId === categoryId)
@@ -62,9 +93,11 @@ async function getLocalLessonsForCategory(categoryId: string): Promise<Lesson[]>
 }
 
 async function getLocalLesson(lessonId: string): Promise<Lesson | null> {
-  console.warn('[offline] Using local lesson cache');
   const allLessons = await loadLocalLessons();
-  return allLessons.find((lesson) => lesson.lessonId === lessonId) ?? null;
+  return (
+    allLessons.find((lesson) => lesson.lessonId === lessonId || lesson.id === lessonId) ??
+    null
+  );
 }
 
 export async function getUser(
@@ -115,13 +148,15 @@ export async function getProgress(
     const snap = await getDoc(ref);
     if (!snap.exists()) return { data: defaultProgress(), error: null };
     const d = snap.data() as Partial<CategoryProgress>;
+    const asIdList = (v: unknown): string[] =>
+      Array.isArray(v) ? v.map((x) => String(x)) : [];
     return {
       data: {
         worldsUnlocked: d.worldsUnlocked ?? 1,
-        lessonsComplete: d.lessonsComplete ?? [],
-        conceptsUnlocked: d.conceptsUnlocked ?? [],
+        lessonsComplete: asIdList(d.lessonsComplete),
+        conceptsUnlocked: asIdList(d.conceptsUnlocked),
         xpEarned: d.xpEarned ?? 0,
-        perfectLessons: d.perfectLessons ?? [],
+        perfectLessons: asIdList(d.perfectLessons),
       },
       error: null,
     };
@@ -167,9 +202,10 @@ export async function markLessonComplete(
   try {
     const { data: allLessons } = await getLessonsForCategory(categoryId);
     const progressRef = doc(db, 'users', uid, 'progress', categoryId);
-    await setDoc(progressRef, defaultProgress() as unknown as Record<string, unknown>, {
-      merge: true,
-    });
+    const existingProgress = await getDoc(progressRef);
+    if (!existingProgress.exists()) {
+      await setDoc(progressRef, defaultProgress() as unknown as Record<string, unknown>);
+    }
 
     const patch: Record<string, unknown> = {
       lessonsComplete: arrayUnion(lessonId),
@@ -245,14 +281,27 @@ export async function getLessonsForCategory(
     );
     const snap = await getDocs(q);
     if (snap.empty) {
+      console.warn('[offline] Using local lesson cache');
       return { data: await getLocalLessonsForCategory(categoryId), error: null };
     }
-    const remote = snap.docs.map((d) => normalizeLesson(d.data() as Lesson, d.id));
+    const remote: Lesson[] = [];
+    for (const d of snap.docs) {
+      try {
+        remote.push(normalizeLesson(d.data(), d.id));
+      } catch (e) {
+        console.warn('[getLessonsForCategory] skip invalid doc', d.id, e);
+      }
+    }
+    if (remote.length === 0) {
+      console.warn('[offline] Using local lesson cache');
+      return { data: await getLocalLessonsForCategory(categoryId), error: null };
+    }
     return {
       data: remote.sort((a, b) => a.world - b.world || a.order - b.order),
       error: null,
     };
   } catch {
+    console.warn('[offline] Using local lesson cache');
     return { data: await getLocalLessonsForCategory(categoryId), error: null };
   }
 }
@@ -264,14 +313,23 @@ export async function getLesson(
     const ref = doc(db, 'content', 'lessons', 'items', lessonId);
     const snap = await getDoc(ref);
     if (snap.exists()) {
-      return {
-        data: normalizeLesson(snap.data() as Lesson, snap.id),
-        error: null,
-      };
+      try {
+        return {
+          data: normalizeLesson(snap.data(), snap.id),
+          error: null,
+        };
+      } catch (e) {
+        console.warn('[getLesson] invalid Firestore doc, trying cache', lessonId, e);
+        console.warn('[offline] Using local lesson cache');
+        const local = await getLocalLesson(lessonId);
+        return { data: local, error: null };
+      }
     }
+    console.warn('[offline] Using local lesson cache');
     const local = await getLocalLesson(lessonId);
     return { data: local, error: null };
   } catch {
+    console.warn('[offline] Using local lesson cache');
     const local = await getLocalLesson(lessonId);
     return { data: local, error: null };
   }

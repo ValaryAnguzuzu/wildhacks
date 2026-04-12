@@ -4,14 +4,16 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useCallback, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { getLocalLesson, getLocalLessonsForCategory } from '@/content/lessons';
 import {
+  getLessonsForCategory,
   getSessionCount,
   markLessonComplete,
   patchUser,
   updateUser,
 } from '@/firebase/firestore';
+import { useLesson } from '@/hooks/useLesson';
 import { useStore } from '@/store/useStore';
+import type { LessonChoice } from '@/types/lesson';
 import {
   calculateXP,
   checkStreakUpdate,
@@ -19,6 +21,7 @@ import {
   shouldShowLifeReport,
   updateNetWorth,
 } from '@/utils/gameLogic';
+import { shuffleWithSeed } from '@/utils/shuffleWithSeed';
 
 import { Button } from '../components/Button';
 
@@ -38,10 +41,12 @@ export function Lesson() {
   const setProgress = useStore((s) => s.setProgress);
   const pushCelebration = useStore((s) => s.pushCelebration);
 
-  const lesson = useMemo(
-    () => (lessonId ? getLocalLesson(lessonId) : undefined),
-    [lessonId],
-  );
+  const {
+    data: lesson,
+    isPending: lessonLoading,
+    isError: lessonError,
+    refetch: refetchLesson,
+  } = useLesson(lessonId);
   const categoryId = lesson?.categoryId ?? user?.activeCategory ?? null;
 
   const [phase, setPhase] = useState<'concept' | 'quiz' | 'result'>('concept');
@@ -50,6 +55,11 @@ export function Lesson() {
   const [retried, setRetried] = useState(false);
   const [startTime] = useState(() => Date.now());
   const [showSheet, setShowSheet] = useState(false);
+
+  const quizChoices = useMemo((): LessonChoice[] => {
+    if (!lesson || phase !== 'quiz') return [];
+    return shuffleWithSeed([...lesson.scenario.choices], `${lesson.id}-${startTime}`);
+  }, [lesson, phase, startTime]);
 
   const handleLessonComplete = useCallback(async () => {
     if (!user || !lesson || !categoryId) return;
@@ -128,7 +138,7 @@ export function Lesson() {
     let newWorldNumber: number | null = null;
 
     if (mark.error || !mark.data) {
-      const allLessons = getLocalLessonsForCategory(categoryId);
+      const { data: allLessons = [] } = await getLessonsForCategory(categoryId);
       const merged = mergeProgressAfterLessonComplete(
         prevProg,
         lesson.id,
@@ -205,13 +215,34 @@ export function Lesson() {
     navigate,
   ]);
 
-  if (!lesson || !lessonId) {
+  if (!lessonId) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-[var(--background)]">
         <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>
           Something went wrong
         </p>
         <Button onClick={() => navigate('/home')}>Try again</Button>
+      </div>
+    );
+  }
+
+  if (lessonLoading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-[var(--background)]">
+        <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>
+          Loading lesson…
+        </p>
+      </div>
+    );
+  }
+
+  if (lessonError || !lesson) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-[var(--background)]">
+        <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>
+          Something went wrong
+        </p>
+        <Button onClick={() => void refetchLesson()}>Try again</Button>
       </div>
     );
   }
@@ -354,7 +385,7 @@ export function Lesson() {
                     {lesson.scenario.situation}
                   </p>
                   <div className="space-y-3">
-                    {lesson.scenario.choices.map((choice) => {
+                    {quizChoices.map((choice) => {
                       const selected = choiceMade === choice.id;
                       const isCorrectChoice = choice.id === lesson.scenario.correct;
                       const show = choiceMade !== null;

@@ -83,11 +83,17 @@ export function getLessonStatus(
   progress: CategoryProgress,
   allLessons: Lesson[],
 ): LessonStatus {
-  const { lessonsComplete = [], perfectLessons = [] } = progress;
-  const lesson = allLessons.find((l) => l.id === lessonId);
+  const lessonsComplete = progress.lessonsComplete ?? [];
+  const perfectLessons = progress.perfectLessons ?? [];
+  const lesson = allLessons.find((l) => l.id === lessonId || l.lessonId === lessonId);
   if (!lesson) return 'locked';
-  if (perfectLessons.includes(lessonId)) return 'perfect';
-  if (lessonsComplete.includes(lessonId)) return 'complete';
+
+  const done = new Set(lessonsComplete.map(String));
+  const perfect = new Set(perfectLessons.map(String));
+  const keys = [lesson.id, lesson.lessonId].filter(Boolean).map(String);
+
+  if (keys.some((k) => perfect.has(k))) return 'perfect';
+  if (keys.some((k) => done.has(k))) return 'complete';
   return 'available';
 }
 

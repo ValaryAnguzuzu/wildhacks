@@ -12,7 +12,7 @@ import { motion } from 'motion/react';
 import { useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getLocalLessonsForCategory } from '@/content/lessons';
+import { useCategoryLessonLists } from '@/hooks/useCategoryLessonLists';
 import { useStore } from '@/store/useStore';
 import { CATEGORY_META, CATEGORY_ORDER, type CategoryId } from '@/utils/categoryMeta';
 
@@ -38,9 +38,14 @@ export function Home() {
   const user = useStore((s) => s.user);
   const progressMap = useStore((s) => s.progress);
   const motivationPick = useRef(Math.floor(Math.random() * 4));
+  const { lessonsByCategory, isLoading: lessonsLoading } = useCategoryLessonLists();
 
   const activeCategory = (user?.activeCategory as CategoryId | null) ?? null;
-  const lessonsActive = activeCategory ? getLocalLessonsForCategory(activeCategory) : [];
+  const lessonsActive = activeCategory ? (lessonsByCategory[activeCategory] ?? []) : [];
+  const activeLessonsStillLoading =
+    activeCategory != null &&
+    lessonsLoading &&
+    lessonsByCategory[activeCategory] === undefined;
   const progressActive = activeCategory ? progressMap[activeCategory] : undefined;
 
   const sortedLessons = useMemo(
@@ -76,7 +81,7 @@ export function Home() {
   const displayName = user?.displayName?.split(' ')[0] ?? 'Friend';
 
   const categoryRings = CATEGORY_ORDER.map((id) => {
-    const lessons = getLocalLessonsForCategory(id);
+    const lessons = lessonsByCategory[id] ?? [];
     const p = progressMap[id];
     const done = p?.lessonsComplete?.length ?? 0;
     const total = lessons.length || 1;
@@ -147,13 +152,13 @@ export function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          whileHover={nextLesson ? { y: -2 } : {}}
+          whileHover={nextLesson && !activeLessonsStillLoading ? { y: -2 } : {}}
           onClick={() => {
-            if (!nextLesson) return;
+            if (!nextLesson || activeLessonsStillLoading) return;
             navigate(`/lesson/${nextLesson.id}`);
           }}
           className={`p-6 md:p-8 rounded-[var(--radius-card)] mb-6 md:mb-8 relative overflow-hidden border md:border-2 ${
-            nextLesson ? 'cursor-pointer' : 'opacity-80'
+            nextLesson && !activeLessonsStillLoading ? 'cursor-pointer' : 'opacity-80'
           }`}
           style={{
             backgroundColor: 'var(--surface)',
@@ -168,7 +173,25 @@ export function Home() {
             ~3 min
           </div>
 
-          {!activeCategory || !nextLesson ? (
+          {activeLessonsStillLoading ? (
+            <>
+              <h3
+                className="mb-2"
+                style={{
+                  fontSize: 'var(--font-subheading)',
+                  color: 'var(--text-primary)',
+                }}
+              >
+                Loading your path…
+              </h3>
+              <p
+                className="mb-4"
+                style={{ fontSize: 'var(--font-body)', color: 'var(--text-secondary)' }}
+              >
+                Fetching lessons from the server.
+              </p>
+            </>
+          ) : !activeCategory || !nextLesson ? (
             <>
               <h3
                 className="mb-2"

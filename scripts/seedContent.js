@@ -1,5 +1,5 @@
 /**
- * Seeds Firestore `lessons` collection from local JSON (skip existing docs).
+ * Seeds Firestore `content/lessons/items` from `src/content/lessons.json` (skip existing docs).
  * Run: GOOGLE_APPLICATION_CREDENTIALS=... node scripts/seedContent.js
  */
 import admin from 'firebase-admin';
@@ -9,8 +9,6 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
-
-const files = ['investing.json', 'budgeting.json', 'taxes.json', 'realEstate.json'];
 
 if (!process.env.GOOGLE_APPLICATION_CREDENTIALS) {
   console.warn(
@@ -27,20 +25,20 @@ try {
 const db = admin.firestore();
 
 async function main() {
-  for (const f of files) {
-    const raw = readFileSync(join(root, 'src/content', f), 'utf8');
-    /** @type {Array<{ id: string }>} */
-    const lessons = JSON.parse(raw);
-    for (const lesson of lessons) {
-      const ref = db.collection('lessons').doc(lesson.id);
-      const snap = await ref.get();
-      if (snap.exists) {
-        console.log(`Skip (exists) ${lesson.id}`);
-        continue;
-      }
-      await ref.set(lesson);
-      console.log(`Seeded ${lesson.id}`);
+  const raw = readFileSync(join(root, 'src/content/lessons.json'), 'utf8');
+  /** @type {Array<{ id: string }>} */
+  const lessons = JSON.parse(raw);
+  const col = db.collection('content').doc('lessons').collection('items');
+
+  for (const lesson of lessons) {
+    const ref = col.doc(lesson.id);
+    const snap = await ref.get();
+    if (snap.exists) {
+      console.log(`Skip (exists) ${lesson.id}`);
+      continue;
     }
+    await ref.set(lesson);
+    console.log(`Seeded ${lesson.id}`);
   }
   console.log('Done.');
 }

@@ -4,9 +4,9 @@ import { Award, type LucideIcon, Target, TrendingUp, Zap } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useMemo } from 'react';
 
-import { getLocalLessonsForCategory } from '@/content/lessons';
 import { auth } from '@/firebase/config';
 import { getRecentSessions } from '@/firebase/firestore';
+import { useCategoryLessonLists } from '@/hooks/useCategoryLessonLists';
 import { useStore } from '@/store/useStore';
 import { CATEGORY_META, CATEGORY_ORDER, type CategoryId } from '@/utils/categoryMeta';
 
@@ -34,6 +34,7 @@ export function Progress() {
   const uid = auth.currentUser?.uid;
   const profile = useStore((s) => s.user);
   const progressMap = useStore((s) => s.progress);
+  const { lessonsByCategory } = useCategoryLessonLists();
 
   const { data: sessions = [], isLoading } = useQuery({
     queryKey: ['progress-sessions', uid],
@@ -92,7 +93,7 @@ export function Progress() {
     }
 
     for (const id of CATEGORY_ORDER) {
-      const lessons = getLocalLessonsForCategory(id);
+      const lessons = lessonsByCategory[id] ?? [];
       const done = new Set(progressMap[id]?.lessonsComplete ?? []);
       if (lessons.length === 0) continue;
       const meta = CATEGORY_META[id as CategoryId];
@@ -132,7 +133,7 @@ export function Progress() {
       seen.add(a.title);
       return true;
     });
-  }, [profile?.streak, progressMap]);
+  }, [profile?.streak, progressMap, lessonsByCategory]);
 
   const todayDow = new Date().getDay();
   const todayIdx = todayDow === 0 ? 6 : todayDow - 1;

@@ -19,6 +19,8 @@ export type Lesson = {
   concept: string;
   takeaway: string;
   scenario: LessonScenario;
+  /** Some Firestore docs store quiz content as an array; the UI uses `scenario` (from the first item if needed). */
+  questions?: LessonScenario[];
 };
 
 export type CategoryProgress = {
