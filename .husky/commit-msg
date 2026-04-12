@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+# Strip Cursor IDE footers from commit messages (applies to commits made with hooks enabled).
+
+msgfile="$1"
+[ -z "$msgfile" ] || [ ! -f "$msgfile" ] && exit 0
+
+tmp=$(mktemp)
+awk '
+  tolower($0) ~ /^co-authored-by:[[:space:]]+cursor[[:space:]]*</ { next }
+  {
+    l = tolower($0)
+    if (l ~ /^made with cursor/) next
+    if (l ~ /^generated with cursor/) next
+    print
+  }
+' "$msgfile" > "$tmp" && mv "$tmp" "$msgfile"
+
+exit 0
