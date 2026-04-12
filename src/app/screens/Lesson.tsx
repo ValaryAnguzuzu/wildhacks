@@ -11,6 +11,7 @@ import {
   patchUser,
   updateUser,
 } from '@/firebase/firestore';
+import { incrementSquadWeeklyXp } from '@/firebase/groups';
 import { useLesson } from '@/hooks/useLesson';
 import { useStore } from '@/store/useStore';
 import type { LessonChoice } from '@/types/lesson';
@@ -180,6 +181,10 @@ export function Lesson() {
         ? (user.recoverableStreak ?? null)
         : null,
     });
+
+    if (xp > 0 && user.activeGroupId) {
+      void incrementSquadWeeklyXp(user.uid, user.activeGroupId, xp);
+    }
 
     await applyStreakFollowUps();
 

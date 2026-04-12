@@ -42,6 +42,7 @@ export type FinLifeUser = {
   netWorth: number;
   skillLevel: string | null;
   activeCategory: string | null;
+  activeGroupId?: string | null;
   streakFreezes: number;
   createdAt?: import('firebase/firestore').Timestamp;
 };
