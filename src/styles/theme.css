@@ -50,6 +50,27 @@
   --radius-pill: 999px;
 }
 
+/* Light theme — toggled via `data-theme="light"` on <html> (next-themes) */
+html[data-theme='light'] {
+  --background: #f4f4f9;
+  --surface: #ffffff;
+  --surface-elevated: #ececf2;
+  --border-subtle: #d8d8e4;
+
+  --text-primary: #12121c;
+  --text-secondary: #5a5a6e;
+  --text-muted: #8a8a9c;
+
+  --teal: #0d9488;
+  --amber: #d97706;
+  --indigo: #4f46e5;
+  --rose: #e11d48;
+
+  --xp-gold: #c78f00;
+  --correct: #059669;
+  --wrong: #dc2626;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);

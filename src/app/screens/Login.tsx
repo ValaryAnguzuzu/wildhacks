@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { FloatingThemeToggle } from '@/components/FloatingThemeToggle';
 import { useAuth } from '@/context/AuthContext';
 import { signInWithEmail, signInWithGoogle, signUpWithEmail } from '@/firebase/auth';
 import { useStore } from '@/store/useStore';
@@ -60,7 +61,8 @@ export function Login() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center px-6 py-10 bg-[var(--background)]">
+    <div className="min-h-screen flex flex-col justify-center px-6 py-10 bg-[var(--background)] relative">
+      <FloatingThemeToggle />
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
@@ -112,7 +114,14 @@ export function Login() {
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-lg bg-rose-500/10 border border-rose-500/30 text-rose-200 text-sm">
+          <div
+            className="mb-4 p-3 rounded-lg border text-sm"
+            style={{
+              backgroundColor: 'color-mix(in srgb, var(--wrong) 12%, transparent)',
+              borderColor: 'color-mix(in srgb, var(--wrong) 35%, transparent)',
+              color: 'var(--wrong)',
+            }}
+          >
             {error}
           </div>
         )}

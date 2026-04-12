@@ -2,6 +2,7 @@ import { animate, motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { FloatingThemeToggle } from '@/components/FloatingThemeToggle';
 import { getConceptLine } from '@/content/conceptDictionary';
 import type { Lesson } from '@/types/lesson';
 
@@ -47,7 +48,8 @@ export function Result() {
 
   if (!state) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-6 bg-[var(--background)]">
+      <div className="min-h-screen flex items-center justify-center px-6 bg-[var(--background)] relative">
+        <FloatingThemeToggle />
         <p style={{ color: 'var(--text-secondary)' }}>No result to show.</p>
         <Button className="ml-4" onClick={() => navigate('/home')}>
           Home
@@ -61,7 +63,8 @@ export function Result() {
   const tag = lesson.scenario.conceptTag;
 
   return (
-    <div className="min-h-screen px-6 py-10 flex flex-col items-center justify-center bg-[var(--background)]">
+    <div className="min-h-screen px-6 py-10 flex flex-col items-center justify-center bg-[var(--background)] relative">
+      <FloatingThemeToggle />
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
