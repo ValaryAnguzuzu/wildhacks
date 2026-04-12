@@ -82,6 +82,7 @@ export function SkillCheck() {
               netWorth: 10000,
               skillLevel,
               activeCategory: null,
+              activeGroupId: null,
               streakFreezes: 0,
               recoverableStreak: null,
             });

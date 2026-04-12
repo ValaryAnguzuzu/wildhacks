@@ -6,6 +6,7 @@ import {
   Play,
   Star,
   TrendingUp,
+  Users,
   Wallet,
 } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -13,8 +14,10 @@ import { useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useCategoryLessonLists } from '@/hooks/useCategoryLessonLists';
+import { useSquadBoard } from '@/hooks/useSquadBoard';
 import { useStore } from '@/store/useStore';
 import { CATEGORY_META, CATEGORY_ORDER, type CategoryId } from '@/utils/categoryMeta';
+import { currentWeekId } from '@/utils/weekId';
 
 import { Layout } from '../components/Layout';
 
@@ -39,6 +42,9 @@ export function Home() {
   const progressMap = useStore((s) => s.progress);
   const motivationPick = useRef(Math.floor(Math.random() * 4));
   const { lessonsByCategory, isLoading: lessonsLoading } = useCategoryLessonLists();
+  const squadId = user?.activeGroupId ?? null;
+  const { data: squadBoard } = useSquadBoard(squadId);
+  const weekLabel = currentWeekId();
 
   const activeCategory = (user?.activeCategory as CategoryId | null) ?? null;
   const lessonsActive = activeCategory ? (lessonsByCategory[activeCategory] ?? []) : [];
@@ -267,6 +273,57 @@ export function Home() {
             </>
           )}
         </motion.div>
+
+        {squadId && squadBoard?.group && (
+          <motion.button
+            type="button"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            onClick={() => navigate('/squad')}
+            className="w-full text-left p-5 rounded-[var(--radius-card)] mb-6 border flex flex-col gap-3"
+            style={{
+              backgroundColor: 'var(--surface)',
+              borderColor: 'var(--border-subtle)',
+            }}
+          >
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 min-w-0">
+                <Users size={20} className="shrink-0" style={{ color: 'var(--teal)' }} />
+                <span
+                  className="font-semibold truncate"
+                  style={{ color: 'var(--text-primary)' }}
+                >
+                  {squadBoard.group.name}
+                </span>
+              </div>
+              <span className="text-xs shrink-0" style={{ color: 'var(--text-muted)' }}>
+                Week {weekLabel}
+              </span>
+            </div>
+            <div className="space-y-2">
+              {squadBoard.members.slice(0, 3).map((m, i) => (
+                <div key={m.uid} className="flex justify-between text-sm gap-2">
+                  <span style={{ color: 'var(--text-secondary)' }} className="truncate">
+                    {i + 1}. {m.displayName}
+                    {m.uid === user?.uid ? (
+                      <span style={{ color: 'var(--teal)' }}> · you</span>
+                    ) : null}
+                  </span>
+                  <span
+                    className="tabular-nums font-medium shrink-0"
+                    style={{ color: 'var(--xp-gold)' }}
+                  >
+                    {m.weekId === weekLabel ? m.weeklyXp : 0} XP
+                  </span>
+                </div>
+              ))}
+            </div>
+            <span className="text-sm font-medium" style={{ color: 'var(--teal)' }}>
+              Open squad leaderboard →
+            </span>
+          </motion.button>
+        )}
 
         <div className="flex md:grid md:grid-cols-4 gap-4 overflow-x-auto md:overflow-visible pb-4 mb-6 -mx-1 px-1 sm:-mx-2 sm:px-2 md:mx-0 md:px-0 scrollbar-hide">
           {categoryRings.map((category, index) => {

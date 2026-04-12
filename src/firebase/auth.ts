@@ -20,6 +20,7 @@ const initialUserFields = (displayName: string | null, email: string | null) => 
   netWorth: 10000,
   skillLevel: null,
   activeCategory: null,
+  activeGroupId: null,
   streakFreezes: 0,
   createdAt: serverTimestamp(),
 });

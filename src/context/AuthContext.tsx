@@ -100,6 +100,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         netWorth: typeof docData.netWorth === 'number' ? docData.netWorth : 10000,
         skillLevel: docSkill ?? (sameSession ? prev.skillLevel : null) ?? null,
         activeCategory: docCategory ?? (sameSession ? prev.activeCategory : null) ?? null,
+        activeGroupId:
+          typeof docData.activeGroupId === 'string' && docData.activeGroupId.length > 0
+            ? docData.activeGroupId
+            : ((sameSession ? prev.activeGroupId : null) ?? null),
         streakFreezes:
           typeof docData.streakFreezes === 'number' ? docData.streakFreezes : 0,
         recoverableStreak:
