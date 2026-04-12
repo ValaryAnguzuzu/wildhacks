@@ -4,41 +4,21 @@ import { describe, expect, test } from 'vitest';
 
 import App from './App';
 
-describe('App component', () => {
-  test('renders the heading and links', () => {
+describe('PrompTetris App', () => {
+  test('home shows hero and start links', () => {
     render(<App />);
-    expect(screen.getByText(/Vite \+ React \+ Typescript/)).toBeInTheDocument();
-    expect(screen.getByText('Learn React')).toBeInTheDocument();
-    expect(screen.getByText('Vite Docs')).toBeInTheDocument();
-    expect(screen.getByText('Vitest Docs')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/PrompTetris/i);
+    const start = screen.getAllByRole('link', { name: /start game/i });
+    expect(start.length).toBeGreaterThanOrEqual(1);
   });
 
-  test('counter should be 0 at the start', () => {
-    render(<App />);
-    expect(screen.getByText('count is: 0')).toBeInTheDocument();
-  });
-
-  test('counter should increment by one when clicked', async () => {
+  test('play route shows level HUD', async () => {
     const user = userEvent.setup();
     render(<App />);
-    const counter = screen.getByRole('button');
-    await user.click(counter);
-    expect(screen.getByText('count is: 1')).toBeInTheDocument();
-  });
-
-  test('counter should increment multiple times', async () => {
-    const user = userEvent.setup();
-    render(<App />);
-    const counter = screen.getByRole('button');
-    await user.click(counter);
-    await user.click(counter);
-    await user.click(counter);
-    expect(screen.getByText('count is: 3')).toBeInTheDocument();
-  });
-
-  test('renders the logo image', () => {
-    render(<App />);
-    const logo = screen.getByAltText('logo');
-    expect(logo).toBeInTheDocument();
+    await user.click(screen.getAllByRole('link', { name: /start game/i })[0]);
+    expect(
+      await screen.findByText(/How does ChatGPT actually work\?/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/lvl\s*1/i)).toBeInTheDocument();
   });
 });
