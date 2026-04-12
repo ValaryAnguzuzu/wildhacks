@@ -1,5 +1,11 @@
 node_modules
 .DS_Store
+
+# Env (secrets) — keep Firebase keys and API tokens out of git
+.env
+.env.local
+.env.*.local
+
 dist
 dist-ssr
 *.local
