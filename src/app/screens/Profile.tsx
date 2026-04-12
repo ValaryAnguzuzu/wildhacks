@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { Timestamp } from 'firebase/firestore';
-import { Award, Calendar } from 'lucide-react';
+import { Award, Calendar, LogOut } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { signOut } from '@/firebase/auth';
 import { auth } from '@/firebase/config';
 import { getUserSessionsSample } from '@/firebase/firestore';
 import { useCategoryLessonLists } from '@/hooks/useCategoryLessonLists';
@@ -24,6 +25,13 @@ export function Profile() {
   const progressMap = useStore((s) => s.progress);
   const uid = auth.currentUser?.uid;
   const [mounted, setMounted] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+    await signOut();
+    navigate('/login', { replace: true });
+  };
   const { lessonsByCategory, isLoading: lessonsLoading } = useCategoryLessonLists();
 
   useEffect(() => setMounted(true), []);
@@ -447,6 +455,29 @@ export function Profile() {
               </motion.div>
             ))}
           </div>
+        </motion.div>
+
+        {/* Sign out */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mt-4 pb-8"
+        >
+          <button
+            type="button"
+            disabled={isSigningOut}
+            onClick={() => void handleSignOut()}
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-[var(--radius-button)] font-semibold border transition-colors"
+            style={{
+              borderColor: 'var(--border-subtle)',
+              color: isSigningOut ? 'var(--text-secondary)' : '#ef4444',
+              backgroundColor: 'transparent',
+            }}
+          >
+            <LogOut size={16} aria-hidden />
+            {isSigningOut ? 'Signing out…' : 'Sign out'}
+          </button>
         </motion.div>
       </div>
     </Layout>
