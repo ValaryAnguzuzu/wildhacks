@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { FloatingThemeToggle } from '@/components/FloatingThemeToggle';
 import { useAuth } from '@/context/AuthContext';
 import { useStore } from '@/store/useStore';
 
@@ -28,6 +29,7 @@ export function Welcome() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden bg-[var(--background)]">
+      <FloatingThemeToggle />
       <div className="absolute inset-0 opacity-5 pointer-events-none">
         {Array.from({ length: 20 }).map((_, i) => {
           const Icon = bgIcons[i % 4];

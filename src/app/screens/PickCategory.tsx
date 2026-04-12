@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { FloatingThemeToggle } from '@/components/FloatingThemeToggle';
 import { useAuth } from '@/context/AuthContext';
 import { updateUser } from '@/firebase/firestore';
 import { useStore } from '@/store/useStore';
@@ -56,7 +57,8 @@ export function PickCategory() {
   }, [profile?.skillLevel, profile?.activeCategory, navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col px-6 py-8">
+    <div className="min-h-screen flex flex-col px-6 py-8 relative bg-[var(--background)]">
+      <FloatingThemeToggle />
       <h2
         className="mb-2"
         style={{
