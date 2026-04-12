@@ -1,12 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import type { LevelStats } from '@/types/lesson';
-import {
-  type CategoryAllocation,
-  emptyAllocation,
-  sumAllocation,
-} from '@/utils/gameLogic';
-
 import {
   evaluateAllocation,
   FIN_SIM_ROUND_COUNT,
@@ -15,7 +8,13 @@ import {
   finSimResourcesLose,
   type FinSimRound,
   type FinSimStep,
-} from '../content/finSimScenario';
+} from '@/content/finSimScenario';
+import type { LevelStats } from '@/types/lesson';
+import {
+  type CategoryAllocation,
+  emptyAllocation,
+  sumAllocation,
+} from '@/utils/gameLogic';
 
 export type FinSimUiPhase = 'roundIntro' | 'step' | 'feedback' | 'gameWon' | 'gameLost';
 
@@ -200,7 +199,7 @@ export function useFinSimEngine(): UseFinSimEngineReturn {
     (id: keyof CategoryAllocation, delta: number) => {
       if (phase !== 'step' || !currentStep || currentStep.kind !== 'allocate') return;
       const pool = currentStep.pool;
-      setAllocationDraft((d) => {
+      setAllocationDraft((d: CategoryAllocation) => {
         const next = { ...d };
         const sumOthers = sumAllocation(d) - d[id];
         const cap = Math.max(0, pool - sumOthers);
@@ -222,38 +221,27 @@ export function useFinSimEngine(): UseFinSimEngineReturn {
       splitAnimRef.current = null;
     }
 
-    setAllocationDraft((prev) => {
-      // If already matches target, nothing to animate
-      const same = (
-        ['needs', 'debt', 'savings', 'investing', 'wants'] as (keyof CategoryAllocation)[]
-      ).every((k) => prev[k] === target[k]);
+    setAllocationDraft((prev: CategoryAllocation) => {
+      const bucketIds = ['needs', 'debt', 'savings', 'investing', 'wants'] as const;
+      const same = bucketIds.every((k) => prev[k] === target[k]);
       if (same) return prev;
-      // Start from current draft (may be empty) and animate towards target
-      const current = { ...prev } as Record<string, number>;
+      const current: CategoryAllocation = { ...prev };
 
       splitAnimRef.current = setInterval(() => {
-        // On each tick, bump one category that hasn't reached target yet.
         let done = true;
-        const ids: (keyof CategoryAllocation)[] = [
-          'needs',
-          'debt',
-          'savings',
-          'investing',
-          'wants',
-        ];
-        for (const id of ids) {
+        for (const id of bucketIds) {
           if (current[id] < target[id]) {
             current[id] += 1;
             done = false;
             break;
-          } else if (current[id] > target[id]) {
+          }
+          if (current[id] > target[id]) {
             current[id] -= 1;
             done = false;
             break;
           }
         }
-        // Push update
-        setAllocationDraft({ ...(current as CategoryAllocation) });
+        setAllocationDraft({ ...current });
         if (done && splitAnimRef.current) {
           clearInterval(splitAnimRef.current);
           splitAnimRef.current = null;

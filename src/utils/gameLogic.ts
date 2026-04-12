@@ -145,3 +145,20 @@ export function mergeProgressAfterLessonComplete(
 export function shouldShowLifeReport(sessionsCompleted: number): boolean {
   return sessionsCompleted > 0 && sessionsCompleted % 5 === 0;
 }
+
+/** FinSim budget buckets (monthly allocation puzzle). */
+export type CategoryAllocation = {
+  needs: number;
+  debt: number;
+  savings: number;
+  investing: number;
+  wants: number;
+};
+
+export function emptyAllocation(): CategoryAllocation {
+  return { needs: 0, debt: 0, savings: 0, investing: 0, wants: 0 };
+}
+
+export function sumAllocation(a: CategoryAllocation): number {
+  return a.needs + a.debt + a.savings + a.investing + a.wants;
+}

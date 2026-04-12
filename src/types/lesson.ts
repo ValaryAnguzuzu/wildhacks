@@ -31,6 +31,17 @@ export type CategoryProgress = {
   perfectLessons: string[];
 };
 
+/** Per-level summary for FinSim run stats (UI / analytics). */
+export type LevelStats = {
+  levelId: string;
+  score: number;
+  correctCount: number;
+  totalCount: number;
+  bestStreak: number;
+  speedBonus: number;
+  timeTakenMs: number;
+};
+
 export type FinLifeUser = {
   uid: string;
   displayName: string | null;
