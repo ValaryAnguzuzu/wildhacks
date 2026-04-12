@@ -1,0 +1,237 @@
+/* Answer key lists — level modal + /answers page */
+
+.answer-key-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.answer-key-item {
+  text-align: left;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(51, 65, 85, 0.45);
+}
+
+.answer-key-item-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.answer-key-name {
+  font-weight: 800;
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  line-height: 1.35;
+}
+
+.answer-key-badge {
+  flex-shrink: 0;
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.45rem;
+  border-radius: 6px;
+}
+
+.answer-key-badge--ok {
+  background: rgba(22, 101, 52, 0.35);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  color: #86efac;
+}
+
+.answer-key-badge--bad {
+  background: rgba(127, 29, 29, 0.35);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  color: #fecaca;
+}
+
+.answer-key-row {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  margin-bottom: 0.2rem;
+}
+
+.answer-key-row--muted {
+  opacity: 0.9;
+}
+
+.answer-key-label {
+  flex-shrink: 0;
+  width: 4.5rem;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.answer-key-value {
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.answer-key-desc {
+  margin: 0.45rem 0 0;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: #94a3b8;
+}
+
+/* Level complete modal — preview + answer block */
+.ov-next-preview {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(139, 92, 246, 0.06));
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.ov-next-preview-label {
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  margin-bottom: 0.25rem;
+}
+
+.ov-next-preview-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #f1f5f9;
+  margin: 0 0 0.25rem;
+}
+
+.ov-next-preview-sub {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+.ov-answer-key-block {
+  text-align: left;
+  margin-bottom: 1rem;
+  max-height: min(42vh, 420px);
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+.ov-answer-key-title {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin: 0 0 0.6rem;
+}
+
+.ov-answer-key-foot {
+  margin: 0.75rem 0 0;
+  font-size: 0.72rem;
+  text-align: center;
+}
+
+.ov-answer-key-foot a {
+  color: #7dd3fc;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ov-answer-key-foot a:hover {
+  text-decoration: underline;
+}
+
+/* Full page */
+.stats-study-link a {
+  font-weight: 700;
+  color: var(--accent, #38bdf8);
+  text-decoration: none;
+}
+
+.stats-study-link a:hover {
+  text-decoration: underline;
+}
+
+.page-answers {
+  flex: 1;
+}
+
+.answer-key-page-wrap {
+  max-width: 720px;
+}
+
+.answer-key-toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+}
+
+.answer-key-toc-link {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(88, 28, 135, 0.25);
+  color: #cbd5e1;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.answer-key-toc-link:hover {
+  border-color: rgba(167, 139, 250, 0.45);
+  color: #f8fafc;
+}
+
+.answer-key-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.answer-key-section {
+  scroll-margin-top: calc(var(--nav-height, 56px) + 1rem);
+}
+
+.answer-key-section-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #f1f5f9;
+}
+
+.answer-key-section-goal {
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+.answer-key-foot {
+  margin-top: 2rem;
+}
+
+.answer-key-foot-dot {
+  margin: 0 0.35rem;
+  opacity: 0.5;
+}
+
+.level-complete-card .ov-answer-key-block .answer-key-item {
+  background: rgba(15, 23, 42, 0.75);
+}
